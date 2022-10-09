@@ -1,16 +1,18 @@
 // use "import" to import libraries
 import express from 'express';
-import callPj from './resources/projects';
 
 // use "require" to import JSON files
 const admins = require('./data/admins.json');
+const callRouter = require('./resources/projects');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 6000;
 
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
+
+app.use(callRouter);
 
 app.get('/', async (req, res) => {
   res.send('Hello World!');
@@ -21,8 +23,6 @@ app.get('/admins', (req, res) => {
     data: admins,
   });
 });
-
-app.get('/projects', callPj);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
