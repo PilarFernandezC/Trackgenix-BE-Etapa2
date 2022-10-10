@@ -57,7 +57,7 @@ router.delete('/deleteById', (req, res) => {
     if (err) {
       res.send('Cannot found the item');
     } else {
-      res.send(`Item id=${timeSheetsId} deleted\n${JSON.stringify(timeSheets, null, '\n')}`);
+      res.send(`Item id=${timeSheetsId} deleted\n${JSON.stringify(timeSheets, null, 4)}`);
     }
   });
 });
