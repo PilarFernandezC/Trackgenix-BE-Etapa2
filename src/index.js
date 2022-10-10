@@ -3,8 +3,7 @@ import express from 'express';
 
 // use "require" to import JSON files
 const admins = require('./data/admins.json');
-const tasks = require('./resources/tasks')
-const taskList = require('./data/tasks.json');
+const tasks = require('./resources/tasks');
 
 const app = express();
 const port = process.env.PORT || 3000;
