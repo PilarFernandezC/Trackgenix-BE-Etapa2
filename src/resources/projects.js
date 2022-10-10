@@ -18,22 +18,6 @@ router.get('/getById/:id', (req, res) => {
   }
 });
 router.post('/createNew', (req, res) => {
-//   const NewProject = {
-//     id: req.body.id,
-//     name: req.body.name,
-//     description: req.dody.description,
-//     starDate: req.body.starDate,
-//     finishDate: req.dody.finishDate,
-//     clientName: req.body.clientName,
-//     status: 'active',
-//   };
-//   if (!NewProject.id || !NewProject.name || !NewProject.description || !NewProject.starDate
-//      || !NewProject.finishDate || !NewProject.clientName) {
-//     return res.status(400).json({ msg: 'please include correct params' });
-//   }
-
-  //   project.push(NewProject);
-  //   return res.json(project);
   const requesBody = req.body;
   project.push(requesBody);
   fs.writeFile('src/data/projects.json', JSON.stringify(requesBody, null, 2), (err) => {
@@ -41,6 +25,6 @@ router.post('/createNew', (req, res) => {
       res.send('error');
     }
   });
-  res.send('mandaloo');
+  res.send('New Project Created');
 });
 module.exports = router;
