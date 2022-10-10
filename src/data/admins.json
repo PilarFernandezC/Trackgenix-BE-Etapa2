@@ -88,4 +88,26 @@
     "lastName": "Tindle",
     "email": "ttindlee@free.fr",
     "password": "thXKfHKJm"
+},
+{
+    "id": 16,
+    "name": "esteban",
+    "lastName": "frare",
+    "email": "esteban.frare@radiumrocket.com",
+    "password": "rocket"
+
+},
+{
+    "id": 17,
+    "name": "Pau",
+    "lastName": "Lita",
+    "email": "pau.lita@radiumrocket.com",
+    "password": "rocketsito"
+},
+{
+    "id": 18,
+    "name": "Ayom",
+    "lastName": "Aristo",
+    "email": "ayom.aristo@radiumrocket.com",
+    "password": "rocketsito"
 }]
