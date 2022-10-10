@@ -57,4 +57,49 @@ router.put('/editById', (req, res) => {
     res.send('Modify error: Timesheet not found');
   }
 });
+function orderDate(dateStr, refDateStr) {
+  const date = new Date(dateStr);
+  const refDate = new Date(refDateStr);
+  if (date > refDate) {
+    return 1;
+  }
+  return date < refDate ? -1 : 0;
+}
+router.get('/filterBy', (req, res) => {
+  const {
+    fromDate,
+    toDate,
+    descriptionContains,
+    taskIs,
+    taskContains,
+  } = req.query;
+  if (
+    (fromDate
+    || toDate
+    || descriptionContains
+    || taskIs
+    || taskContains) !== undefined
+  ) {
+    let filteredTSs = [...timeSheets];
+    if (fromDate) {
+      filteredTSs = filteredTSs.filter((ts) => orderDate(ts.date, fromDate) > -1);
+    }
+    if (toDate) {
+      filteredTSs = filteredTSs.filter((ts) => orderDate(ts.date, toDate) < 1);
+    }
+    if (descriptionContains) {
+      filteredTSs = filteredTSs.filter((ts) => ts.description.includes(descriptionContains));
+    }
+    if (taskIs) {
+      filteredTSs = filteredTSs.filter((ts) => ts.task.localeCompare(taskIs) === 0);
+    }
+    if (taskContains) {
+      filteredTSs = filteredTSs.filter((ts) => ts.task.includes(taskContains));
+    }
+    res.send(filteredTSs);
+  } else {
+    res.status = 400;
+    res.send('Error: no filtering parameters specified.');
+  }
+});
 module.exports = router;
