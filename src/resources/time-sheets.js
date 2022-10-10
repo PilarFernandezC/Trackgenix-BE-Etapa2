@@ -50,4 +50,16 @@ router.post('/add', (req, res) => {
   });
 });
 
+router.delete('/deleteById', (req, res) => {
+  const timeSheetsId = parseInt(req.query.id, 10);
+  const timeSheetsFilter = timeSheets.filter((timeSheet) => timeSheet.id !== timeSheetsId);
+  fileSystem.writeFile('src/data/time-sheets.json', JSON.stringify(timeSheetsFilter, null, '\n'), (err) => {
+    if (err) {
+      res.send('Cannot found the item');
+    } else {
+      res.send(`Item id=${timeSheetsId} deleted\n${JSON.stringify(timeSheets, null, '\n')}`);
+    }
+  });
+});
+
 module.exports = router;
