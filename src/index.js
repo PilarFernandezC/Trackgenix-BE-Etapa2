@@ -8,7 +8,7 @@ const employees = require('./resources/employees');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// app.use(express.json());
+app.use(express.json());
 
 app.get('/', async (req, res) => {
   res.send('Hello World!');
@@ -18,6 +18,7 @@ app.get('/', async (req, res) => {
 //     data: admins,
 //   });
 // });
+
 app.use('/employees', employees);
 
 app.listen(port, () => {
