@@ -1,4 +1,5 @@
 const express = require('express');
+const fileSystem = require('fs');
 const timeSheets = require('../data/time-sheets.json');
 
 const router = express.Router();
@@ -35,6 +36,18 @@ router.get('/getByDesc', (req, res) => {
     res.status = 400;
     res.send('Error, invalid request.');
   }
+});
+
+router.post('/add', (req, res) => {
+  const newTimeSheet = req.body;
+  timeSheets.push(newTimeSheet);
+  fileSystem.writeFile('src/data/time-sheets.json', JSON.stringify(timeSheets, null, 4), (err) => {
+    if (err) {
+      res.send('Cannot save new user');
+    } else {
+      res.send(`User created\n ${JSON.stringify(newTimeSheet)}`);
+    }
+  });
 });
 
 module.exports = router;
