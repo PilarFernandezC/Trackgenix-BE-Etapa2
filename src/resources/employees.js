@@ -18,4 +18,16 @@ router.post('/add', (req, res) => {
   });
 });
 
+router.delete('/delete/:id', (req, res) => {
+  const employeeId = req.params.id;
+  const remainingEmployees = employees.filter((employee) => employee.id !== employeeId);
+  fs.writeFile('src/data/employees.json', JSON.stringify(remainingEmployees), (err) => {
+    if (err) {
+      res.send('Failed deleting user');
+    } else {
+      res.send('User deleted successfully');
+    }
+  });
+});
+
 module.exports = router;
