@@ -46,4 +46,47 @@ router.put('/editById', (req, res) => {
     res.send(`Error: Super admin id=${requestId} was not found.`);
   }
 });
+router.get('/filterBy', (req, res) => {
+  const {
+    nameIs,
+    nameContains,
+    lastNameIs,
+    lastNameContains,
+    emailIs,
+    emailContains,
+
+  } = req.query;
+  if (
+    (nameIs
+    || nameContains
+    || lastNameIs
+    || lastNameContains
+    || emailIs
+    || emailContains) !== undefined
+  ) {
+    let filteredSAdmins = [...superadminList];
+    if (nameIs) {
+      filteredSAdmins = filteredSAdmins.filter((sa) => sa.name === nameIs);
+    }
+    if (nameContains) {
+      filteredSAdmins = filteredSAdmins.filter((sa) => sa.name.includes(nameContains));
+    }
+    if (lastNameIs) {
+      filteredSAdmins = filteredSAdmins.filter((sa) => sa.lastName === lastNameIs);
+    }
+    if (lastNameContains) {
+      filteredSAdmins = filteredSAdmins.filter((sa) => sa.lastName.includes(lastNameContains));
+    }
+    if (emailIs) {
+      filteredSAdmins = filteredSAdmins.filter((sa) => sa.email === emailIs);
+    }
+    if (emailContains) {
+      filteredSAdmins = filteredSAdmins.filter((sa) => sa.email.includes(emailContains));
+    }
+    res.send(filteredSAdmins);
+  } else {
+    res.status = 400;
+    res.send('Error: no filtering parameters specified.');
+  }
+});
 module.exports = router;
