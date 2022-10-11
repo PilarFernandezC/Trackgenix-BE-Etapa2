@@ -1,5 +1,5 @@
 const express = require('express');
-// const fileSystem = require('fs');
+const fileSystem = require('fs');
 
 const superadminList = require('../data/super-admins.json');
 
@@ -14,6 +14,23 @@ router.get('/:id', (req, res) => {
   } else {
     res.send(`Couldn't find a SuperAdmin with id ${superAdminId}`);
   }
+});
+
+router.post('/createSuper-admin', (req, res) => {
+  const newSuperAdmin = {
+    id: parseInt(req.body.id, 10),
+    name: req.body.name,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: req.body.password,
+  };
+  superadminList.push(newSuperAdmin);
+  fileSystem.writeFile('src/data/super-admins.json', JSON.stringify(superadminList, null, 4), (error) => {
+    if (error) {
+      res.status(400).json({ msg: 'ERROR! Could not create a SuperAdmin' });
+    }
+    res.send(`SuperAdmin ${req.body.email} created`);
+  });
 });
 
 module.exports = router;
