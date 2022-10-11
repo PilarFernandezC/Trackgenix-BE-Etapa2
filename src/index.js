@@ -24,7 +24,6 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-// Admin functions by Ernesto
 const adminRouter = require('./resources/admins');
 
 app.use('/admins', adminRouter);
