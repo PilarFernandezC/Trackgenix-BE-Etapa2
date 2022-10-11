@@ -1,5 +1,5 @@
 const express = require('express');
-// const fs = require('fs');
+const fs = require('fs');
 // const app = express;
 const router = express.Router();
 const admins = require('../data/admins.json');
@@ -17,5 +17,23 @@ router.get('/:id', (req, res) => {
   }
 });
 
+// create new admin
+router.post('/createAdmin', (req, res) => {
+  const newAdmin = {
+    id: Number(req.body.id),
+    name: req.body.name,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: req.body.password,
+  };
+  admins.push(newAdmin);
+  fs.writeFile('src/data/admins.json', JSON.stringify(admins), (err) => {
+    if (err) {
+      res.send('ERROR');
+    } else {
+      res.send(`Admin ${req.body.email} created`);
+    }
+  });
+});
 // final footer
 module.exports = router;
