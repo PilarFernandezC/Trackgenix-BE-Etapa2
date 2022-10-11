@@ -124,5 +124,12 @@
         "lastName": "Aristo",
         "email": "ayom.aristo@radiumrocket.com",
         "password": "rocketsito"
+    },
+    {
+        "id": 24,
+        "name": "Ernes",
+        "lastName": "Tito",
+        "email": "ErnesTito@whatevermail.com",
+        "password": "wordpass"
     }
 ]
