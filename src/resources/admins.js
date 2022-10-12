@@ -6,7 +6,7 @@ const adminList = require('../data/admins.json');
 const router = express.Router();
 
 router.get('/getAll', (req, res) => {
-  res.send(adminList);
+  res.status(200).send(adminList);
 });
 
 router.put('/editById', (req, res) => {
@@ -61,6 +61,7 @@ router.get('/filterBy', (req, res) => {
     emailIs,
     emailContains,
   } = req.query;
+
   if (
     (nameIs || nameContains || lastNameIs || lastNameContains || emailIs || emailContains)
     !== undefined
