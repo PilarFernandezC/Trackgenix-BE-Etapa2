@@ -9,15 +9,15 @@ router.get('/getAll', (req, res) => {
   res.send(superadminList);
 });
 
-router.put('/editById', (req, res) => {
+router.put('/editById/:id', (req, res) => {
+  const requestId = parseInt(req.params.id, 10);
   const {
-    id: requestId,
     name: newName,
     lastName: newLastName,
     email: newEmail,
     password: newPassword,
   } = req.body;
-  const indexOfSAdmin = superadminList.findIndex((sAdmin) => sAdmin.id === parseInt(requestId, 10));
+  const indexOfSAdmin = superadminList.findIndex((sAdmin) => sAdmin.id === requestId);
   if (indexOfSAdmin !== -1) {
     const {
       id,
