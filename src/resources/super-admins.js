@@ -24,7 +24,7 @@ router.put('/editById', (req, res) => {
       name: oldName,
       lastName: oldLastName,
       email: oldEmail,
-      pasword: oldPassword,
+      password: oldPassword,
     } = superadminList[indexOfSAdmin];
     const updatedSAdmin = {
       id,
@@ -46,16 +46,16 @@ router.put('/editById', (req, res) => {
     res.send(`Error: Super admin id=${requestId} was not found.`);
   }
 });
-router.get('/filterBy', (req, res) => {
-  const {
+router.get('/filterBy/:filters', (req, res) => {
+  // filters values are separated by ',' and '*' ignores a filtering parameter
+  const [
     nameIs,
     nameContains,
     lastNameIs,
     lastNameContains,
     emailIs,
     emailContains,
-
-  } = req.query;
+  ] = req.params.filters.split(',').map((filter) => (filter !== '*' ? filter : undefined));
   if (
     (nameIs
     || nameContains
