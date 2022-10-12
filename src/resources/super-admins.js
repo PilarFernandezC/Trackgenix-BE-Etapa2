@@ -1,12 +1,12 @@
 const express = require('express');
 const fileSystem = require('fs');
 
-const superadminList = require('../data/super-admins.json');
+const superAdminList = require('../data/super-admins.json');
 
 const router = express.Router();
 
 router.get('/getAll', (req, res) => {
-  res.send(superadminList);
+  res.send(superAdminList);
 });
 
 router.put('/editById/:id', (req, res) => {
@@ -17,7 +17,7 @@ router.put('/editById/:id', (req, res) => {
     email: newEmail,
     password: newPassword,
   } = req.body;
-  const indexOfSAdmin = superadminList.findIndex((sAdmin) => sAdmin.id === requestId);
+  const indexOfSAdmin = superAdminList.findIndex((sAdmin) => sAdmin.id === requestId);
   if (indexOfSAdmin !== -1) {
     const {
       id,
@@ -25,7 +25,7 @@ router.put('/editById/:id', (req, res) => {
       lastName: oldLastName,
       email: oldEmail,
       password: oldPassword,
-    } = superadminList[indexOfSAdmin];
+    } = superAdminList[indexOfSAdmin];
     const updatedSAdmin = {
       id,
       name: newName || oldName,
@@ -33,8 +33,8 @@ router.put('/editById/:id', (req, res) => {
       email: newEmail || oldEmail,
       password: newPassword || oldPassword,
     };
-    superadminList[indexOfSAdmin] = updatedSAdmin;
-    fileSystem.writeFile('src/data/super-admins.json', JSON.stringify(superadminList, null, 4), (err) => {
+    superAdminList[indexOfSAdmin] = updatedSAdmin;
+    fileSystem.writeFile('src/data/super-admins.json', JSON.stringify(superAdminList, null, 4), (err) => {
       if (err) {
         res.send(["Error: can't write to filesystem.", err.toString()].join('\n'));
       } else {
@@ -64,7 +64,7 @@ router.get('/filterBy/:filters', (req, res) => {
     || emailIs
     || emailContains) !== undefined
   ) {
-    let filteredSAdmins = [...superadminList];
+    let filteredSAdmins = [...superAdminList];
     if (nameIs) {
       filteredSAdmins = filteredSAdmins.filter((sa) => sa.name === nameIs);
     }
