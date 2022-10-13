@@ -8,11 +8,14 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use('/timeSheets', timeSheetsRouter);
+app.use('/employees', employees);
+app.use('/superAdmin', superAdmin);
 
 app.get('/', async (req, res) => {
   res.send('Hello World!');
 });
-app.use('/employees', employees);
+
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
