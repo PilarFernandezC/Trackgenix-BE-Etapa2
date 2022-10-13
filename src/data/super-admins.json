@@ -89,19 +89,5 @@
         "lastName": "Sachno",
         "email": "bsachnoc@yahoo.co.jp",
         "password": "rw02HIcmjxiLpa5cM"
-    },
-    {
-        "id": 14,
-        "name": "Martyn",
-        "lastName": "Simnel",
-        "email": "msimneld@intel.com",
-        "password": "hNZf0GqKZ6cbLbHvv"
-    },
-    {
-        "id": 15,
-        "name": "Aldrich",
-        "lastName": "Strelitz",
-        "email": "astrelitze@alibaba.com",
-        "password": "i6pA4LbbhhkQQyP"
     }
 ]

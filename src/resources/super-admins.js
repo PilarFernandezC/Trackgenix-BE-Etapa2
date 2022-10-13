@@ -1,12 +1,28 @@
 const express = require('express');
-const fileSystem = require('fs');
-
-const superAdminList = require('../data/super-admins.json');
+const fs = require('fs');
+const superAdmins = require('../data/super-admins.json');
 
 const router = express.Router();
 
+router.delete('/delete/:id', (req, res) => {
+  const superAdminId = parseInt(req.params.id, 10);
+  const superAdminToDelete = superAdmins.some((superAdmin) => superAdmin.id === superAdminId);
+  if (superAdminToDelete) {
+    const remainingSuperAdmins = superAdmins.filter((superAdmin) => superAdmin.id !== superAdminId);
+    fs.writeFile('src/data/super-admins.json', JSON.stringify(remainingSuperAdmins, null, 4), (err) => {
+      if (err) {
+        res.send('Failed deleting super admin');
+      } else {
+        res.send('Super admin deleted successfully');
+      }
+    });
+  } else {
+    res.send('ID does not exist');
+  }
+});
+
 router.get('/getAll', (req, res) => {
-  res.send(superAdminList);
+  res.send(superAdmins);
 });
 
 router.put('/editById/:id', (req, res) => {
@@ -17,7 +33,7 @@ router.put('/editById/:id', (req, res) => {
     email: newEmail,
     password: newPassword,
   } = req.body;
-  const indexOfSAdmin = superAdminList.findIndex((sAdmin) => sAdmin.id === requestId);
+  const indexOfSAdmin = superAdmins.findIndex((sAdmin) => sAdmin.id === requestId);
   if (indexOfSAdmin !== -1) {
     const {
       id,
@@ -25,7 +41,7 @@ router.put('/editById/:id', (req, res) => {
       lastName: oldLastName,
       email: oldEmail,
       password: oldPassword,
-    } = superAdminList[indexOfSAdmin];
+    } = superAdmins[indexOfSAdmin];
     const updatedSAdmin = {
       id,
       name: newName || oldName,
@@ -33,8 +49,8 @@ router.put('/editById/:id', (req, res) => {
       email: newEmail || oldEmail,
       password: newPassword || oldPassword,
     };
-    superAdminList[indexOfSAdmin] = updatedSAdmin;
-    fileSystem.writeFile('src/data/super-admins.json', JSON.stringify(superAdminList, null, 4), (err) => {
+    superAdmins[indexOfSAdmin] = updatedSAdmin;
+    fs.writeFile('src/data/super-admins.json', JSON.stringify(superAdmins, null, 4), (err) => {
       if (err) {
         res.send(["Error: can't write to filesystem.", err.toString()].join('\n'));
       } else {
@@ -64,7 +80,7 @@ router.get('/filterBy/:filters', (req, res) => {
     || emailIs
     || emailContains) !== undefined
   ) {
-    let filteredSAdmins = [...superAdminList];
+    let filteredSAdmins = [...superAdmins];
     if (nameIs) {
       filteredSAdmins = filteredSAdmins.filter((sa) => sa.name === nameIs);
     }
