@@ -2,6 +2,7 @@
 import express from 'express';
 
 // use "require" to import JSON files
+const projectRouter = require('./resources/projects');
 const tasksRouter = require('./resources/tasks');
 const employees = require('./resources/employees');
 const timeSheetsRouter = require('./resources/time-sheets');
@@ -15,6 +16,8 @@ app.use('/tasks', tasksRouter);
 app.use('/timeSheets', timeSheetsRouter);
 app.use('/employees', employees);
 app.use('/superAdmin', superAdmin);
+
+app.use(projectRouter);
 
 app.get('/', async (req, res) => {
   res.send('Hello World!');
