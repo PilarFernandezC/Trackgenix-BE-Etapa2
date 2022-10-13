@@ -2,7 +2,6 @@
 import express from 'express';
 
 // use "require" to import JSON files
-const admins = require('./data/admins.json');
 const tasksRouter = require('./resources/tasks');
 const employees = require('./resources/employees');
 const timeSheetsRouter = require('./resources/time-sheets');
@@ -20,8 +19,6 @@ app.use('/superAdmin', superAdmin);
 app.get('/', async (req, res) => {
   res.send('Hello World!');
 });
-
-
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
