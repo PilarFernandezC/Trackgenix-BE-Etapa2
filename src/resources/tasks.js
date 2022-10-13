@@ -19,6 +19,22 @@ router.get('/getById/:id', (req, res) => {
   }
 });
 
+router.post('/add', (req, res) => {
+  const newTask = req.body;
+  taskList.push(newTask);
+  fs.writeFile(
+    'src/data/tasks.json',
+    JSON.stringify(taskList, null, 4),
+    (err) => {
+      if (err) {
+        res.send('Cannot save new task');
+      } else {
+        res.send(`Task added \n ${JSON.stringify(newTask)}`);
+      }
+    },
+  );
+});
+
 router.delete('/deleteById/:id', (req, res) => {
   const taskId = parseInt(req.params.id, 10);
   if (!(Number.isNaN(taskId))) {
@@ -40,6 +56,24 @@ router.delete('/deleteById/:id', (req, res) => {
   } else {
     res.status(400);
     res.send('Error: No id parameter provided.');
+  }
+});
+
+router.get('/getByDescription/:description', (req, res) => {
+  const taskDescription = req.params.description;
+  if (taskDescription) {
+    const targetDesc = taskDescription;
+    const targetTask = taskList
+      .filter((current) => current.description === targetDesc);
+    if (targetTask.length > 0) {
+      res.send(targetTask);
+    } else {
+      res.status = 404;
+      res.send(`ERROR, task with description: ${targetDesc} not found.`);
+    }
+  } else {
+    res.status = 400;
+    res.send('ERROR, invalid request.');
   }
 });
 
