@@ -66,19 +66,19 @@ router.put('/editById/:id', (req, res) => {
 function orderDate(dateStr, refDateStr) {
   const date = new Date(dateStr);
   const refDate = new Date(refDateStr);
-  if (date > refDate) {
+  if (date.getTime() > refDate.getTime()) {
     return 1;
   }
   return date < refDate ? -1 : 0;
 }
-router.get('/filterBy', (req, res) => {
-  const {
-    fromDate,
+router.get('/filterBy/:filters', (req, res) => {
+  const [
+    fromDate, // dates are '-' separated. orderDate takes care of the different formats.
     toDate,
     descriptionContains,
     taskIs,
     taskContains,
-  } = req.query;
+  ] = req.params.filters.split(',').map((filter) => (filter !== '*' ? filter : undefined));
   if (
     (fromDate
     || toDate
