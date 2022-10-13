@@ -7,8 +7,8 @@ const router = express.Router();
 
 router.get('/:id', (req, res) => {
   const superAdminId = req.params.id;
-  // eslint-disable-next-line max-len
-  const superAdminFound = superadminList.some((superAdmin) => superAdmin.id === parseInt(superAdminId, 10));
+  const superAdminFound = superadminList.some((superAdmin) => superAdmin.id
+  === parseInt(superAdminId, 10));
   if (superAdminFound) {
     res.json(superadminList.filter((superAdmin) => superAdmin.id === parseInt(superAdminId, 10)));
   } else {
@@ -16,7 +16,7 @@ router.get('/:id', (req, res) => {
   }
 });
 
-router.post('/createSuper-admin', (req, res) => {
+router.post('/create', (req, res) => {
   const newSuperAdmin = {
     id: parseInt(req.body.id, 10),
     name: req.body.name,
@@ -29,7 +29,7 @@ router.post('/createSuper-admin', (req, res) => {
     if (error) {
       res.status(400).json({ msg: 'ERROR! Could not create a SuperAdmin' });
     }
-    res.send(`SuperAdmin ${req.body.email} created`);
+    res.send(`SuperAdmin ${req.body.name} ${req.body.lastName} created`);
   });
 });
 
