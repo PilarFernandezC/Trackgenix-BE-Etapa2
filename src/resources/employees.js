@@ -6,7 +6,7 @@ const employeesRouter = express.Router();
 employeesRouter.get('/getAll', (req, res) => {
   res.send(employees);
 });
-employeesRouter.get('/getEmployee/:id', (req, res) => {
+employeesRouter.get('/getById/:id', (req, res) => {
   const employeeId = parseInt(req.params.id, 10);
   const findEmployee = employees.find((employee) => employee.id === employeeId);
   if (findEmployee) {
@@ -15,7 +15,7 @@ employeesRouter.get('/getEmployee/:id', (req, res) => {
     res.send("Employee doesn't exist");
   }
 });
-employeesRouter.put('/editEmployee/:id', (req, res) => {
+employeesRouter.put('/update/:id', (req, res) => {
   const employeeId = req.params.id;
   const updatedData = req.body;
   const selectedEmployee = employees.filter((employee) => `${employee.id}` !== employeeId);
