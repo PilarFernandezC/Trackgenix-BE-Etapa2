@@ -28,7 +28,6 @@ router.put('/edit/:id', (req, res) => {
 router.get('/getAll', (req, res) => {
   res.send(tasks);
 });
-
 router.get('/getById/:id', (req, res) => {
   const taskIndex = parseInt(req.params.id, 10) - 1;
   const selectedTask = tasks[taskIndex];
@@ -39,7 +38,6 @@ router.get('/getById/:id', (req, res) => {
     res.send(`Error: No task with id=${req.params.id} found.`);
   }
 });
-
 router.post('/add', (req, res) => {
   const newTask = req.body;
   tasks.push(newTask);
@@ -55,7 +53,6 @@ router.post('/add', (req, res) => {
     },
   );
 });
-
 router.delete('/deleteById/:id', (req, res) => {
   const taskId = parseInt(req.params.id, 10);
   if (!(Number.isNaN(taskId))) {
@@ -79,7 +76,6 @@ router.delete('/deleteById/:id', (req, res) => {
     res.send('Error: No id parameter provided.');
   }
 });
-
 router.get('/getByDescription/:description', (req, res) => {
   const taskDescription = req.params.description;
   if (taskDescription) {
@@ -97,5 +93,4 @@ router.get('/getByDescription/:description', (req, res) => {
     res.send('ERROR, invalid request.');
   }
 });
-
 module.exports = router;
