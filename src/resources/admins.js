@@ -1,12 +1,12 @@
 const express = require('express');
 const fs = require('fs');
-// const app = express;
+
 const router = express.Router();
 const admins = require('../data/admins.json');
 
-router.get('/getAllAdmins', (req, res) => res.json(admins));
+router.get('/getAll', (req, res) => res.json(admins));
 
-router.get('/:id', (req, res) => {
+router.get('/getById/:id', (req, res) => {
   const adminFound = admins.some((admin) => admin.id === parseInt(req.params.id, 10));
   if (adminFound) {
     res.json(admins.filter((admin) => admin.id === parseInt(req.params.id, 10)));
@@ -15,7 +15,7 @@ router.get('/:id', (req, res) => {
   }
 });
 
-router.post('/createAdmin', (req, res) => {
+router.post('/add', (req, res) => {
   const newAdmin = {
     id: Number(req.body.id),
     name: req.body.name,
@@ -32,9 +32,9 @@ router.post('/createAdmin', (req, res) => {
   });
 });
 
-router.delete('/deleteAdmin/:id', (req, res) => {
-  const adminDeleter = admins.filter((admin) => admin.id !== parseInt(req.params.id, 10));
-  fs.writeFile('src/data/admins.json', JSON.stringify(adminDeleter), (error) => {
+router.delete('/delete/:id', (req, res) => {
+  const selectedAdmin = admins.filter((admin) => admin.id !== parseInt(req.params.id, 10));
+  fs.writeFile('src/data/admins.json', JSON.stringify(selectedAdmin), (error) => {
     if (error) {
       res.send(`Can't delete Admin with ID: ${req.params.id}`);
     } else {
