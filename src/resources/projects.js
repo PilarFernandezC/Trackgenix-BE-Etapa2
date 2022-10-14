@@ -12,6 +12,7 @@ router.get("/getByName/:name", (req, res) => {
         res.send("Nothing found");
     }
 });
+
 router.delete("/delete/:id", (req, res) => {
     const projectId = parseInt(req.params.id);
     const filteredProject = projects.filter((project) => project.id !== projectId);
@@ -23,6 +24,7 @@ router.delete("/delete/:id", (req, res) => {
         }
     });
 });
+
 router.post("/modify/:id", (req, res) => {
     const changeProject = req.body;
     const projectId = parseInt(req.params.id, 10);
@@ -36,6 +38,7 @@ router.post("/modify/:id", (req, res) => {
         }
     });
 });
+
 router.post("/addEmployee/:id", (req, res) => {
     const newEmployee = req.body;
     const projectId = parseInt(req.params.id, 10);
@@ -51,32 +54,31 @@ router.post("/addEmployee/:id", (req, res) => {
         }
     });
 });
-module.exports = router;
-const fs = require('fs');
-const express = require('express');
-const project = require('../data/projects.json');
-const router = express.Router();
+
 router.get('/getAll', (req, res) => {
   res.status(200).json({
-    data: project,
+    data: projects,
   });
 });
+
 router.get('/getById/:id', (req, res) => {
-  const found = project.find((proj) => proj.id === parseInt(req.params.id, 10));
+  const found = projects.find((proj) => proj.id === parseInt(req.params.id, 10));
   if (found) {
-    res.json(project.filter((proj) => proj.id === parseInt(req.params.id, 10)));
+    res.json(projects.filter((proj) => proj.id === parseInt(req.params.id, 10)));
   } else {
     res.status(400).json({ msg: 'project not found' });
   }
 });
+
 router.post('/createNew', (req, res) => {
   const requestBody = req.body;
-  project.push(requestBody);
-  fs.writeFile('src/data/projects.json', JSON.stringify(requesBody, null, 2), (err) => {
+  projects.push(requestBody);
+  fs.writeFile('src/data/projects.json', JSON.stringify(requestBody, null, 2), (err) => {
     if (err) {
       res.send('error');
     }
   });
   res.send('New Project Created');
 });
+
 module.exports = router;
