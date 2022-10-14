@@ -7,11 +7,13 @@ const admins = require('./data/admins.json');
 
 
 const app = express();
-const projectRouter = require("./resources/projects")
+const projectRouter = require("./resources/projects");
 const port = process.env.PORT || 3000;
+const tasksRouter = require("./resources/tasks");
 
 app.use(express.json());
-app.use("/projects", projectRouter)
+app.use("/projects", projectRouter);
+app.use("/tasks", tasksRouter);
 
 app.get('/', async (req, res) => {
   res.send('Hello World!');

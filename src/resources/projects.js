@@ -25,7 +25,7 @@ router.delete("/delete/:id", (req, res) => {
 });
 router.post("/modify/:id", (req, res) => {
     const changeProject = req.body;
-    const projectId = parseInt(req.params.id);
+    const projectId = parseInt(req.params.id, 10);
     const newProject = projects.filter((project) => project.id !== projectId);
     newProject.push(changeProject);
     fs.writeFile('src/data/projects.json', JSON.stringify(newProject), (err) => {
@@ -38,7 +38,7 @@ router.post("/modify/:id", (req, res) => {
 });
 router.post("/addEmployee/:id", (req, res) => {
     const newEmployee = req.body;
-    const projectId = parseInt(req.params.id);
+    const projectId = parseInt(req.params.id, 10);
     const dataProject = projects.find((project) => project.id === projectId);
     dataProject["employees"].push(newEmployee);
     const newProject = projects.filter((project) => project.id !== projectId);
