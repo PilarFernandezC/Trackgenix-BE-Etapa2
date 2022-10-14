@@ -28,7 +28,7 @@ router.post('/add', (req, res) => {
     if (error) {
       res.status(400).json({ msg: 'ERROR! Could not create an Admin' });
     }
-    res.send(`Admin ${req.body.email} created`);
+    res.send(`Admin ${req.body.name} ${req.body.lastName} created`);
   });
 });
 
