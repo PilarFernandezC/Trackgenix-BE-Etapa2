@@ -1,8 +1,36 @@
 const express = require('express');
+
+const router = express.Router();
 const fs = require('fs');
 const superAdmins = require('../data/super-admins.json');
 
-const router = express.Router();
+router.get('/:id', (req, res) => {
+  const superAdminId = req.params.id;
+  const superAdminFound = superAdmins.some((superAdmin) => superAdmin.id
+  === parseInt(superAdminId, 10));
+  if (superAdminFound) {
+    res.json(superAdmins.filter((superAdmin) => superAdmin.id === parseInt(superAdminId, 10)));
+  } else {
+    res.send(`Couldn't find a SuperAdmin with id ${superAdminId}`);
+  }
+});
+
+router.post('/create', (req, res) => {
+  const newSuperAdmin = {
+    id: parseInt(req.body.id, 10),
+    name: req.body.name,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: req.body.password,
+  };
+  superAdmins.push(newSuperAdmin);
+  fs.writeFile('src/data/super-admins.json', JSON.stringify(superAdmins, null, 4), (error) => {
+    if (error) {
+      res.status(400).json({ msg: 'ERROR! Could not create a SuperAdmin' });
+    }
+    res.send(`SuperAdmin ${req.body.name} ${req.body.lastName} created`);
+  });
+});
 
 router.delete('/delete/:id', (req, res) => {
   const superAdminId = parseInt(req.params.id, 10);

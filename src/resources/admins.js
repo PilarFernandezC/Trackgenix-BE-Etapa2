@@ -1,9 +1,46 @@
 const express = require('express');
 const fs = require('fs');
 
+const router = express.Router();
 const adminList = require('../data/admins.json');
 
-const router = express.Router();
+router.get('/getById/:id', (req, res) => {
+  const adminFound = adminList.some((admin) => admin.id === parseInt(req.params.id, 10));
+  if (adminFound) {
+    res.json(adminList.filter((admin) => admin.id === parseInt(req.params.id, 10)));
+  } else {
+    res.status(400).json({ msg: 'ERROR! No Admin found' });
+  }
+});
+
+router.post('/add', (req, res) => {
+  const newAdmin = {
+    id: Number(req.body.id),
+    name: req.body.name,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: req.body.password,
+  };
+  adminList.push(newAdmin);
+  fs.writeFile('src/data/admins.json', JSON.stringify(adminList, null, 4), (error) => {
+    if (error) {
+      res.status(400).json({ msg: 'ERROR! Could not create an Admin' });
+    }
+    res.send(`Admin ${req.body.name} ${req.body.lastName} created`);
+  });
+});
+
+router.delete('/delete/:id', (req, res) => {
+  const selectedAdmin = adminList.filter((admin) => admin.id !== parseInt(req.params.id, 10));
+  fs.writeFile('src/data/admins.json', JSON.stringify(selectedAdmin), (error) => {
+    if (error) {
+      res.send(`Can't delete Admin with ID: ${req.params.id}`);
+    } else {
+      res.send('Admin deleted');
+      res.send(JSON.stringify(adminList, null, 4));
+    }
+  });
+});
 
 router.get('/getAll', (req, res) => {
   res.status(200).send(adminList);
