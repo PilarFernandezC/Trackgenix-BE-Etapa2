@@ -1,15 +1,36 @@
-const express = require('express');
 const fs = require('fs');
-const taskList = require('../data/tasks.json');
+const express = require('express');
+const tasks = require('../data/tasks.json');
 
 const router = express.Router();
 
+router.put('/edit/:id', (req, res) => {
+  const taskId = parseInt(req.params.id, 10);
+  const taskToEdit = tasks.find((task) => task.id === taskId);
+  if (taskToEdit) {
+    const editTask = req.body;
+    tasks.forEach((tk) => {
+      if (tk.id === parseInt(req.params.id, 10)) {
+        taskToEdit.id = editTask.id ? editTask.id : tk.id;
+        taskToEdit.description = editTask.description ? editTask.description : tk.description;
+        fs.writeFile('src/data/tasks.json', JSON.stringify(tasks, null, 2), (err) => {
+          if (err) {
+            res.send('task error');
+          } else {
+            res.send('task updated');
+          }
+        });
+        res.json({ taskToEdit });
+      }
+    });
+  }
+});
 router.get('/getAll', (req, res) => {
-  res.send(taskList);
+  res.send(tasks);
 });
 router.get('/getById/:id', (req, res) => {
   const taskIndex = parseInt(req.params.id, 10) - 1;
-  const selectedTask = taskList[taskIndex];
+  const selectedTask = tasks[taskIndex];
   if (selectedTask) {
     res.send(selectedTask);
   } else {
@@ -19,10 +40,10 @@ router.get('/getById/:id', (req, res) => {
 });
 router.post('/add', (req, res) => {
   const newTask = req.body;
-  taskList.push(newTask);
+  tasks.push(newTask);
   fs.writeFile(
     'src/data/tasks.json',
-    JSON.stringify(taskList, null, 4),
+    JSON.stringify(tasks, null, 4),
     (err) => {
       if (err) {
         res.send('Cannot save new task');
@@ -35,8 +56,8 @@ router.post('/add', (req, res) => {
 router.delete('/deleteById/:id', (req, res) => {
   const taskId = parseInt(req.params.id, 10);
   if (!(Number.isNaN(taskId))) {
-    if (taskList.some((task) => task.id === taskId)) {
-      const updatedTaskList = taskList.filter((task) => task.id !== taskId);
+    if (tasks.some((task) => task.id === taskId)) {
+      const updatedTaskList = tasks.filter((task) => task.id !== taskId);
       const payload = JSON.stringify(updatedTaskList, null, 4);
       fs.writeFile('src/data/tasks.json', payload, (err) => {
         if (err) {
@@ -59,7 +80,7 @@ router.get('/getByDescription/:description', (req, res) => {
   const taskDescription = req.params.description;
   if (taskDescription) {
     const targetDesc = taskDescription;
-    const targetTask = taskList
+    const targetTask = tasks
       .filter((current) => current.description === targetDesc);
     if (targetTask.length > 0) {
       res.send(targetTask);
