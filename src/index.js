@@ -25,10 +25,6 @@ app.get('/', async (req, res) => {
   res.send('Hello World!');
 });
 
-// app.listen(port, () => {
-//   // eslint-disable-next-line no-console
-//   console.log(`Example app listening on port ${port}`);
-// });
 const MONGO_URL = 'mongodb+srv://BaSP-database-ayom-a:BaSP2022@cluster0.b8vlcfc.mongodb.net/?retryWrites=true&w=majority';
 mongoose.connect(
   MONGO_URL,
