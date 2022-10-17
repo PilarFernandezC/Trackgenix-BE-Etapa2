@@ -1,7 +1,7 @@
 // use "import" to import libraries
 import express from 'express';
 import mongoose from 'mongoose';
-import routes from './routes/index'
+import routes from './routes/index';
 
 // use "require" to import JSON files
 const tasksRouter = require('./resources/tasks');
@@ -20,7 +20,7 @@ app.use('/timeSheets', timeSheetsRouter);
 app.use('/employees', employees);
 app.use('/admins', adminRouter);
 
-app.use('/api',routes)
+app.use('/api', routes);
 
 app.get('/', async (req, res) => {
   res.send('Hello World!');
