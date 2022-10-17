@@ -7,13 +7,10 @@ async function createEmployeeMongo(req, res) {
     res.status(201).json({
       message: 'New employee successfully created.',
       data: req.body,
-      error: false,
     });
   } catch (error) {
     res.status(400).json({
       message: `Failed to create document in database: ${error.message}`,
-      data: undefined,
-      error: true,
     });
   }
 }
@@ -35,13 +32,10 @@ async function filterEmployeesMongo(req, res) {
     res.status(200).json({
       message: 'List of employees matching the query params was successfully retrieved.',
       data: filteredEmployees,
-      error: false,
     });
   } catch (error) {
     res.status(400).json({
       message: `Failed to retrieve documents in database: ${error.message}`,
-      data: undefined,
-      error: true,
     });
   }
 }
