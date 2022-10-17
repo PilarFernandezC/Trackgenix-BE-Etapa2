@@ -16,7 +16,59 @@
 		},
 		{
 			"name": "employee",
-			"item": []
+			"item": [
+                {
+                    "name": "Get all",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "localhost:3000/api/employees/",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "employees",
+                                ""
+                            ],
+                            "query": []
+                        }
+                    },
+                    "response": []
+                },
+                {
+                "name": "Filter",
+                "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                        "raw": "localhost:3000/api/employees/?name=Wilone&other=blablabla",
+                        "host": [
+                            "localhost"
+                        ],
+                        "port": "3000",
+                        "path": [
+                            "api",
+                            "employees",
+                            ""
+                        ],
+                        "query": [
+                            {
+                                "key": "name",
+                                "value": "Wilone"
+                            },
+                            {
+                                "key": "other",
+                                "value": "blablabla"
+                            }
+                        ]
+                    }
+                },
+                "response": []
+            }
+        ]
 		},
 		{
 			"name": "time-sheet",
