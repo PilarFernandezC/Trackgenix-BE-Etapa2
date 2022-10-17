@@ -1,10 +1,10 @@
-const express = require('express');
-const dataValidator = require('../validations/employee');
-const dbController = require('../controllers/employee');
+import express from 'express';
+import dataValidator from '../validations/employee';
+import dbController from '../controllers/employee';
 
 const router = express.Router();
 
 router.post('/', dataValidator, dbController.create);
 router.get('/', dbController.filter);
 
-module.exports = router;
+export default router;
