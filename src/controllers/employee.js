@@ -1,20 +1,4 @@
-// const fs = require('fs');
-// const employees = require('../data/employees.json');
 const Employee = require('../models/Employee');
-
-// function createEmployeeLocal(req, res) {
-//   const newEmployee = req.body;
-//   employees.push(newEmployee);
-//   fs.writeFile('src/data/employees.json',
-//     JSON.stringify(employees, null, 4),
-//     (err) => {
-//     if (err) {
-//       res.send('Local database: Error writing to file system.');
-//     } else {
-//       res.send('Local database: Successful write.');
-//     }
-//   });
-// }
 
 async function createEmployeeMongo(req, res) {
   try {
@@ -50,10 +34,6 @@ async function fileterEmployeesMongo(req, res) {
     });
   }
 }
-
-// const employeeLocalDBController = {
-//   create: createEmployeeLocal,
-// };
 
 const employeeDBController = {
   create: createEmployeeMongo,
