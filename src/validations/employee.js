@@ -28,8 +28,7 @@ const employeeJoiSchema = Joi.object({
     .email(),
   password: Joi.string()
     .required()
-    .alphanum()
-    .min(8),
+    .pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
 });
 
 async function employeeValidatorMiddleware(req, res, next) {
