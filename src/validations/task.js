@@ -4,7 +4,7 @@ const taskValidateUpdate = Joi.object({
   description: Joi.string().valid(
     'BE',
     'FE',
-  ),
+  ).required(),
 });
 
 const updateTaskValidation = (req, res, next) => {
@@ -18,4 +18,4 @@ const updateTaskValidation = (req, res, next) => {
   } return next();
 };
 
-export default { updateTaskValidation };
+export default updateTaskValidation;
