@@ -1,7 +1,6 @@
 const Joi = require('joi');
 
 const employeeJoiSchema = Joi.object({
-  id: Joi.string().required(),
   name: Joi.string()
     .required()
     .pattern(/^[\p{L}]+$/u)
@@ -32,4 +31,18 @@ const employeeJoiSchema = Joi.object({
     .alphanum()
     .min(8),
 });
-console.log(employeeJoiSchema);
+
+async function employeeValidatorMiddleware(req, res, next) {
+  try {
+    await employeeJoiSchema.validateAsync(req.body);
+    next();
+  } catch (error) {
+    res.status(400).json({
+      message: `Data could not be validated: ${error.message}`,
+      data: undefined,
+      error: true,
+    });
+  }
+}
+
+module.exports = employeeValidatorMiddleware;
