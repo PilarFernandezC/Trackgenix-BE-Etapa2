@@ -1,10 +1,13 @@
 import Joi from 'joi';
 
 const TSValidateUpdate = Joi.object({
+    id: Joi.string().required,
   task: Joi.string().valid(
     'BE',
     'FE',
   ),
+  description: Joi.string().required(),
+  date: Joi.date().required(),
 });
 
 const updateTSValidation = (req, res, next) => {
@@ -18,4 +21,4 @@ const updateTSValidation = (req, res, next) => {
   } return next();
 };
 
-export default { updateTSValidation };
+export default updateTSValidation;
