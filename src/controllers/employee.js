@@ -18,7 +18,7 @@ async function createEmployeeMongo(req, res) {
   }
 }
 
-async function fileterEmployeesMongo(req, res) {
+async function filterEmployeesMongo(req, res) {
   try {
     const filteredEmployees = await Employee.find(req.body);
     res.status(200).json({
@@ -37,7 +37,7 @@ async function fileterEmployeesMongo(req, res) {
 
 const employeeDBController = {
   create: createEmployeeMongo,
-  filter: fileterEmployeesMongo,
+  filter: filterEmployeesMongo,
 };
 
 export default employeeDBController;
