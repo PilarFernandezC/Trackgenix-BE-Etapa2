@@ -22,6 +22,22 @@ const createAdmin = async (req, res) => {
   }
 };
 
+const getAllAdmins = async (req, res) => {
+  try {
+    const admins = await Admins.find();
+    return res.status(200).json({
+      message: 'Admin found',
+      data: admins,
+    });
+  } catch (error) {
+    return res.json({
+      message: 'An error occurred',
+      error,
+    });
+  }
+};
+
 export default {
   createAdmin,
+  getAllAdmins,
 };
