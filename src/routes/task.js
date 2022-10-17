@@ -1,17 +1,15 @@
 import express from 'express';
 // import validations from '../validations/task';
 import {
-  deleteTask, editTask, getAll, getTaskById,
+  deleteTask, updateTask, getOneTask,
 } from '../controllers/task';
-// import { updateTaskValidation } from '../validations/task';
+// import { updateTaskValidation } fr|om '../validations/task';
 
 const router = express.Router();
 
 router
   .delete('/:id', deleteTask)
-//   .post('/', createTask)
-  .get('/:id', getTaskById)
-  .put('/:id', editTask)
-  .get('/', getAll);
+  .get('/:id', getOneTask)
+  .put('/:id', updateTask)
 
 export default router;
