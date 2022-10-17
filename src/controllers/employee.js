@@ -19,10 +19,21 @@ async function createEmployeeMongo(req, res) {
 }
 
 async function filterEmployeesMongo(req, res) {
+  const {
+    name, lastName, phone, email,
+  } = req.query;
+  const allowedFilterParams = {
+    name, lastName, phone, email,
+  };
+  const getAll = Object.values(allowedFilterParams)
+    .reduce(((acc, cur) => acc && cur === undefined), true);
+  const objKeys = Object.keys(allowedFilterParams);
+  const filterParams = Object.values(allowedFilterParams)
+    .reduce(((obj, cur, i) => (cur ? { ...obj, [objKeys[i]]: cur } : obj)), {});
   try {
-    const filteredEmployees = await Employee.find(req.body);
+    const filteredEmployees = await Employee.find(getAll ? {} : filterParams);
     res.status(200).json({
-      message: 'List of employees that match the request criteria successfully retrieved.',
+      message: 'List of employees matching the query params was successfully retrieved.',
       data: filteredEmployees,
       error: false,
     });
