@@ -45,4 +45,4 @@ async function employeeValidatorMiddleware(req, res, next) {
   }
 }
 
-module.exports = employeeValidatorMiddleware;
+export default employeeValidatorMiddleware;

@@ -1,4 +1,4 @@
-const Employee = require('../models/Employee');
+import Employee from '../models/Employee';
 
 async function createEmployeeMongo(req, res) {
   try {
@@ -40,4 +40,4 @@ const employeeDBController = {
   filter: fileterEmployeesMongo,
 };
 
-module.exports = employeeDBController;
+export default employeeDBController;
