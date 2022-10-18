@@ -3,8 +3,8 @@ import superAdmin from '../models/SuperAdmin';
 export const getSAdminById = async (req, res) => {
   try {
     const { id } = req.params;
-    const superAdmins = await superAdmin.findById(id);
-    if (!superAdmins) {
+    const superAdminData = await superAdmin.findById(id);
+    if (!superAdminData) {
       return res.status(404).json({
         message: '404 Not found',
         error: false,
@@ -12,13 +12,12 @@ export const getSAdminById = async (req, res) => {
     }
     return res.status(200).json({
       message: 'Request successful!',
-      data: superAdmins,
+      data: superAdminData,
       error: false,
     });
   } catch (error) {
     return res.status(400).json({
-      message: 'Error!',
-      error,
+      message: `An error ocurred: ${error}`,
     });
   }
 };
@@ -28,7 +27,7 @@ export const updateSAdmin = async (req, res) => {
     const { id } = req.params;
     const result = await superAdmin.findByIdAndUpdate(
       { _id: id },
-      { ...req.body },
+      req.body,
       { new: true },
     );
     if (!result) {
@@ -44,8 +43,7 @@ export const updateSAdmin = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({
-      message: 'Error!',
-      error,
+      message: `An error ocurred: ${error}`,
     });
   }
 };
@@ -67,8 +65,7 @@ export const deleteSAdmin = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({
-      message: 'Error!',
-      error,
+      message: `An error ocurred: ${error}`,
     });
   }
 };
