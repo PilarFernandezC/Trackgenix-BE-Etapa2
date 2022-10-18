@@ -31,17 +31,15 @@ const employeeJoiSchema = Joi.object({
     .pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
 });
 
-async function employeeValidatorMiddleware(req, res, next) {
+const employeeValidatorMiddleware = async (req, res, next) => {
   try {
     await employeeJoiSchema.validateAsync(req.body);
     next();
   } catch (error) {
     res.status(400).json({
       message: `Data could not be validated: ${error.message}`,
-      data: undefined,
-      error: true,
     });
   }
-}
+};
 
 export default employeeValidatorMiddleware;

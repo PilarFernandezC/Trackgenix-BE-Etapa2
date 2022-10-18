@@ -1,6 +1,6 @@
 import Employee from '../models/Employee';
 
-async function createEmployeeMongo(req, res) {
+const createEmployeeMongo = async (req, res) => {
   try {
     const newEmployee = new Employee(req.body);
     await newEmployee.save();
@@ -13,18 +13,18 @@ async function createEmployeeMongo(req, res) {
       message: `Failed to create document in database: ${error.message}`,
     });
   }
-}
+};
 
-function validateFilterParams(filterParams) {
+const validateFilterParams = (filterParams) => {
   const objKeys = Object.keys(filterParams); // Extract key names into array
   return Object.values(filterParams) // With an array of values do the following
     .reduce(((obj, cur, i) => (cur ? { ...obj, [objKeys[i]]: cur } : obj)), {});
   // Starting with an empty object, evaluate the current value
   // If it's undefined, return the obj in construction as is
   // If not, add a key with the current value. Result is an object with defined filter keys.
-}
+};
 
-async function filterEmployeesMongo(req, res) {
+const filterEmployeesMongo = async (req, res) => {
   const {
     name, lastName, phone, email,
   } = req.query;
@@ -43,11 +43,9 @@ async function filterEmployeesMongo(req, res) {
       message: `Failed to retrieve documents in database: ${error.message}`,
     });
   }
-}
+};
 
-const employeeDBController = {
+export default {
   create: createEmployeeMongo,
   filter: filterEmployeesMongo,
 };
-
-export default employeeDBController;
