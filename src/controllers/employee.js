@@ -17,6 +17,28 @@ const getEmployeeById = async (req, res) => {
   }
 };
 
+const editEmployee = async (req, res) => {
+  try {
+    // const { id } = req.params;
+    const employee = await Employee.findByIdAndUpdate(
+      { _id: req.params.id },
+      { ...req.body },
+      { new: true },
+    );
+    return res.status(200).json({
+      message: `Employee with the ID ${req.params.id} has been updated.`,
+      data: employee,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      message: 'ERROR',
+      error: true,
+    });
+  }
+};
+
 export default {
   getEmployeeById,
+  editEmployee,
 };
