@@ -9,6 +9,6 @@ const router = express.Router();
 router
   .delete('/:id', deleteTask)
   .get('/:id', getOneTask)
-  .put('/:id',updateTaskValidation ,updateTask)
+  .put('/:id', updateTaskValidation, updateTask);
 
 export default router;

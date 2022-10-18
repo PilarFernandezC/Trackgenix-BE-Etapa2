@@ -5,8 +5,6 @@ const { Schema } = mongoose;
 const taskSchema = new Schema({
   description: {
     type: String,
-    required: true,
-    lowercase: true,
   },
 });
 
