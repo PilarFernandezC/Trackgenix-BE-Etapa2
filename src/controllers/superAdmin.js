@@ -1,7 +1,7 @@
 import SuperAdmin from '../models/SuperAdmin';
 
 const getAll = async (req, res) => {
-    const queriesArray =  Object.keys(req.query);
+  const queriesArray = Object.keys(req.query);
   try {
     const superAdmins = await SuperAdmin.find();
     if (!superAdmins) {
@@ -9,25 +9,24 @@ const getAll = async (req, res) => {
         message: 'An error occured ',
       });
     }
-    if(queriesArray.length === 0){
-        return res.status(200).json({
-            message: 'Super Admins founded',
-            data: superAdmins,
-          });
-    }else{
-        let filterByParams ;
-        if (req.query.name) {
-            filterByParams = superAdmins.filter((superAdmin) => superAdmin.name === req.query.name);
-        }
-        if (req.query.lastName) {
-           filterByParams = superAdmins.filter((superAdmin) => superAdmin.lastName === req.query.lastName);
-        }
-        if (req.query.email) {
-            filterByParams = superAdmins.filter((superAdmin) => superAdmin.email === req.query.email);
-        }
-        res.status(200).json({ filterByParams });
+    if (queriesArray.length === 0) {
+      return res.status(200).json({
+        message: 'Super Admins founded',
+        data: superAdmins,
+      });
     }
-
+    let filterByParams;
+    if (req.query.name) {
+      filterByParams = superAdmins.filter((superAdmin) => superAdmin.name === req.query.name);
+    }
+    if (req.query.lastName) {
+      filterByParams = superAdmins.filter((superAdmin) => superAdmin.lastName
+      === req.query.lastName);
+    }
+    if (req.query.email) {
+      filterByParams = superAdmins.filter((superAdmin) => superAdmin.email === req.query.email);
+    }
+    return res.status(200).json({ filterByParams });
   } catch (error) {
     return res.json({
       message: `An error ocurred: ${error}`,
@@ -65,4 +64,5 @@ const create = async (req, res) => {
 export default {
   getAll,
   create,
+//   filtSuperAdmin,
 };
