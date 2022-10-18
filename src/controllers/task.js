@@ -3,16 +3,11 @@ import Tasks from '../models/Task';
 const getAllTasks = async (req, res) => {
     try {
         const tasks = await Tasks.find()
-
-        return res.status(200).json({
-            message: 'Tasks found',
-            data: tasks,
-            error: false,
-        });
     } catch (error) {
         return res.json({
-            message: 'An error occurred',
-            error: error,
+            return res.status(400).json({
+                message: 'An error occurred: ${error}',
+                error: error,
         });
     }
 };
@@ -31,7 +26,7 @@ const createTask = async (req, res) => {
         });
     } catch (error) {
         return res.status(400).json({
-            message: 'An error ocurred',
+            message: 'An error occurred: ${error}',
             error: error,
         });
     }
