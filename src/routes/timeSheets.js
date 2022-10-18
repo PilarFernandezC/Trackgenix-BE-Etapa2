@@ -2,7 +2,7 @@ import express from 'express';
 import {
   deleteTimesheet, updateTimesheet, getOneTimesheet,
 } from '../controllers/timeSheet';
-import updateTimesheetValidation from '../validations/timesheet'
+import updateTimesheetValidation from '../validations/timeSheet';
 
 const router = express.Router();
 
