@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "1c9f1b3f-ab78-4739-a5b3-be2ba3d30375",
+		"_postman_id": "c5dfef8e-a1f3-489a-a095-40e9011fdad2",
 		"name": "postman_collection",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "23743261"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -12,7 +11,77 @@
 		},
 		{
 			"name": "super-admin",
-			"item": []
+			"item": [
+				{
+					"name": "getSAdminById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/superAdmin/634da86648b27ead3e4f486d",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin",
+								"634da86648b27ead3e4f486d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateSAdmin",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"name\": \"Patricio\",\r\n    \"lastName\": \"Estrella\",\r\n    \"email\": \"mp.soler@gmail.com\",\r\n    \"password\": \"updatetesting123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/superAdmin/634da86648b27ead3e4f486d",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin",
+								"634da86648b27ead3e4f486d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSAdmin",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/superAdmin/634da86648b27ead3e4f486d",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin",
+								"634da86648b27ead3e4f486d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "employee",
