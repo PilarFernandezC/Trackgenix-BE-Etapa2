@@ -12,7 +12,55 @@
 		},
 		{
 			"name": "super-admin",
-			"item": []
+			"item": [
+				{
+					"name": "createNew",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Patricia\",\r\n  \"lastName\": \"solerdario\",\r\n  \"email\": \"mp.soler@gmail.com\",\r\n  \"password\":\"asd12345678\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/superAdmin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/superAdmin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "employee",
