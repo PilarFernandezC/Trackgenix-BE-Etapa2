@@ -1,15 +1,12 @@
 import Joi from 'joi';
 
-const timesheetValidateUpdate = Joi.object({
-  task: Joi.string().valid(
-    'BE',
-    'FE',
-  ),
-  description: Joi.string().required(),
-  date: Joi.date().required(),
-});
+const validateTimesheet = (req, res, next) => {
+  const timesheetValidateUpdate = Joi.object({
+    description: Joi.string().required(),
+    date: Joi.date().required(),
+    task: Joi.string().valid('BE', 'FE'),
+  });
 
-const updateTimesheetValidation = (req, res, next) => {
   const validation = timesheetValidateUpdate.validate(req.body);
   if (validation.error) {
     return res.status(400).json({
@@ -20,4 +17,4 @@ const updateTimesheetValidation = (req, res, next) => {
   } return next();
 };
 
-export default updateTimesheetValidation;
+export default validateTimesheet;
