@@ -19,7 +19,7 @@ app.use('/tasks', tasksRouter);
 app.use('/timeSheets', timeSheetsRouter);
 app.use('/employees', employees);
 app.use('/superAdmin', superAdmin);
-app.use('/', routes);
+app.use('/api', routes);
 
 app.get('/', async (req, res) => {
   res.send('Hello World!');
