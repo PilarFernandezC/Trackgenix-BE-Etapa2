@@ -4,7 +4,7 @@ import validaTimesheet from '../validations/timeSheet';
 
 const router = express.Router();
 
-router
-  .post('/', validaTimesheet, TimesheetController.createTimesheet);
+router.post('/', validaTimesheet, TimesheetController.createTimesheet);
+router.get('/', TimesheetController.getAllTimesheets);
 
 export default router;
