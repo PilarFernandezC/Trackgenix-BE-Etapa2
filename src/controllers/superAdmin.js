@@ -14,8 +14,7 @@ const getAll = async (req, res) => {
     });
   } catch (error) {
     return res.json({
-      message: 'An error occured ',
-      error,
+      message: `An error ocurred: ${error}`,
     });
   }
 };
@@ -42,7 +41,7 @@ const create = async (req, res) => {
     });
   } catch (error) {
     return res.json({
-      message: 'An error occured ',
+      message: `An error ocurred: ${error}`,
       error,
     });
   }
@@ -50,4 +49,5 @@ const create = async (req, res) => {
 export default {
   getAll,
   create,
+//   filtSuperAdmin,
 };
