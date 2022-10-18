@@ -38,7 +38,24 @@ const editEmployee = async (req, res) => {
   }
 };
 
+const deleteEmployee = async (req, res) => {
+  try {
+    const employeeFoundById = await Employee.findByIdAndDelete(req.params.id);
+    return res.status(204).json({
+      message: `Employee with the ID ${req.params.id} has been deleted.`,
+      data: employeeFoundById,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      message: 'ERROR',
+      error: true,
+    });
+  }
+};
+
 export default {
   getEmployeeById,
   editEmployee,
+  deleteEmployee,
 };

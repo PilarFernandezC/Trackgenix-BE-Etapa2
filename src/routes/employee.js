@@ -6,5 +6,6 @@ const router = express.Router();
 
 router
   .get('/:id', employeeControllers.getEmployeeById)
-  .put('/:id', employeeValidations.createValidation, employeeControllers.editEmployee);
+  .put('/:id', employeeValidations.createValidation, employeeControllers.editEmployee)
+  .delete('/:id', employeeControllers.deleteEmployee);
 export default router;
