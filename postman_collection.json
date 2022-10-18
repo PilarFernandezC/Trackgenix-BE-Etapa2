@@ -57,6 +57,32 @@
 						}
 					},
 					"response": []
+				},
+                {
+					"name": "filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/?lastName=pablo",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								""
+							],
+							"query": [
+								{
+									"key": "lastName",
+									"value": "pablo"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

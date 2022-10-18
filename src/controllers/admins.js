@@ -22,6 +22,7 @@ const createAdmin = async (req, res) => {
 };
 
 const getAllAdmins = async (req, res) => {
+  const queriesArray = Object.keys(req.query);
   try {
     const admins = await Admins.find();
     if (!admins) {
@@ -29,12 +30,25 @@ const getAllAdmins = async (req, res) => {
         message: 'Admin not found',
       });
     }
-    return res.status(200).json({
-      message: 'Admin found',
-      data: admins,
-    });
+    if (queriesArray.length === 0) {
+      return res.status(200).json({
+        message: 'Admin found',
+        data: admins,
+      });
+    }
+    let filterByParams;
+    if (req.query.name) {
+      filterByParams = admins.filter((admin) => admin.name === req.query.name);
+    }
+    if (req.query.lastName) {
+      filterByParams = admins.filter((admin) => admin.lastName === req.query.lastName);
+    }
+    if (req.query.email) {
+      filterByParams = admins.filter((admin) => admin.email === req.query.email);
+    }
+    return res.status(200).json({ filterByParams });
   } catch (error) {
-    return res.json({
+    return res.status(400).json({
       message: `An error ocurred ${error}`,
     });
   }
