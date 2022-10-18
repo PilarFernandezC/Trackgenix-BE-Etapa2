@@ -1,6 +1,6 @@
 import Models from '../models/TimeSheet';
 
-export const getOneTS = async (req, res) => {
+export const getOneTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
     const timeSheet = await Models.findById(id);
@@ -20,7 +20,7 @@ export const getOneTS = async (req, res) => {
   }
 };
 
-export const updateTS = async (req, res) => {
+export const updateTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
     const timeSheet = req.body;
@@ -44,7 +44,7 @@ export const updateTS = async (req, res) => {
   }
 };
 
-export const deleteTS = async (req, res) => {
+export const deleteTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await Models.findByIdAndDelete(id);

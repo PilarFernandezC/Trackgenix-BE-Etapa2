@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
-const TSValidateUpdate = Joi.object({
-    id: Joi.string().required,
+const TimesheetValidateUpdate = Joi.object({
   task: Joi.string().valid(
     'BE',
     'FE',
@@ -10,8 +9,8 @@ const TSValidateUpdate = Joi.object({
   date: Joi.date().required(),
 });
 
-const updateTSValidation = (req, res, next) => {
-  const validation = TSValidateUpdate.validate(req.body);
+const updateTimesheetValidation = (req, res, next) => {
+  const validation = TimesheetValidateUpdate.validate(req.body);
   if (validation.error) {
     return res.status(400).json({
       msg: 'There was a validation error:',
@@ -21,4 +20,4 @@ const updateTSValidation = (req, res, next) => {
   } return next();
 };
 
-export default updateTSValidation;
+export default updateTimesheetValidation;

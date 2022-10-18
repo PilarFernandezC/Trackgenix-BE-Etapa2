@@ -1,8 +1,8 @@
 import express from 'express';
-import timeSheetRouter from './timeSheets';
+import timesheetRouter from './timeSheets';
 
 const router = express.Router();
 
-router.use('/timeSheets', timeSheetRouter);
+router.use('/timesheets', timesheetRouter);
 
 export default router;

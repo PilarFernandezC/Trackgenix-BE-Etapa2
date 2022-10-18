@@ -1,14 +1,14 @@
 import express from 'express';
 import {
-  deleteTS, updateTS, getOneTS,
+  deleteTimesheet, updateTimesheet, getOneTimesheet,
 } from '../controllers/timeSheet';
-import updateTSValidation from '../validations/timesheet'
+import updateTimesheetValidation from '../validations/timesheet'
 
 const router = express.Router();
 
 router
-  .delete('/:id', deleteTS)
-  .get('/:id', getOneTS)
-  .put('/:id', updateTSValidation, updateTS);
+  .delete('/:id', deleteTimesheet)
+  .get('/:id', getOneTimesheet)
+  .put('/:id', updateTimesheetValidation, updateTimesheet);
 
 export default router;
