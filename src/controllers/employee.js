@@ -15,6 +15,15 @@ async function createEmployeeMongo(req, res) {
   }
 }
 
+function validateFilterParams(filterParams) {
+  const objKeys = Object.keys(filterParams); // Extract key names into array
+  return Object.values(filterParams) // With an array of values do the following
+    .reduce(((obj, cur, i) => (cur ? { ...obj, [objKeys[i]]: cur } : obj)), {});
+  // Starting with an empty object, evaluate the current value
+  // If it's undefined, return the obj in construction as is
+  // If not, add a key with the current value. Result is an object with defined filter keys.
+}
+
 async function filterEmployeesMongo(req, res) {
   const {
     name, lastName, phone, email,
@@ -22,13 +31,9 @@ async function filterEmployeesMongo(req, res) {
   const allowedFilterParams = {
     name, lastName, phone, email,
   };
-  const getAll = Object.values(allowedFilterParams)
-    .reduce(((acc, cur) => acc && cur === undefined), true);
-  const objKeys = Object.keys(allowedFilterParams);
-  const filterParams = Object.values(allowedFilterParams)
-    .reduce(((obj, cur, i) => (cur ? { ...obj, [objKeys[i]]: cur } : obj)), {});
+  const filterParams = validateFilterParams(allowedFilterParams);
   try {
-    const filteredEmployees = await Employee.find(getAll ? {} : filterParams);
+    const filteredEmployees = await Employee.find(filterParams);
     res.status(200).json({
       message: 'List of employees matching the query params was successfully retrieved.',
       data: filteredEmployees,
