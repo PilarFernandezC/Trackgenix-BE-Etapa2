@@ -64,5 +64,4 @@ const create = async (req, res) => {
 export default {
   getAll,
   create,
-//   filtSuperAdmin,
 };
