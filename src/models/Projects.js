@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const schema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
-  statDate: { type: Date, default: Date.now, required: true },
+  startDate: { type: Date, default: Date.now, required: true },
   endDate: { type: Date, required: true },
   clientName: { type: String, required: true },
   employees: [{
