@@ -20,8 +20,24 @@ const getProjectById = async (req, res) => {
   }
 };
 
-const dummyDBupdate = async (req, res) => {
-  res.send('dummyDBupdate');
+const updateProjectById = async (req, res) => {
+  if (req.params.id) {
+    try {
+      const updatedProject = await Project.findByIdAndUpdate(req.params.id, req.body);
+      res.status(200).json({
+        message: `Project with id=${req.params.id} deleted.`,
+        data: updatedProject,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  } else {
+    res.status(400).json({
+      message: 'Error: no project id provided',
+    });
+  }
 };
 
 const deleteProjectById = async (req, res) => {
@@ -45,6 +61,6 @@ const deleteProjectById = async (req, res) => {
 
 export default {
   getOne: getProjectById,
-  update: dummyDBupdate,
+  update: updateProjectById,
   delete: deleteProjectById,
 };
