@@ -40,9 +40,12 @@ const getProjectById = async (req, res) => {
 const updateProjectById = async (req, res) => {
   if (req.params.id && isValidId(req.params.id)) {
     try {
-      const updateResponse = await Project.findByIdAndUpdate(req.params.id, req.body);
-      if (updateResponse !== null) {
-        const updatedProject = await Project.findById(req.params.id);
+      const updatedProject = await Project.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true },
+      );
+      if (updatedProject !== null) {
         res.status(200).json({
           message: `Project with id=${req.params.id} has been updated.`,
           data: updatedProject,
