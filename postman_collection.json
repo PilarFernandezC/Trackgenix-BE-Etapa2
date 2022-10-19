@@ -1,6 +1,6 @@
 {
-	"info": {
-		"_postman_id": "3a72a520-a918-4609-836b-6c24db3e8aa7",
+    "info": {
+		"_postman_id": "1c9f1b3f-ab78-4739-a5b3-be2ba3d30375",
 		"name": "postman_collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23744378"
@@ -103,7 +103,55 @@
 		},
 		{
 			"name": "super-admin",
-			"item": []
+			"item": [
+				{
+					"name": "createNew",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Patricia\",\r\n  \"lastName\": \"solerdario\",\r\n  \"email\": \"mp.soler@gmail.com\",\r\n  \"password\":\"asd12345678\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/superAdmin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/superAdmin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "employee",
