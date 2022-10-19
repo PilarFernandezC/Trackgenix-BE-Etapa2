@@ -28,7 +28,116 @@
 		},
 		{
 			"name": "projects",
-			"item": []
+			"item": [
+				{
+					"name": "Edit Project by ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Tally (edited)\",\n    \"description\": \"Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.\",\n    \"startDate\": \"2010-02-18\",\n    \"endDate\": \"2022-12-29\",\n    \"clientName\": \"Innojam\",\n    \"employees\": [\n        {\n            \"employeeId\": \"635012ccfc13ae5d78000576\",\n            \"role\": \"PM\",\n            \"rate\": 40.21\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d78000577\",\n            \"role\": \"QA\",\n            \"rate\": 67.86\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d78000578\",\n            \"role\": \"TL\",\n            \"rate\": 40.9\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d78000579\",\n            \"role\": \"PM\",\n            \"rate\": 59.99\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d7800057a\",\n            \"role\": \"TL\",\n            \"rate\": 31.96\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d7800057b\",\n            \"role\": \"TL\",\n            \"rate\": 77.29\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/projects/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"projects",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "635015885581eb421df09402"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/projects/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"projects",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "635015885581eb421df093f5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/projects/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"projects",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "635015885581eb421df09444"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
