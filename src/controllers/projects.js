@@ -31,7 +31,7 @@ const create = async (req, res) => {
     const newProject = new Projects({
       name: req.body.name,
       description: req.body.description,
-      startDate: req.body.starDate,
+      startDate: req.body.startDate,
       endDate: req.body.endDate,
       clientName: req.body.clientName,
       employees: req.body.employees,
