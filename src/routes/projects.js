@@ -5,6 +5,6 @@ import dbController from '../controllers/projects';
 const router = express.Router();
 
 router.get('/', dbController.getAll);
-router.post('/', dataValidator.createValidation, dbController.create);
+router.post('/', dataValidator, dbController.create);
 
 export default router;

@@ -31,14 +31,10 @@ const create = async (req, res) => {
     const newProject = new Projects({
       name: req.body.name,
       description: req.body.description,
-      starDate: req.body.starDate,
+      startDate: req.body.starDate,
       endDate: req.body.endDate,
       clientName: req.body.clientName,
-      employee: {
-        employeeId: req.body.employeeId,
-        role: req.body.role,
-        rate: req.body.rate,
-      },
+      employees: req.body.employees,
     });
     const confirm = await newProject.save();
     if (!newProject) {
