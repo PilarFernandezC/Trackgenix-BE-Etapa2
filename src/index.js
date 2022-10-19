@@ -8,7 +8,6 @@ const tasksRouter = require('./resources/tasks');
 const employees = require('./resources/employees');
 const timeSheetsRouter = require('./resources/time-sheets');
 const projectsRouter = require('./resources/projects');
-const adminRouter = require('./resources/admins');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,7 +17,6 @@ app.use('/projects', projectsRouter);
 app.use('/tasks', tasksRouter);
 app.use('/timeSheets', timeSheetsRouter);
 app.use('/employees', employees);
-app.use('/admins', adminRouter);
 
 app.use('/api', routes);
 
