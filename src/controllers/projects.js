@@ -44,7 +44,7 @@ const create = async (req, res) => {
       });
     }
     return res.status(201).json({
-      message: 'Super Admins created',
+      message: 'New Project created',
       data: confirm,
     });
   } catch (error) {
