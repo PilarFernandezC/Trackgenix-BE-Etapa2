@@ -15,8 +15,7 @@ const getAdminById = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({
-      message: 'Admin does not exists',
-      $: { error },
+      message: `Admin does not exists: ${error}`,
     });
   }
 };
@@ -40,8 +39,7 @@ const editAdmin = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({
-      message: 'Admin does not exists',
-      $: { error },
+      message: `Admin does not exists: ${error}`,
     });
   }
 };
@@ -52,18 +50,15 @@ const deleteAdmin = async (req, res) => {
     if (!result) {
       return res.status(404).json({
         message: 'Admin does not exists',
-        error: false,
       });
     }
     return res.status(200).json({
       message: `Admin with ID ${id} deleted.`,
       data: result,
-      error: false,
     });
   } catch (error) {
     return res.json({
-      message: 'Admin does not exists',
-      $: { error },
+      message: `Admin does not exists: ${error}`,
     });
   }
 };
