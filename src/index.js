@@ -1,6 +1,7 @@
 // use "import" to import libraries
 import express from 'express';
 import mongoose from 'mongoose';
+import routes from './routes/index';
 
 // use "require" to import JSON files
 const tasksRouter = require('./resources/tasks');
@@ -22,6 +23,8 @@ app.use('/admins', adminRouter);
 app.get('/', async (req, res) => {
   res.send('Hello World!');
 });
+
+app.use('/api', routes);
 
 const MONGO_URL = 'mongodb+srv://BaSP-database-ayom-a:BaSP2022@cluster0.b8vlcfc.mongodb.net/?retryWrites=true&w=majority';
 mongoose.connect(
