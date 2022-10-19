@@ -4,8 +4,8 @@ import dbController from '../controllers/projects';
 
 const router = express.Router();
 
-router.get('/', dbController.getOne);
-router.patch('/', dataValidator, dbController.update);
-router.delete('/', dbController.delete);
+router.get('/:id', dbController.getOne);
+router.patch('/:id', express.json(), dataValidator.update, dbController.update);
+router.delete('/:id', dbController.delete);
 
 export default router;
