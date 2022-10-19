@@ -28,7 +28,63 @@
 		},
 		{
 			"name": "projects",
-			"item": []
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Project-N25\",\r\n  \"description\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry\",\r\n  \"starDate\": \"10/18/2022\",\r\n  \"endDate\":\"10/22/2022\",\r\n  \"clientName\":\"Trackgenix 2.0\",\r\n  \"employee\":{\r\n      \"employeeId\":\"634ed4144e0d5334bd008057\",\r\n      \"role\": \"PM\",\r\n      \"rate\": \"25000\"\r\n  }\r\n  }\r\n  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/projects/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"projects",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/projects/?name=Project-N24",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"projects",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Project-N24"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
