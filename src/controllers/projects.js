@@ -87,10 +87,6 @@ const getById = async (req, res) => {
         message: error.message,
       });
     }
-  } else {
-    res.status(400).json({
-      message: 'Error: id is invalid or missing.',
-    });
   }
 };
 
@@ -117,10 +113,6 @@ const updateById = async (req, res) => {
         message: error.message,
       });
     }
-  } else {
-    res.status(400).json({
-      message: 'Error: id is invalid or missing.',
-    });
   }
 };
 
@@ -142,10 +134,6 @@ const deleteById = async (req, res) => {
         message: error.message,
       });
     }
-  } else {
-    res.status(400).json({
-      message: 'Error: id is invalid or missing.',
-    });
   }
 };
 
