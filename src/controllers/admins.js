@@ -21,6 +21,50 @@ const createAdmin = async (req, res) => {
   }
 };
 
+const getAdminById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const admins = await Admins.findById(id);
+    if (!admins) {
+      return res.status(404).json({
+        message: 'Admin does not exists',
+      });
+    }
+    return res.status(200).json({
+      message: 'Admin Found',
+      data: admins,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: `Admin does not exists: ${error}`,
+    });
+  }
+};
+
+const editAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await Admins.findByIdAndUpdate(
+      { _id: id },
+      req.body,
+      { new: true },
+    );
+    if (!result) {
+      return res.status(404).json({
+        message: 'Admin does not exists',
+      });
+    }
+    return res.status(200).json({
+      message: `Admin with ID ${id} edited.`,
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: `An error ocurred ${error}`,
+    });
+  }
+};
+
 const getAllAdmins = async (req, res) => {
   const queriesArray = Object.keys(req.query);
   try {
@@ -54,7 +98,29 @@ const getAllAdmins = async (req, res) => {
   }
 };
 
+const deleteAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await Admins.findByIdAndDelete(id);
+    if (!result) {
+      return res.status(404).json({
+        message: 'Admin does not exists',
+      });
+    }
+    return res.status(200).json({
+      message: `Admin with ID ${id} deleted.`,
+      data: result,
+    });
+  } catch (error) {
+    return res.json({
+      message: `Admin does not exists: ${error}`,
+    });
+  }
+};
 export default {
   createAdmin,
   getAllAdmins,
+  getAdminById,
+  editAdmin,
+  deleteAdmin,
 };

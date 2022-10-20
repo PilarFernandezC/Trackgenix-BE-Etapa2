@@ -26,6 +26,7 @@ app.get('/', async (req, res) => {
 });
 
 const MONGO_URL = 'mongodb+srv://BaSP-database-ayom-a:BaSP2022@cluster0.b8vlcfc.mongodb.net/?retryWrites=true&w=majority';
+
 mongoose.connect(
   MONGO_URL,
   (error) => {
