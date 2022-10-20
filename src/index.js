@@ -12,7 +12,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use('/', routes);
+app.use('/api', routes);
 app.use('/projects', projectsRouter);
 app.use('/timeSheets', timeSheetsRouter);
 app.use('/employees', employees);
