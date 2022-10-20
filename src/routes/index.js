@@ -1,10 +1,17 @@
 import express from 'express';
 import taskRouter from './task';
-import admin from './admins';
+import adminRouter from './admins';
+import projectsRouter from './projects';
+import superAdminRouter from './superAdmin';
+import employeesRouter from './employee';
 
 const router = express.Router();
 
 router.use('/task', taskRouter);
-router.use('/admins', admin);
+router.use('/projects', projectsRouter);
+router.use('/superAdmin', superAdminRouter);
+router.use('/employees', employeesRouter);
+router.use('/admin', adminRouter);
+
 
 export default router;
