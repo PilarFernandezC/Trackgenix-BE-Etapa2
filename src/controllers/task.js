@@ -1,17 +1,35 @@
 import Models from '../models/Task';
 
 const getAllTasks = async (req, res) => {
+  const queriesArray = Object.keys(req.query);
+
   try {
     const tasks = await Models.find();
 
-    return res.status(200).json({
-      message: 'Tasks found',
-      data: tasks,
-      error: false,
-    });
-  } catch (error) {
+    if (!tasks) {
+      return res.status(404).json({
+        message: 'An error occured ',
+      });
+    }
+
+    if (queriesArray.length === 0) {
+      return res.status(200).json({
+        message: 'Super Admins founded',
+        data: tasks,
+      });
+    }
+
+    let filterByParams;
+
+    if (req.query.description) {
+      filterByParams = tasks.filter(
+        (task) => task.description === req.query.description,
+      );
+    }
+    return res.status(200).json({ filterByParams });
+  } catch (err) {
     return res.json({
-      message: 'An error occurred',
+      message: `An error ocurred: ${err}`,
     });
   }
 };
@@ -29,9 +47,9 @@ const getOneTask = async (req, res) => {
       msg: 'The task has been found',
       data: task,
     });
-  } catch (error) {
+  } catch (err) {
     return res.json({
-      message: `an error ocurred: ${error}`,
+      message: `an error ocurred: ${err}`,
     });
   }
 };
