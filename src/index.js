@@ -4,16 +4,12 @@ import routes from './routes/index';
 
 // use "require" to import JSON files
 
-const timeSheetsRouter = require('./resources/time-sheets');
-const superAdmin = require('./resources/super-admins');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/api', routes);
-app.use('/timeSheets', timeSheetsRouter);
-app.use('/superAdmin', superAdmin);
 
 app.get('/', async (req, res) => {
   res.send('Hello World!');

@@ -1,4 +1,5 @@
 import express from 'express';
+import timesheetRouter from './timeSheets';
 import taskRouter from './task';
 import adminRouter from './admins';
 import projectsRouter from './projects';
@@ -12,5 +13,6 @@ router.use('/projects', projectsRouter);
 router.use('/superAdmin', superAdminRouter);
 router.use('/employees', employeesRouter);
 router.use('/admin', adminRouter);
+router.use('/timesheets', timesheetRouter);
 
 export default router;
