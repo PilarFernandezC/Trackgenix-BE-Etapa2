@@ -1,0 +1,23 @@
+import Joi from 'joi';
+
+const validateCreation = (req, res, next) => {
+  const adminValidation = Joi.object({
+    name: Joi.string().pattern(/^[\p{L}]+$/u).min(3).required(),
+    lastName: Joi.string().pattern(/^[\p{L}]+$/u).min(3).required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/).required(),
+  });
+
+  const validation = adminValidation.validate(req.body);
+
+  if (validation.error) {
+    return res.status(400).json({
+      message: `There was an error ${validation.error.details[0].message}`,
+    });
+  }
+  return next();
+};
+
+export default {
+  validateCreation,
+};
