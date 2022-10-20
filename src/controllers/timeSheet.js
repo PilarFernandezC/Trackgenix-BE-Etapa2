@@ -53,7 +53,7 @@ export const deleteTimesheet = async (req, res) => {
         msg: 'The time-sheet has not been found',
       });
     }
-    return res.status(200).json({
+    return res.status(204).json({
       msg: 'The time-sheet has been deleted: ',
       data: result,
     });

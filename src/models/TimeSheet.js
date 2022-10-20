@@ -6,7 +6,6 @@ const timesheetSchema = new Schema({
   description: {
     type: String,
     required: true,
-    lowercase: true,
   },
   date: {
     type: Date,
