@@ -1,9 +1,11 @@
-import Projects from '../models/Projects';
+import Project from '../models/Projects';
+
+const { ObjectId } = require('mongoose').Types;
 
 const getAll = async (req, res) => {
   const queriesArray = Object.keys(req.query);
   try {
-    const projects = await Projects.find();
+    const projects = await Project.find();
     if (!projects) {
       return res.status(404).json({
         message: 'An error occured ',
@@ -26,9 +28,10 @@ const getAll = async (req, res) => {
     });
   }
 };
+
 const create = async (req, res) => {
   try {
-    const newProject = new Projects({
+    const newProject = new Project({
       name: req.body.name,
       description: req.body.description,
       startDate: req.body.startDate,
@@ -54,7 +57,90 @@ const create = async (req, res) => {
     });
   }
 };
+
+const isValidId = (id) => {
+  try {
+    const oid = new ObjectId(id);
+    return ObjectId.isValid(id)
+      && oid.toString() === id;
+  } catch {
+    return false;
+  }
+};
+
+const getById = async (req, res) => {
+  if (req.params.id && isValidId(req.params.id)) {
+    try {
+      const retrievedProject = await Project.findById(req.params.id);
+      if (retrievedProject !== null) {
+        res.status(200).json({
+          message: `Project with id=${req.params.id} found.`,
+          data: retrievedProject,
+        });
+      } else {
+        res.status(404).json({
+          message: `Project with id=${req.params.id} not found.`,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+};
+
+const updateById = async (req, res) => {
+  if (req.params.id && isValidId(req.params.id)) {
+    try {
+      const updatedProject = await Project.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true },
+      );
+      if (updatedProject !== null) {
+        res.status(200).json({
+          message: `Project with id=${req.params.id} has been updated.`,
+          data: updatedProject,
+        });
+      } else {
+        res.status(404).json({
+          message: `Project with id=${req.params.id} not found.`,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+};
+
+const deleteById = async (req, res) => {
+  if (req.params.id && isValidId(req.params.id)) {
+    try {
+      const response = await Project.findByIdAndDelete(req.params.id);
+      if (response !== null) {
+        res.status(202).json({
+          message: `Project with id=${req.params.id} deleted.`,
+        });
+      } else {
+        res.status(404).json({
+          message: `Project with id=${req.params.id} not found.`,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+};
+
 export default {
   getAll,
+  getById,
   create,
+  updateById,
+  deleteById,
 };

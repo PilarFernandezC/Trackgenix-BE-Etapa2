@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import routes from './routes/index';
 
-// use "require" to import JSON files
 const tasksRouter = require('./resources/tasks');
 const timeSheetsRouter = require('./resources/time-sheets');
 const superAdmin = require('./resources/super-admins');
