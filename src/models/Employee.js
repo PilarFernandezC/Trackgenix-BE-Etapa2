@@ -10,6 +10,4 @@ const employeeSchema = new Schema({
   password: { type: String, required: true },
 });
 
-const Employee = mongoose.model('Employee', employeeSchema);
-
-export default Employee;
+export default mongoose.model('Employees', employeeSchema);
