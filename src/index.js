@@ -17,6 +17,7 @@ app.use('/tasks', tasksRouter);
 app.use('/timeSheets', timeSheetsRouter);
 app.use('/employees', employees);
 app.use('/superAdmin', superAdmin);
+
 app.get('/', async (req, res) => {
   res.send('Hello World!');
 });
@@ -24,6 +25,7 @@ app.get('/', async (req, res) => {
 app.use('/api', routes);
 
 const MONGO_URL = 'mongodb+srv://BaSP-database-ayom-a:BaSP2022@cluster0.b8vlcfc.mongodb.net/?retryWrites=true&w=majority';
+
 mongoose.connect(
   MONGO_URL,
   (error) => {
