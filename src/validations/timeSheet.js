@@ -1,19 +1,20 @@
 import Joi from 'joi';
 
-const TimeSheetValidateUpdate = (req, res, next) => {
-  const taskValidation = Joi.object({
-    description: Joi.string().valid('BE', 'FE').required(),
+const validateTimesheet = (req, res, next) => {
+  const timesheetValidateUpdate = Joi.object({
+    description: Joi.string().required(),
+    date: Joi.date().required(),
+    task: Joi.string().valid('BE', 'FE'),
   });
 
-  const validation = taskValidation.validate(req.body);
-
+  const validation = timesheetValidateUpdate.validate(req.body);
   if (validation.error) {
     return res.status(400).json({
-      message: `There was an error: ${validation.error.details[0].message}`,
+      msg: 'There was a validation error:',
+      data: validation.error.details.map((x) => x.message).join(', '),
       error: true,
     });
-  }
-  return next();
+  } return next();
 };
 
-export default TimeSheetValidateUpdate;
+export default validateTimesheet;
