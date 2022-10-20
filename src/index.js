@@ -7,23 +7,22 @@ import routes from './routes/index';
 const tasksRouter = require('./resources/tasks');
 const employees = require('./resources/employees');
 const timeSheetsRouter = require('./resources/time-sheets');
-const projectsRouter = require('./resources/projects');
+const superAdmin = require('./resources/super-admins');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use('/api', routes);
-app.use('/projects', projectsRouter);
 app.use('/tasks', tasksRouter);
 app.use('/timeSheets', timeSheetsRouter);
 app.use('/employees', employees);
-
-app.use('/api', routes);
+app.use('/superAdmin', superAdmin);
 
 app.get('/', async (req, res) => {
   res.send('Hello World!');
 });
+
+app.use('/api', routes);
 
 const MONGO_URL = 'mongodb+srv://BaSP-database-ayom-a:BaSP2022@cluster0.b8vlcfc.mongodb.net/?retryWrites=true&w=majority';
 
