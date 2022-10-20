@@ -10,6 +10,55 @@
 			"name": "admin",
 			"item": [
 				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cristina\",\r\n    \"lastName\": \"Madera\",\r\n    \"email\": \"crismadera@gmail.com\",\r\n    \"password\": \"contra123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+                {
 					"name": "localhost:3000/admins/:id",
 					"request": {
 						"method": "PUT",
@@ -43,6 +92,32 @@
 								{
 									"key": "id",
 									"value": "634c803fe497079ffa179f72"
+								}
+							]
+						}
+					},
+                    "response": []
+				},
+                {
+					"name": "filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/?lastName=pablo",
+                            "host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								""
+							],
+							"query": [
+								{
+									"key": "lastName",
+									"value": "pablo"
 								}
 							]
 						}
