@@ -1,14 +1,16 @@
 import express from 'express';
-import {
-  deleteTimesheet, updateTimesheet, getOneTimesheet,
-} from '../controllers/timeSheet';
+import TimesheetController from '../controllers/timeSheet';
 import validateTimesheet from '../validations/timeSheet';
 
 const router = express.Router();
 
-router
-  .delete('/:id', deleteTimesheet)
-  .get('/:id', getOneTimesheet)
-  .put('/:id', validateTimesheet, updateTimesheet);
+router.post('/', validateTimesheet, TimesheetController.createTimesheet);
+router.get('/', TimesheetController.getAllTimesheets);
+router.delete('/:id', TimesheetController.deleteTimesheet)
+router.get('/:id', TimesheetController.getOneTimesheet)
+router.put('/:id', validateTimesheet, TimesheetController.updateTimesheet);
 
 export default router;
+
+
+
