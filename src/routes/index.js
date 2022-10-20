@@ -1,12 +1,14 @@
 import express from 'express';
-import timesheetRouter from './timeSheets';
+import adminRouter from './admins';
+import projectsRouter from './projects';
+import superAdminRouter from './superAdmin';
 import employeesRouter from './employee';
-import admin from './admins';
 
 const router = express.Router();
 
-router.use('/timesheets', timesheetRouter);
+router.use('/projects', projectsRouter);
+router.use('/superAdmin', superAdminRouter);
 router.use('/employees', employeesRouter);
-router.use('/admins', admin);
+router.use('/admin', adminRouter);
 
 export default router;
