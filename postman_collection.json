@@ -1,6 +1,6 @@
 {
-	"info": {
-		"_postman_id": "3a72a520-a918-4609-836b-6c24db3e8aa7",
+    "info": {
+		"_postman_id": "1c9f1b3f-ab78-4739-a5b3-be2ba3d30375",
 		"name": "postman_collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23744378"
@@ -10,6 +10,55 @@
 			"name": "admin",
 			"item": [
 				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cristina\",\r\n    \"lastName\": \"Madera\",\r\n    \"email\": \"crismadera@gmail.com\",\r\n    \"password\": \"contra123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+                {
 					"name": "localhost:3000/admins/:id",
 					"request": {
 						"method": "PUT",
@@ -43,6 +92,32 @@
 								{
 									"key": "id",
 									"value": "634c803fe497079ffa179f72"
+								}
+							]
+						}
+					},
+                    "response": []
+				},
+                {
+					"name": "filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/?lastName=pablo",
+                            "host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								""
+							],
+							"query": [
+								{
+									"key": "lastName",
+									"value": "pablo"
 								}
 							]
 						}
@@ -103,11 +178,171 @@
 		},
 		{
 			"name": "super-admin",
-			"item": []
+			"item": [
+				{
+					"name": "createNew",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Patricia\",\r\n  \"lastName\": \"solerdario\",\r\n  \"email\": \"mp.soler@gmail.com\",\r\n  \"password\":\"asd12345678\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/superAdmin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/superAdmin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "employee",
-			"item": []
+			"item": [
+                {
+                    "name": "Get all",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "localhost:3000/api/employees/",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "employees",
+                                ""
+                            ],
+                            "query": []
+                        }
+                    },
+                    "response": []
+                },
+                {
+                "name": "Filter",
+                "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                        "raw": "localhost:3000/api/employees/?name=Wilone&other=blablabla",
+                        "host": [
+                            "localhost"
+                        ],
+                        "port": "3000",
+                        "path": [
+                            "api",
+                            "employees",
+                            ""
+                        ],
+                        "query": [
+                            {
+                                "key": "name",
+                                "value": "Wilone"
+                            },
+                            {
+                                "key": "other",
+                                "value": "blablabla"
+                            }
+                        ]
+                    }
+                },
+                "response": []
+                },
+                {
+					"name": "getById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/employees/634d4ae6cc51b61f8d9c862e\n",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"employees",
+								"634d4ae6cc51b61f8d9c862e\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/employees/634d4ae6cc51b61f8d9c862e\n\n",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"employees",
+								"634d4ae6cc51b61f8d9c862e\n\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/employees/634d4ae6cc51b61f8d9c862e",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"employees",
+								"634d4ae6cc51b61f8d9c862e"
+							]
+						}
+					},
+					"response": []
+				}
+            ]
 		},
 		{
 			"name": "time-sheet",
@@ -119,7 +354,171 @@
 		},
 		{
 			"name": "projects",
-			"item": []
+			"item": [
+                {
+                    "name": "Get Project by ID",
+					"protocolProfileBehavior": {
+                        "disableBodyPruning": true
+					},
+					"request": {
+                        "method": "GET",
+						"header": [],
+						"body": {
+                            "mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/projects/:id",
+                            "host": [
+                                "localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"projects",
+                                ":id"
+							],
+							"variable": [
+                                {
+									"key": "id",
+									"value": "635015885581eb421df093f5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+                {
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/projects/?name=Project-N24",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"projects",
+                                ""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Project-N24"
+                                }
+							]
+						}
+					},
+					"response": []
+				},
+				{
+                    "name": "Delete Project by ID",
+					"request": {
+                        "method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+                                    "language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/projects/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"projects",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "635015885581eb421df09444"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+                {
+                    "name": "Edit Project by ID",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Tally (edited)\",\n    \"description\": \"Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.\",\n    \"startDate\": \"2010-02-18\",\n    \"endDate\": \"2022-12-29\",\n    \"clientName\": \"Innojam\",\n    \"employees\": [\n        {\n            \"employeeId\": \"635012ccfc13ae5d78000576\",\n            \"role\": \"PM\",\n            \"rate\": 40.21\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d78000577\",\n            \"role\": \"QA\",\n            \"rate\": 67.86\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d78000578\",\n            \"role\": \"TL\",\n            \"rate\": 40.9\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d78000579\",\n            \"role\": \"PM\",\n            \"rate\": 59.99\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d7800057a\",\n            \"role\": \"TL\",\n            \"rate\": 31.96\n        },\n        {\n            \"employeeId\": \"635012ccfc13ae5d7800057b\",\n            \"role\": \"TL\",\n            \"rate\": 77.29\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost:3000/api/projects/:id",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "projects",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "635015885581eb421df09402"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Project",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n  \"name\": \"Project-N25\",\r\n  \"description\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry\",\r\n  \"starDate\": \"10/18/2022\",\r\n  \"endDate\":\"10/22/2022\",\r\n  \"clientName\":\"Trackgenix 2.0\",\r\n  \"employee\":{\r\n      \"employeeId\":\"634ed4144e0d5334bd008057\",\r\n      \"role\": \"PM\",\r\n      \"rate\": \"25000\"\r\n  }\r\n  }\r\n  ",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost:3000/api/projects/",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "projects",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+			]
 		}
 	]
 }
