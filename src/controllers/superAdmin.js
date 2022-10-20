@@ -58,7 +58,7 @@ export const deleteSAdmin = async (req, res) => {
         error: false,
       });
     }
-    return res.status(200).json({
+    return res.status(204).json({
       message: `Super Admin (ID ${id}) deleted.`,
       data: result,
       error: false,
