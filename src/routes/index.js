@@ -13,5 +13,4 @@ router.use('/superAdmin', superAdminRouter);
 router.use('/employees', employeesRouter);
 router.use('/admin', adminRouter);
 
-
 export default router;
