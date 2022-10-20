@@ -2,16 +2,73 @@ import Project from '../models/Projects';
 
 const { ObjectId } = require('mongoose').Types;
 
+const getAll = async (req, res) => {
+  const queriesArray = Object.keys(req.query);
+  try {
+    const projects = await Project.find();
+    if (!projects) {
+      return res.status(404).json({
+        message: 'An error occured ',
+      });
+    }
+    if (queriesArray.length === 0) {
+      return res.status(200).json({
+        message: 'Projects founded',
+        data: projects,
+      });
+    }
+    let filterByParams;
+    if (req.query.name) {
+      filterByParams = projects.filter((project) => project.name === req.query.name);
+    }
+    return res.status(200).json({ filterByParams });
+  } catch (error) {
+    return res.json({
+      message: `An error ocurred: ${error}`,
+    });
+  }
+};
+
+const create = async (req, res) => {
+  try {
+    const newProject = new Project({
+      name: req.body.name,
+      description: req.body.description,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      clientName: req.body.clientName,
+      employees: req.body.employees,
+    });
+    const confirm = await newProject.save();
+    if (!newProject) {
+      return res.status(400).json({
+        message: 'All the fileds need to be filled',
+        data: confirm,
+      });
+    }
+    return res.status(201).json({
+      message: 'New Project created',
+      data: confirm,
+    });
+  } catch (error) {
+    return res.json({
+      message: `An error ocurred: ${error}`,
+      error,
+    });
+  }
+};
+
 const isValidId = (id) => {
   try {
     const oid = new ObjectId(id);
     return ObjectId.isValid(id)
-    && oid.toString() === id;
+      && oid.toString() === id;
   } catch {
     return false;
   }
 };
-const getProjectById = async (req, res) => {
+
+const getById = async (req, res) => {
   if (req.params.id && isValidId(req.params.id)) {
     try {
       const retrievedProject = await Project.findById(req.params.id);
@@ -37,7 +94,7 @@ const getProjectById = async (req, res) => {
   }
 };
 
-const updateProjectById = async (req, res) => {
+const updateById = async (req, res) => {
   if (req.params.id && isValidId(req.params.id)) {
     try {
       const updatedProject = await Project.findByIdAndUpdate(
@@ -67,7 +124,7 @@ const updateProjectById = async (req, res) => {
   }
 };
 
-const deleteProjectById = async (req, res) => {
+const deleteById = async (req, res) => {
   if (req.params.id && isValidId(req.params.id)) {
     try {
       const response = await Project.findByIdAndDelete(req.params.id);
@@ -93,7 +150,9 @@ const deleteProjectById = async (req, res) => {
 };
 
 export default {
-  getOne: getProjectById,
-  update: updateProjectById,
-  delete: deleteProjectById,
+  getAll,
+  getById,
+  create,
+  updateById,
+  deleteById,
 };
