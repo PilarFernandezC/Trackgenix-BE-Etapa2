@@ -2,15 +2,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
 
+import tasksRouter from './routes/task';
+
 // use "require" to import JSON files
-//const tasksRouter = require('./resources/tasks');
+// const tasksRouter = require('./resources/tasks');
 const employees = require('./resources/employees');
 const timeSheetsRouter = require('./resources/time-sheets');
 const superAdmin = require('./resources/super-admins');
 const projectsRouter = require('./resources/projects');
 const adminRouter = require('./resources/admins');
-
-import tasksRouter from './routes/task';
 
 const app = express();
 const port = process.env.PORT || 3000;

@@ -5,7 +5,7 @@ import tasksValidations from '../validations/task';
 const router = express.Router();
 
 router
-    .get('/', tasksControllers.getAllTasks)
-    .post('/', tasksValidations.validateCreation, tasksControllers.createTask);
+  .get('/', tasksControllers.getAllTasks)
+  .post('/', tasksValidations.validateCreation, tasksControllers.createTask);
 
 export default router;
