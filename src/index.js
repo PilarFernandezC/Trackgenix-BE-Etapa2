@@ -2,7 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import routes from './routes/index';
 
-const tasksRouter = require('./resources/tasks');
+// use "require" to import JSON files
+
 const timeSheetsRouter = require('./resources/time-sheets');
 const superAdmin = require('./resources/super-admins');
 
@@ -11,7 +12,6 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/api', routes);
-app.use('/tasks', tasksRouter);
 app.use('/timeSheets', timeSheetsRouter);
 app.use('/superAdmin', superAdmin);
 
