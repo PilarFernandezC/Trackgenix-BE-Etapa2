@@ -7,7 +7,7 @@ import employeesRouter from './employee';
 
 const router = express.Router();
 
-router.use('/task', taskRouter);
+router.use('/tasks', taskRouter);
 router.use('/projects', projectsRouter);
 router.use('/superAdmin', superAdminRouter);
 router.use('/employees', employeesRouter);
