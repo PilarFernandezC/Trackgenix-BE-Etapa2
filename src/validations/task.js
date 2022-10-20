@@ -16,4 +16,6 @@ const updateTaskValidation = (req, res, next) => {
   return next();
 };
 
-export default updateTaskValidation;
+export default {
+  updateTaskValidation,
+};

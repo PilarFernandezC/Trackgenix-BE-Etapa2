@@ -1,14 +1,14 @@
 import express from 'express';
-import {
-  deleteTask, updateTask, getOneTask,
-} from '../controllers/task';
-import updateTaskValidation from '../validations/task';
+import tasksControllers from '../controllers/task';
+import tasksValidations from '../validations/task';
 
 const router = express.Router();
 
 router
-  .delete('/:id', deleteTask)
-  .get('/:id', getOneTask)
-  .put('/:id', updateTaskValidation, updateTask);
+  .get('/', tasksControllers.getAllTasks)
+  .post('/', tasksValidations.updateTaskValidation, tasksControllers.createTask)
+  .delete('/:id', tasksControllers.deleteTask)
+  .get('/:id', tasksControllers.getOneTask)
+  .put('/:id', tasksValidations.updateTaskValidation, tasksControllers.updateTask);
 
 export default router;

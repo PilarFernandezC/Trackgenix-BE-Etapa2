@@ -1,6 +1,40 @@
 import Models from '../models/Task';
 
-export const getOneTask = async (req, res) => {
+const getAllTasks = async (req, res) => {
+  const queriesArray = Object.keys(req.query);
+
+  try {
+    const tasks = await Models.find();
+
+    if (!tasks) {
+      return res.status(404).json({
+        message: 'An error occured ',
+      });
+    }
+
+    if (queriesArray.length === 0) {
+      return res.status(200).json({
+        message: 'Super Admins founded',
+        data: tasks,
+      });
+    }
+
+    let filterByParams;
+
+    if (req.query.description) {
+      filterByParams = tasks.filter(
+        (task) => task.description === req.query.description,
+      );
+    }
+    return res.status(200).json({ filterByParams });
+  } catch (err) {
+    return res.json({
+      message: `An error ocurred: ${err}`,
+    });
+  }
+};
+
+const getOneTask = async (req, res) => {
   try {
     const { id } = req.params;
     const task = await Models.findById(id);
@@ -13,14 +47,33 @@ export const getOneTask = async (req, res) => {
       msg: 'The task has been found',
       data: task,
     });
-  } catch (error) {
+  } catch (err) {
     return res.json({
-      message: `an error ocurred: ${error}`,
+      message: `an error ocurred: ${err}`,
     });
   }
 };
 
-export const updateTask = async (req, res) => {
+const createTask = async (req, res) => {
+  try {
+    const task = new Models({
+      description: req.body.description,
+    });
+
+    const result = await task.save();
+    return res.status(201).json({
+      messsage: 'Project created successfully',
+      data: result,
+      error: false,
+    });
+  } catch (err) {
+    return res.status(400).json({
+      message: `An error ocurred: ${err}`,
+    });
+  }
+};
+
+const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
     const task = req.body;
@@ -35,14 +88,14 @@ export const updateTask = async (req, res) => {
     return res.status(200).json({
       msg: 'The task has been Updated',
     });
-  } catch (error) {
+  } catch (err) {
     return res.json({
-      message: `an error ocurred: ${error}`,
+      message: `an error ocurred: ${err}`,
     });
   }
 };
 
-export const deleteTask = async (req, res) => {
+const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await Models.findByIdAndDelete(id);
@@ -55,9 +108,17 @@ export const deleteTask = async (req, res) => {
       msg: 'The task has been deleted: ',
       data: result,
     });
-  } catch (error) {
+  } catch (err) {
     return res.json({
-      message: `an error ocurred: ${error}`,
+      message: `an error ocurred: ${err}`,
     });
   }
+};
+
+export default {
+  getAllTasks,
+  createTask,
+  deleteTask,
+  updateTask,
+  getOneTask,
 };

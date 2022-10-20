@@ -119,9 +119,9 @@ const deleteTimesheet = async (req, res) => {
 };
 
 export default {
-    createTimesheet,
-    getAllTimesheets,
-    getOneTimesheet,
-    updateTimesheet,
-    deleteTimesheet,
-  };
+  createTimesheet,
+  getAllTimesheets,
+  getOneTimesheet,
+  updateTimesheet,
+  deleteTimesheet,
+};
