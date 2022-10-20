@@ -1,9 +1,9 @@
-import Models from '../models/TimeSheet';
+import TimesheetModel from '../models/TimeSheet';
 
 export const getOneTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
-    const timeSheet = await Models.findById(id);
+    const timeSheet = await TimesheetModel.findById(id);
     if (!timeSheet) {
       return res.status(404).json({
         msg: 'The time-sheet has not been found',
@@ -24,7 +24,7 @@ export const updateTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
     const timeSheet = req.body;
-    const response = await Models.findByIdAndUpdate(id, {
+    const response = await TimesheetModel.findByIdAndUpdate(id, {
       description: timeSheet.description,
       date: timeSheet.date,
       task: timeSheet.task,
@@ -47,7 +47,7 @@ export const updateTimesheet = async (req, res) => {
 export const deleteTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await Models.findByIdAndDelete(id);
+    const result = await TimesheetModel.findByIdAndDelete(id);
     if (!result) {
       return res.status(404).json({
         msg: 'The time-sheet has not been found',
