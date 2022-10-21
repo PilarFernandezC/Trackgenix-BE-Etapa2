@@ -8,4 +8,4 @@ const superAdminSchema = new Schema({
   password: { type: String, required: true },
 });
 
-export default mongoose.model('superAdmin', superAdminSchema);
+export default mongoose.model('SuperAdmin', superAdminSchema);

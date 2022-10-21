@@ -1,5 +1,27 @@
 import SuperAdmin from '../models/SuperAdmin';
 
+const getSAdminById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const superAdminData = await SuperAdmin.findById(id);
+    if (!superAdminData) {
+      return res.status(404).json({
+        message: '404 Not found',
+        error: false,
+      });
+    }
+    return res.status(200).json({
+      message: 'Request successful!',
+      data: superAdminData,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: `An error ocurred: ${error}`,
+    });
+  }
+};
+
 const getAll = async (req, res) => {
   const queriesArray = Object.keys(req.query);
   try {
@@ -34,6 +56,51 @@ const getAll = async (req, res) => {
   }
 };
 
+const updateSAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await SuperAdmin.findByIdAndUpdate({ _id: id }, req.body, {
+      new: true,
+    });
+    if (!result) {
+      return res.status(404).json({
+        message: '404 Not found',
+        error: false,
+      });
+    }
+    return res.status(200).json({
+      message: `Super Admin (ID ${id}) edited.`,
+      data: result,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: `An error ocurred: ${error}`,
+    });
+  }
+};
+
+const deleteSAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await SuperAdmin.findByIdAndDelete(id);
+    if (!result) {
+      return res.status(404).json({
+        message: '404 Not found',
+        error: false,
+      });
+    }
+    return res.status(204).json({
+      message: `Super Admin (ID ${id}) deleted.`,
+      data: result,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: `An error ocurred: ${error}`,
+    });
+  }
+};
 const create = async (req, res) => {
   try {
     const newSupAdmin = new SuperAdmin({
@@ -62,6 +129,9 @@ const create = async (req, res) => {
   }
 };
 export default {
+  getSAdminById,
+  updateSAdmin,
+  deleteSAdmin,
   getAll,
   create,
 };

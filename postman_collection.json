@@ -180,13 +180,33 @@
 			"name": "super-admin",
 			"item": [
 				{
-					"name": "createNew",
+					"name": "getSAdminById",
 					"request": {
-						"method": "POST",
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/superAdmin/634da86648b27ead3e4f486d",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"superAdmin",
+								"634da86648b27ead3e4f486d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateSAdmin",
+					"request": {
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Patricia\",\r\n  \"lastName\": \"solerdario\",\r\n  \"email\": \"mp.soler@gmail.com\",\r\n  \"password\":\"asd12345678\"\r\n  }",
+							"raw": "{ \r\n    \"name\": \"Patricio\",\r\n    \"lastName\": \"Estrella\",\r\n    \"email\": \"mp.soler@gmail.com\",\r\n    \"password\": \"updatetesting123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -194,33 +214,35 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/superAdmin",
+							"raw": "localhost:3000/api/superAdmin/634da86648b27ead3e4f486d",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"superAdmin"
+								"superAdmin",
+								"634da86648b27ead3e4f486d"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "getAll",
+					"name": "deleteSAdmin",
 					"request": {
-						"method": "GET",
+						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/superAdmin",
+							"raw": "localhost:3000/api/superAdmin/634da86648b27ead3e4f486d",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"superAdmin"
+								"superAdmin",
+								"634da86648b27ead3e4f486d"
 							]
 						}
 					},
