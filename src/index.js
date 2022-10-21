@@ -6,7 +6,7 @@ require('dotenv').config();
 const port = process.env.PORT;
 
 mongoose.connect(
-    process.env.MONGO_URL,
+  process.env.MONGO_URL,
   (error) => {
     if (error) {
       console.log('Fails connection to database', error);
