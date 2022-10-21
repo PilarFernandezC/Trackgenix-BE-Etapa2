@@ -1,35 +1,22 @@
 import Models from '../models/Task';
 
 const getAllTasks = async (req, res) => {
-  const queriesArray = Object.keys(req.query);
-
   try {
-    const tasks = await Models.find();
+    const tasks = await Models.find(req.query);
 
-    if (!tasks) {
-      return res.status(404).json({
-        message: 'An error occured ',
-      });
+    if (!tasks.length) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Tasks not found', status: 404,
+      };
     }
-
-    if (queriesArray.length === 0) {
-      return res.status(200).json({
-        message: 'Super Admins founded',
-        data: tasks,
-      });
-    }
-
-    let filterByParams;
-
-    if (req.query.description) {
-      filterByParams = tasks.filter(
-        (task) => task.description === req.query.description,
-      );
-    }
-    return res.status(200).json({ filterByParams });
-  } catch (err) {
-    return res.json({
-      message: `An error ocurred: ${err}`,
+    return res.status(200).json({
+      message: 'Tasks found',
+      data: tasks,
+    });
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
