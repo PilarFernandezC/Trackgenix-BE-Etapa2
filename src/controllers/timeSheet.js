@@ -1,4 +1,4 @@
-import TimesheetModel from "../models/TimeSheet";
+import TimesheetModel from '../models/TimeSheet';
 
 const createTimesheet = async (req, res) => {
   try {
@@ -12,7 +12,7 @@ const createTimesheet = async (req, res) => {
     });
     const result = await newTimesheet.save();
     return res.status(201).json({
-      message: "Timesheet created",
+      message: 'Timesheet created',
       data: result,
     });
   } catch (error) {
@@ -26,54 +26,54 @@ const getAllTimesheets = async (req, res) => {
   const timesheetArray = Object.keys(req.query);
   try {
     const TimesheetFound = await TimesheetModel.find()
-      .populate("task")
-      .populate("employee")
-      .populate("project");
+      .populate('task')
+      .populate('employee')
+      .populate('project');
 
     if (!TimesheetFound) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: "Timesheet not found",
+        message: 'Timesheet not found',
         status: 404,
       };
     }
     if (timesheetArray.length === 0) {
       return res.status(200).json({
-        message: "Timesheet found",
+        message: 'Timesheet found',
         data: TimesheetFound,
       });
     }
     let filterByParams;
     if (req.query.description) {
       filterByParams = TimesheetFound.filter(
-        (timesheet) => timesheet.description === req.query.description
+        (timesheet) => timesheet.description === req.query.description,
       );
     }
     if (req.query.date) {
       filterByParams = TimesheetFound.filter(
-        (timesheet) => timesheet.date === req.query.date
+        (timesheet) => timesheet.date === req.query.date,
       );
     }
     if (req.query.task) {
       filterByParams = TimesheetFound.filter(
-        (timesheet) => timesheet.task === req.query.task
+        (timesheet) => timesheet.task === req.query.task,
       );
     }
-    if (req.query.task) {
+    if (req.query.employees) {
       filterByParams = TimesheetFound.filter(
-        (timesheet) => timesheet.employee === req.query.employees
+        (timesheet) => timesheet.employee === req.query.employees,
       );
     }
-    if (req.query.task) {
+    if (req.query.project) {
       filterByParams = TimesheetFound.filter(
-        (timesheet) => timesheet.project === req.query.project
+        (timesheet) => timesheet.project === req.query.project,
       );
     }
-    if (req.query.task) {
-        filterByParams = TimesheetFound.filter(
-          (timesheet) => timesheet.hours === req.query.hours
-        );
-      }
+    if (req.query.hours) {
+      filterByParams = TimesheetFound.filter(
+        (timesheet) => timesheet.hours === req.query.hours,
+      );
+    }
     return res.status(200).json({ filterByParams });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -86,19 +86,19 @@ const getOneTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
     const timeSheet = await TimesheetModel.findById(id)
-      .populate("task")
-      .populate("employee")
-      .populate("project");
+      .populate('task')
+      .populate('employee')
+      .populate('project');
 
     if (!timeSheet) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: "Timesheet not found",
+        message: 'Timesheet not found',
         status: 404,
       };
     }
     return res.status(200).json({
-      msg: "The time-sheet has been found",
+      msg: 'The time-sheet has been found',
       data: timeSheet,
     });
   } catch (error) {
@@ -123,12 +123,12 @@ const updateTimesheet = async (req, res) => {
     if (!response) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: "Timesheet not found",
+        message: 'Timesheet not found',
         status: 404,
       };
     }
     return res.status(200).json({
-      msg: "The time-sheet has been Updated",
+      msg: 'The time-sheet has been Updated',
     });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -144,12 +144,12 @@ const deleteTimesheet = async (req, res) => {
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: "Timesheet not found",
+        message: 'Timesheet not found',
         status: 404,
       };
     }
     return res.status(204).json({
-      msg: "The time-sheet has been deleted: ",
+      msg: 'The time-sheet has been deleted: ',
       data: result,
     });
   } catch (error) {
