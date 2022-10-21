@@ -1,9 +1,9 @@
-import superAdmin from '../models/SuperAdmin';
+import SuperAdmin from '../models/SuperAdmin';
 
 const getSAdminById = async (req, res) => {
   try {
     const { id } = req.params;
-    const superAdminData = await superAdmin.findById(id);
+    const superAdminData = await SuperAdmin.findById(id);
     if (!superAdminData) {
       return res.status(404).json({
         message: '404 Not found',
@@ -17,11 +17,10 @@ const getSAdminById = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({
-        message: `An error ocurred: ${error}`,
+      message: `An error ocurred: ${error}`,
     });
   }
 };
-
 
 const getAll = async (req, res) => {
   const queriesArray = Object.keys(req.query);
@@ -60,11 +59,9 @@ const getAll = async (req, res) => {
 const updateSAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await superAdmin.findByIdAndUpdate(
-      { _id: id },
-      req.body,
-      { new: true },
-    );
+    const result = await SuperAdmin.findByIdAndUpdate({ _id: id }, req.body, {
+      new: true,
+    });
     if (!result) {
       return res.status(404).json({
         message: '404 Not found',
@@ -86,7 +83,7 @@ const updateSAdmin = async (req, res) => {
 const deleteSAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await superAdmin.findByIdAndDelete(id);
+    const result = await SuperAdmin.findByIdAndDelete(id);
     if (!result) {
       return res.status(404).json({
         message: '404 Not found',
