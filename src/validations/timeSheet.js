@@ -2,6 +2,7 @@ import Joi from 'joi';
 
 const validateCreate = (req, res, next) => {
   const timesheetValidation = Joi.object({
+    description: Joi.string().required(),
     date: Joi.date().max('now').required(),
     hours: Joi.number().integer().min(0).max(12)
       .required(),
@@ -23,6 +24,7 @@ const validateCreate = (req, res, next) => {
 
 const validateUpdate = (req, res, next) => {
   const timesheetValidation = Joi.object({
+    description: Joi.string().optional(),
     date: Joi.date().max('now').optional(),
     hours: Joi.number().integer().min(0).max(12)
       .optional(),
