@@ -5,7 +5,7 @@ const { ObjectId } = require('mongoose').Types;
 const getAll = async (req, res) => {
   const queriesArray = Object.keys(req.query);
   try {
-    const projects = await Project.find();
+    const projects = await Project.find().populate('employees');
     if (!projects) {
       // eslint-disable-next-line no-throw-literal
       throw {
@@ -71,7 +71,7 @@ const isValidId = (id) => {
 const getById = async (req, res) => {
   if (req.params.id && isValidId(req.params.id)) {
     try {
-      const retrievedProject = await Project.findById(req.params.id);
+      const retrievedProject = await Project.findById(req.params.id).populate('employees');
       if (retrievedProject !== null) {
         res.status(200).json({
           message: `Project with id=${req.params.id} found.`,
