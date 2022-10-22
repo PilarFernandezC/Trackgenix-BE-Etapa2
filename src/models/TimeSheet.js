@@ -27,6 +27,6 @@ const timesheetSchema = new Schema({
     required: true,
     ref: 'Project',
   },
-});
+}, { timestamps: true });
 
-export default mongoose.model('TimeSheet', timesheetSchema);
+export default mongoose.model('Timesheet', timesheetSchema);
