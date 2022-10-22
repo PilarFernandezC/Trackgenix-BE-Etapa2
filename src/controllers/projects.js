@@ -7,13 +7,14 @@ const getAll = async (req, res) => {
   try {
     const projects = await Project.find();
     if (!projects) {
-      return res.status(404).json({
-        message: 'An error occured ',
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Projects not found', status: 404,
+      };
     }
     if (queriesArray.length === 0) {
       return res.status(200).json({
-        message: 'Projects founded',
+        message: 'Projects found',
         data: projects,
       });
     }
@@ -23,8 +24,8 @@ const getAll = async (req, res) => {
     }
     return res.status(200).json({ filterByParams });
   } catch (error) {
-    return res.json({
-      message: `An error ocurred: ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -41,19 +42,18 @@ const create = async (req, res) => {
     });
     const confirm = await newProject.save();
     if (!newProject) {
-      return res.status(400).json({
-        message: 'All the fileds need to be filled',
-        data: confirm,
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Could not create the project', status: 400,
+      };
     }
     return res.status(201).json({
       message: 'New Project created',
       data: confirm,
     });
   } catch (error) {
-    return res.json({
-      message: `An error ocurred: ${error}`,
-      error,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -78,13 +78,14 @@ const getById = async (req, res) => {
           data: retrievedProject,
         });
       } else {
-        res.status(404).json({
-          message: `Project with id=${req.params.id} not found.`,
-        });
+        // eslint-disable-next-line no-throw-literal
+        throw {
+          message: 'Project not found', status: 404,
+        };
       }
     } catch (error) {
-      res.status(500).json({
-        message: error.message,
+      res.status(error.status || 500).json({
+        message: error.message || error,
       });
     }
   }
@@ -104,13 +105,14 @@ const updateById = async (req, res) => {
           data: updatedProject,
         });
       } else {
-        res.status(404).json({
-          message: `Project with id=${req.params.id} not found.`,
-        });
+        // eslint-disable-next-line no-throw-literal
+        throw {
+          message: 'Project not found', status: 404,
+        };
       }
     } catch (error) {
-      res.status(500).json({
-        message: error.message,
+      res.status(error.status || 500).json({
+        message: error.message || error,
       });
     }
   }
@@ -125,13 +127,14 @@ const deleteById = async (req, res) => {
           message: `Project with id=${req.params.id} deleted.`,
         });
       } else {
-        res.status(404).json({
-          message: `Project with id=${req.params.id} not found.`,
-        });
+        // eslint-disable-next-line no-throw-literal
+        throw {
+          message: 'Project not found', status: 404,
+        };
       }
     } catch (error) {
-      res.status(500).json({
-        message: error.message,
+      res.status(error.status || 500).json({
+        message: error.message, error,
       });
     }
   }
