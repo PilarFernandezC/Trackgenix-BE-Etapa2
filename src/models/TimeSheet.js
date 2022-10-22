@@ -15,17 +15,17 @@ const timesheetSchema = new Schema({
   task: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'Task',
+    ref: 'Tasks',
   },
   employee: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'Employee',
+    ref: 'Employees',
   },
   project: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'Project',
+    ref: 'projects',
   },
 }, { timestamps: true });
 
