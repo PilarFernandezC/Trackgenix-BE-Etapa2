@@ -13,7 +13,7 @@ const getAll = async (req, res) => {
     }
     if (queriesArray.length === 0) {
       return res.status(200).json({
-        message: 'Projects founded',
+        message: 'Projects found',
         data: projects,
       });
     }
