@@ -9,7 +9,8 @@ const schema = new Schema({
   endDate: { type: Date, required: true },
   clientName: { type: String, required: true },
   employees: [{
-    employeeId: { type: mongoose.ObjectId, required: true },
+    _id: false,
+    employeeId: { type: Schema.Types.ObjectId, required: true, ref: 'Employees' },
     role: { type: String, enum: ['DEV', 'QA', 'PM', 'TL'], required: true },
     rate: { type: Number, required: true },
   }],
