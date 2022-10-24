@@ -16,6 +16,13 @@ const mockedEmployee = {
   email: 'ilanfer0@joomla.org',
   password: 'IW8uR6SapD',
 };
+const emptyMockedEmployee = {
+  name: '',
+  lastName: '',
+  phone: '',
+  email: '',
+  password: '',
+};
 
 describe('POST /employees', () => {
   test('With an correct user the response should return a status 201', async () => {
@@ -54,10 +61,48 @@ describe('POST /employees', () => {
   });
 });
 
+describe('PUT /api/employees/:id', () => {
+  test('with valid ID should return status code 200', async () => {
+    const response = await request(app)
+      .put(`/api/employees/${employeeValidId}`)
+      .send(mockedEmployee);
+    expect(response.status).toBe(200);
+    expect(response.body.error).toBeFalsy();
+    expect(response.body.data).toBeDefined();
+    expect(response.body.message).toBe(`${response.body.message}`);
+  });
+
+  test('whit ivalid ID should return status code 400', async () => {
+    const response = await request(app)
+      .put('/api/employees/adsd')
+      .send(mockedEmployee);
+    expect(response.status).toBe(400);
+    expect(response.body.data).toBeUndefined();
+  });
+
+  test('with empty ID should return status code 404', async () => {
+    const response = await request(app)
+      .put('/api/employees/')
+      .send(mockedEmployee);
+    expect(response.status).toBe(404);
+    expect(response.body.data).toBeUndefined();
+    expect(response.body.message).toBe(undefined);
+  });
+
+  test('with an empty body should return status code 400', async () => {
+    const response = await request(app)
+      .put(`/api/employees/${employeeValidId}`)
+      .send(emptyMockedEmployee);
+    expect(response.status).toBe(400);
+    expect(response.body.data).toBeUndefined();
+    expect(response.body.message).toBe(`${response.body.message}`);
+  });
+});
+
 describe('DELETE /employees/:id', () => {
   test('With an empty id the response should return a status 400', async () => {
     const response = await request(app)
-      .delete(`/api/employees/${employeeInvalidId = null}`)
+      .delete(`/api/employees/${(employeeInvalidId = null)}`)
       .send();
     expect(response.status).toBe(400);
   });
