@@ -42,6 +42,7 @@ describe('Test Project - Create', () => {
     const response = await request(app).post('/api/projects').send(mockedProject);
     expect(response.status).toBe(201);
     expect(response.body.message).toEqual('New Project created');
+    expect(response.body.error).toBeFalsy();
   });
   test('Without Body- Should not create a project with status code 400', async () => {
     const response = await request(app).post('/api/projects').send();
@@ -64,6 +65,7 @@ describe('Test Project - Delete', () => {
   test('Correct ID - Should delete a project with status code 202', async () => {
     const response = await request(app).delete(`/api/projects/${projectId}`);
     expect(response.status).toBe(202);
+    expect(response.body.error).toBeFalsy();
     expect(response.body.message).toEqual(`Project with id=${projectId} deleted.`);
   });
   test('Wrong ID - Should not delete a project with status code 404', async () => {
@@ -87,6 +89,7 @@ describe('Test Project - Edit', () => {
   test('Correct ID and correct body - Should let you edit a project with status code 200', async () => {
     const response = await request(app).put(`/api/projects/${editProjectId}`).send(mockedProject);
     expect(response.status).toBe(200);
+    expect(response.body.error).toBeFalsy();
     expect(response.body.message).toEqual(`Project with id=${editProjectId} has been updated.`);
   });
   test('Correct ID and wrong body - Should not let you edit a project with status code 400', async () => {
