@@ -8,7 +8,7 @@ export default [{
   endDate: '2022-12-27T00:00:00.000+00:00',
   clientName: 'Andy',
   employees: [{
-    _id: mongoose.Types.ObjectId('634d4ae6cc51b61f8d9c862e'),
+    employeeId: mongoose.Types.ObjectId('634d4ae6cc51b61f8d9c862e'),
     role: 'DEV',
     rate: 40,
   }],
@@ -20,7 +20,7 @@ export default [{
   endDate: '2022-12-18T00:00:00.000+00:00',
   clientName: 'Agimba',
   employees: [{
-    _id: mongoose.Types.ObjectId('634d4e3982ba5c21599642f5'),
+    employeeId: mongoose.Types.ObjectId('634d4e3982ba5c21599642f5'),
     role: 'DEV',
     rate: 120,
   }],
@@ -32,7 +32,7 @@ export default [{
   endDate: '2022-12-18T00:00:00.000+00:00',
   clientName: 'Bluezoom',
   employees: [{
-    _id: mongoose.Types.ObjectId('634d7e5757bc44f21a345463'),
+    employeeId: mongoose.Types.ObjectId('634d7e5757bc44f21a345463'),
     role: 'TL',
     rate: 110,
   }],
@@ -44,7 +44,7 @@ export default [{
   endDate: '2022-12-18T00:00:00.000+00:00',
   clientName: 'Gabtype',
   employees: [{
-    _id: mongoose.Types.ObjectId('634d7e5757bc44f21a345462'),
+    employeeId: mongoose.Types.ObjectId('634d7e5757bc44f21a345462'),
     role: 'QA',
     rate: 233,
   }],
