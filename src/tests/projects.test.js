@@ -42,6 +42,7 @@ describe('Test Project - Create', () => {
     const response = await request(app).post('/api/projects').send(mockedProject);
     expect(response.status).toBe(201);
     expect(response.body.message).toEqual('New Project created');
+    expect(response.body.data).not.toBeUndefined();
     expect(response.body.error).toBeFalsy();
   });
   test('Without Body- Should not create a project - Status code 400', async () => {
@@ -90,6 +91,7 @@ describe('Test Project - Edit', () => {
     const response = await request(app).put(`/api/projects/${editProjectId}`).send(mockedProject);
     expect(response.status).toBe(200);
     expect(response.body.error).toBeFalsy();
+    expect(response.body.data).not.toBeUndefined();
     expect(response.body.message).toEqual(`Project with id=${editProjectId} has been updated.`);
   });
   test('Correct ID and wrong body - Should not let you edit a project - Status code 400', async () => {
