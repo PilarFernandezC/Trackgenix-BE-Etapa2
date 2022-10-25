@@ -35,6 +35,7 @@ const wrongMockedProject = {
 
 const projectId = '635446a1fc13ae04ac000219';
 const wrongProjectId = '635446a1fc13ae04ac000200';
+const editProjectId = '635446a1fc13ae04ac000210';
 
 describe('Test Project - Create', () => {
   test('Correct Body - Should create a new project with status code 201', async () => {
@@ -77,6 +78,39 @@ describe('Test Project - Delete', () => {
   });
   test('Wrong Path - Should not delete a project with status code 404', async () => {
     const response = await request(app).post('/api/projec').send(projectId);
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBeUndefined();
+  });
+});
+
+describe('Test Project - Edit', () => {
+  test('Correct ID and correct body - Should let you edit a project with status code 200', async () => {
+    const response = await request(app).put(`/api/projects/${editProjectId}`).send(mockedProject);
+    expect(response.status).toBe(200);
+    expect(response.body.message).toEqual(`Project with id=${editProjectId} has been updated.`);
+  });
+  test('Correct ID and wrong body - Should not let you edit a project with status code 400', async () => {
+    const response = await request(app).put(`/api/projects/${editProjectId}`).send(wrongMockedProject);
+    expect(response.status).toBe(400);
+    expect(response.body.message).not.toBeUndefined();
+  });
+  test('Wrong ID and correct body - Should not let you edit a project with status code 404', async () => {
+    const response = await request(app).put(`/api/projects/${wrongProjectId}`).send(mockedProject);
+    expect(response.status).toBe(404);
+    expect(response.body.message).toEqual('Project not found');
+  });
+  test('Wrong ID and wrong body - Should not let you edit a project with status code 400', async () => {
+    const response = await request(app).put(`/api/projects/${wrongProjectId}`).send(wrongMockedProject);
+    expect(response.status).toBe(400);
+    expect(response.body.message).not.toBeUndefined();
+  });
+  test('Wrong path - Should not let you edit a project with status code 404', async () => {
+    const response = await request(app).put(`/api/projec/${wrongProjectId}`).send(wrongMockedProject);
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBeUndefined();
+  });
+  test('Without body - Should not let you edit a project with status code 404', async () => {
+    const response = await request(app).put(`/api/projec/${wrongProjectId}`).send();
     expect(response.status).toBe(404);
     expect(response.body.message).toBeUndefined();
   });
