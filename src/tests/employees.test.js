@@ -104,7 +104,7 @@ describe('DELETE /employees/:id', () => {
     const response = await request(app)
       .delete(`/api/employees/${(employeeInvalidId = null)}`)
       .send();
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(500);
   });
 
   test('With an incorrect route the response should return a status 404', async () => {
@@ -114,7 +114,7 @@ describe('DELETE /employees/:id', () => {
     expect(response.status).toBe(404);
   });
 
-  test('With an nonexistent id the response should return a status 404', async () => {
+  test('With an empty id the response should return a status 404', async () => {
     const response = await request(app)
       .delete('/api/employees/')
       .send({});
@@ -132,8 +132,8 @@ describe('DELETE /employees/:id', () => {
     const response = await request(app)
       .delete('/api/employees/62898d14882f8759987fz59')
       .send();
-    expect(response.body.message).toEqual(
-      'An error has ocurred: CastError: Cast to ObjectId failed for value "62898d14882f8759987fz59" (type string) at path "_id" for model "Employees"',
+    expect(response.body.message).toBe(
+      'Cast to ObjectId failed for value "62898d14882f8759987fz59" (type string) at path "_id" for model "Employees"',
     );
   });
 
