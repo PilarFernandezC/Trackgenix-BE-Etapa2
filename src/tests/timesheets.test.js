@@ -19,18 +19,22 @@ describe('DELETE /timesheet/:id', () => {
   test('should delete an employee', async () => {
     const response = await request(app).delete(`/api/timesheets/${timesheetId}`).send();
     expect(response.status).toBe(204);
+    expect(response.body.message).toBeUndefined();
   });
   test("if I don't pass the id the response should be a status 404", async () => {
     const response = await request(app).delete('/api/timesheets/').send();
     expect(response.status).toBe(404);
+    expect(response.body.message).toBeUndefined();
   });
   test('response status should be 404 with a wrong route ', async () => {
     const response = await request(app).delete(`/api/timesheet/${timesheetId}`).send();
     expect(response.status).toBe(404);
+    expect(response.body.message).toBeUndefined();
   });
   test('response status should be 404 with a wrong id', async () => {
     const response = await request(app).delete('/api/timesheets/6356efc2fc13ae56b9000014').send();
     expect(response.status).toBe(404);
+    expect(response.body.message).not.toBeUndefined();
   });
 });
 describe('GET /timesheet', () => {
@@ -73,12 +77,12 @@ describe('GET /timesheet/:id', () => {
   test('should find an employee by id', async () => {
     const response = await request(app).get('/api/timesheets/6354438cfc13ae204b000069').send();
     expect(response.status).toBe(200);
-    expect(response.body.data).toBeDefined();
   });
 
   test('should return status code 400', async () => {
     const response = await request(app).get('/api/timesheets/6356efc2fc13ae56b9000014').send();
     expect(response.status).toBe(404);
     expect(response.body.data).toBeUndefined();
+    expect(response.body.message).not.toBeUndefined();
   });
 });
