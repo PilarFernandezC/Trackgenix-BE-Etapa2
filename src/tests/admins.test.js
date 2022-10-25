@@ -7,9 +7,8 @@ beforeAll(async () => {
   await admin.collection.insertMany(admins);
 });
 
-// const adminId = '635437ebfc13ae2db70002b8'
 const mockedAdmin = {
-  _id: '635437ebfc13ae2db70002b8',
+  id: '635437ebfc13ae2db70002b8',
   name: 'Tye',
   lastName: 'Haysar',
   email: 'thaysar0@miitbeian.gov.cn',
@@ -39,5 +38,16 @@ describe('GET /admin', () => {
   test('should find the admins filter by task', async () => {
     const response = await request(app).get(`/api/admin/?email=${mockedAdmin}`).send();
     expect(response.status).toBe(200);
+  });
+});
+describe('GET /admin/:id', () => {
+  test('should find an employee by id', async () => {
+    const response = await request(app).get(`/api/admin/${mockedAdmin.id}`).send();
+    expect(response.status).toBe(200);
+  });
+  test('should return status code 400 with a wrong ID', async () => {
+    const response = await request(app).get('/api/admins/6356efc2fc13ae56b9000014').send();
+    expect(response.status).toBe(404);
+    expect(response.body.data).toBeUndefined();
   });
 });
