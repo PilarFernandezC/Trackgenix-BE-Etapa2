@@ -15,17 +15,6 @@ const timesheetEmployee = '6354438cfc13ae204b000064';
 const timesheetProject = '6354438cfc13ae204b000065';
 const timesheetHours = 98;
 
-// const invalidValue = null;
-
-// const mockedTimesheet ={
-//     description: 'vitae nisl aenean',
-//     date: '1/1/2022',
-//     task: mongoose.Types.ObjectId('63546010fc13ae3a75000196'),
-//     employee: mongoose.Types.ObjectId('6354438cfc13ae204b000061'),
-//     project: mongoose.Types.ObjectId('6354438cfc13ae204b000062'),
-//     hours: 81
-// }
-
 describe('DELETE /timesheet/:id', () => {
   test('should delete an employee', async () => {
     const response = await request(app).delete(`/api/timesheets/${timesheetId}`).send();
@@ -79,10 +68,17 @@ describe('GET /timesheet', () => {
     const response = await request(app).get(`/api/timesheets/?hours=${timesheetHours}`).send();
     expect(response.status).toBe(200);
   });
+});
+describe('GET /timesheet/:id', () => {
+  test('should find an employee by id', async () => {
+    const response = await request(app).get('/api/timesheets/6354438cfc13ae204b000069').send();
+    expect(response.status).toBe(200);
+    expect(response.body.data).toBeDefined();
+  });
 
-//   test('should find the timesheets filter by description', async () => {
-//       const response = await request(app).get(`/api/timesheets/?description=${invalidValue}`)
-//   .send();
-//       expect(response.status).toBe(404);
-//   });
+  test('should return status code 400', async () => {
+    const response = await request(app).get('/api/timesheets/6356efc2fc13ae56b9000014').send();
+    expect(response.status).toBe(404);
+    expect(response.body.data).toBeUndefined();
+  });
 });
