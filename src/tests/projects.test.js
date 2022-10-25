@@ -33,6 +33,9 @@ const wrongMockedProject = {
   }],
 };
 
+const projectId = '635446a1fc13ae04ac000219';
+const wrongProjectId = '635446a1fc13ae04ac000200';
+
 describe('Test Project - Create', () => {
   test('Correct Body - Should create a new project with status code 201', async () => {
     const response = await request(app).post('/api/projects').send(mockedProject);
@@ -51,6 +54,29 @@ describe('Test Project - Create', () => {
   });
   test('Wrong Path - Should not create a project with status code 400', async () => {
     const response = await request(app).post('/api/projec').send(mockedProject);
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBeUndefined();
+  });
+});
+
+describe('Test Project - Delete', () => {
+  test('Correct ID - Should delete a project with status code 202', async () => {
+    const response = await request(app).delete(`/api/projects/${projectId}`);
+    expect(response.status).toBe(202);
+    expect(response.body.message).toEqual(`Project with id=${projectId} deleted.`);
+  });
+  test('Wrong ID - Should not delete a project with status code 404', async () => {
+    const response = await request(app).delete(`/api/projects/${wrongProjectId}`);
+    expect(response.status).toBe(404);
+    expect(response.body.message).toEqual('Project not found');
+  });
+  test('Without ID - Should not delete a project with status code 404', async () => {
+    const response = await request(app).delete(`/api/projects/${''}`);
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBeUndefined();
+  });
+  test('Wrong Path - Should not delete a project with status code 404', async () => {
+    const response = await request(app).post('/api/projec').send(projectId);
     expect(response.status).toBe(404);
     expect(response.body.message).toBeUndefined();
   });
