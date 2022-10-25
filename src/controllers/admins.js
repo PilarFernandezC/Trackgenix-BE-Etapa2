@@ -104,19 +104,20 @@ const deleteAdmin = async (req, res) => {
     const result = await Admins.findByIdAndDelete(id);
     if (!result) {
       return res.status(404).json({
-        message: 'Admin does not exists',
+        message: 'Admin does not exist',
       });
     }
-    return res.status(200).json({
+    return res.status(204).json({
       message: `Admin with ID ${id} deleted.`,
       data: result,
     });
   } catch (error) {
-    return res.json({
-      message: `Admin does not exists: ${error}`,
+    return res.status(400).json({
+      message: `Admin does not exist: ${error}`,
     });
   }
 };
+
 export default {
   createAdmin,
   getAllAdmins,
