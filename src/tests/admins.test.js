@@ -74,7 +74,7 @@ describe('PUT /api/admin/:id', () => {
     const response = await request(app)
       .put('/api/admin/adsd')
       .send(mockedAdmin);
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(500);
     expect(response.body.data).toBeUndefined();
   });
 
@@ -102,7 +102,7 @@ describe('DELETE /admin/:id', () => {
     const response = await request(app)
       .delete(`/api/admin/${null}`)
       .send();
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(500);
   });
 
   test('Should return status code 404 With an incorrect route', async () => {
@@ -131,7 +131,7 @@ describe('DELETE /admin/:id', () => {
       .delete('/api/admin/62898d14882f8759987fz59')
       .send();
     expect(response.body.message).toEqual(
-      'Admin does not exist: CastError: Cast to ObjectId failed for value "62898d14882f8759987fz59" (type string) at path "_id" for model "Admins"',
+      'Cast to ObjectId failed for value "62898d14882f8759987fz59" (type string) at path "_id" for model "Admins"',
     );
   });
 

@@ -15,8 +15,8 @@ const createAdmin = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: `An error ocurred ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -26,17 +26,18 @@ const getAdminById = async (req, res) => {
     const { id } = req.params;
     const admins = await Admins.findById(id);
     if (!admins) {
-      return res.status(404).json({
-        message: 'Admin does not exists',
-      });
+    // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Admin does not exist', status: 404,
+      };
     }
     return res.status(200).json({
       message: 'Admin Found',
       data: admins,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: `Admin does not exists: ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -50,17 +51,18 @@ const editAdmin = async (req, res) => {
       { new: true },
     );
     if (!result) {
-      return res.status(404).json({
-        message: 'Admin does not exists',
-      });
+    // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Admin does not exist', status: 404,
+      };
     }
     return res.status(200).json({
       message: `Admin with ID ${id} edited.`,
       data: result,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: `An error ocurred ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -70,9 +72,10 @@ const getAllAdmins = async (req, res) => {
   try {
     const admins = await Admins.find();
     if (!admins) {
-      return req.status(404).json({
-        message: 'Admin not found',
-      });
+    // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Admin not found', status: 404,
+      };
     }
     if (queriesArray.length === 0) {
       return res.status(200).json({
@@ -92,8 +95,8 @@ const getAllAdmins = async (req, res) => {
     }
     return res.status(200).json({ filterByParams });
   } catch (error) {
-    return res.status(400).json({
-      message: `An error ocurred ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -103,17 +106,18 @@ const deleteAdmin = async (req, res) => {
     const { id } = req.params;
     const result = await Admins.findByIdAndDelete(id);
     if (!result) {
-      return res.status(404).json({
-        message: 'Admin does not exist',
-      });
+    // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Admin does not exist', status: 404,
+      };
     }
     return res.status(204).json({
       message: `Admin with ID ${id} deleted.`,
       data: result,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: `Admin does not exist: ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
