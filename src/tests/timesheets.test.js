@@ -7,15 +7,15 @@ beforeAll(async () => {
   await timesheet.collection.insertMany(timeSheetSeed);
 });
 
-const timesheetId = '6354438cfc13ae204b000060';
-const timesheetDesc = 'vitae nisl aenean';
-const timesheetDate = '1/1/2022';
-const timesheetTask = '63546010fc13ae3a75000196';
-const timesheetEmployee = '6354438cfc13ae204b000061';
-const timesheetProject = '6354438cfc13ae204b000062';
-const timesheetHours = 81;
+const timesheetId = '6354438cfc13ae204b000063';
+const timesheetDesc = 'orci mauris';
+const timesheetDate = '2/3/2022';
+const timesheetTask = '63546010fc13ae3a75000197';
+const timesheetEmployee = '6354438cfc13ae204b000064';
+const timesheetProject = '6354438cfc13ae204b000065';
+const timesheetHours = 98;
 
-// const timesheetInvalidHours = 'asffgasd';
+// const invalidValue = null;
 
 // const mockedTimesheet ={
 //     description: 'vitae nisl aenean',
@@ -53,6 +53,7 @@ describe('GET /timesheet', () => {
     const response = await request(app).get('/api/timesheet').send();
     expect(response.status).toBe(404);
   });
+
   test('should find the timesheets filter by description', async () => {
     const response = await request(app).get(`/api/timesheets/?description=${timesheetDesc}`).send();
     expect(response.status).toBe(200);
@@ -61,6 +62,7 @@ describe('GET /timesheet', () => {
     const response = await request(app).get(`/api/timesheets/?date=${timesheetDate}`).send();
     expect(response.status).toBe(200);
   });
+
   test('should find the timesheets filter by task', async () => {
     const response = await request(app).get(`/api/timesheets/?task=${timesheetTask}`).send();
     expect(response.status).toBe(200);
@@ -78,19 +80,9 @@ describe('GET /timesheet', () => {
     expect(response.status).toBe(200);
   });
 
-  // test('should not find the timesheets with a invalid hours type', async () => {
-  //     const response = await request(app).get(`/api/timesheets/?hours=${timesheetInvalidHours}`)
-  // .send();
-  //     expect(response.status).toBe(404);
-  // });
-  // test('should find the timesheets filter by hours', async () => {
-  //     const response = await request(app).get(`/api/timesheets/?hours=10000`).send();
-  //     expect(response.status).toBe(404);
-  // });
-
-  // test('should find the timesheets filter by description', async () => {
-  //     const response = await request(app).get(`/api/timesheets/?description=esta desc no exite`)
+//   test('should find the timesheets filter by description', async () => {
+//       const response = await request(app).get(`/api/timesheets/?description=${invalidValue}`)
 //   .send();
-  //     expect(response.status).toBe(404);
-  // });
+//       expect(response.status).toBe(404);
+//   });
 });

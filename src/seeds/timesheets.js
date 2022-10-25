@@ -19,7 +19,7 @@ export default [{
 }, {
   _id: mongoose.Types.ObjectId('6354438cfc13ae204b000066'),
   description: 'turpis nec euismod scelerisque',
-  date: '6/6/2022',
+  date: '06/06/2022',
   task: mongoose.Types.ObjectId('63546010fc13ae3a75000198'),
   employee: mongoose.Types.ObjectId('6354438cfc13ae204b000067'),
   project: mongoose.Types.ObjectId('6354438cfc13ae204b000068'),
