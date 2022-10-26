@@ -68,11 +68,12 @@ const editAdmin = async (req, res) => {
 const getAllAdmins = async (req, res) => {
   const queriesArray = Object.keys(req.query);
   try {
-    const admins = await Admins.find();
+    const admins = await Admins.find(req.query);
     if (!admins) {
-      return req.status(404).json({
-        message: 'Admin not found',
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Admin not found', status: 404,
+      };
     }
     if (queriesArray.length === 0) {
       return res.status(200).json({
@@ -92,8 +93,8 @@ const getAllAdmins = async (req, res) => {
     }
     return res.status(200).json({ filterByParams });
   } catch (error) {
-    return res.status(400).json({
-      message: `An error ocurred ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
