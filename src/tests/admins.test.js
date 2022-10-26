@@ -20,6 +20,7 @@ describe('GET /admin', () => {
     const response = await request(app).get('/api/admin').send();
     expect(response.body.data).toBeDefined();
     expect(response.status).toBe(200);
+    expect(response.body.message).not.toBeUndefined();
   });
   test('should not get all the admins with a wrong route', async () => {
     const response = await request(app).get(`/api/admins/?name=${mockedAdmin.name}`).send();
@@ -44,10 +45,12 @@ describe('GET /admin/:id', () => {
   test('should find an employee by id', async () => {
     const response = await request(app).get(`/api/admin/${mockedAdmin.id}`).send();
     expect(response.status).toBe(200);
+    expect(response.body.message).not.toBeUndefined();
   });
   test('should return status code 400 with a wrong ID', async () => {
     const response = await request(app).get('/api/admins/6356efc2fc13ae56b9000014').send();
     expect(response.status).toBe(404);
     expect(response.body.data).toBeUndefined();
+    expect(response.body.message).toBeUndefined();
   });
 });
