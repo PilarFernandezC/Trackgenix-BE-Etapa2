@@ -8,7 +8,7 @@ export default [{
   endDate: '07/18/2022',
   clientName: 'Florence',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000b4'),
+    employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000b4'),
     rol: 'DEV',
     rate: 345,
   },
@@ -21,7 +21,7 @@ export default [{
   endDate: '12/29/2022',
   clientName: 'Abbey',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000b5'),
+    employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000b5'),
     rol: 'DEV',
     rate: 300,
   },
@@ -34,7 +34,7 @@ export default [{
   endDate: '12/23/2022',
   clientName: 'Padget',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000b6'),
+    employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000b6'),
     rol: 'QA',
     rate: 150,
   },
@@ -47,7 +47,7 @@ export default [{
   endDate: '12/17/2021',
   clientName: 'Armando',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000b7'),
+    employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000b7'),
     rol: 'TL',
     rate: 200,
   },
@@ -60,7 +60,7 @@ export default [{
   endDate: '12/11/2022',
   clientName: 'Adelaida',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000b8'),
+    employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000b8'),
     rol: 'QA',
     rate: 123,
   },
@@ -73,7 +73,7 @@ export default [{
   endDate: '12/04/2022',
   clientName: 'Aubrette',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000b9'),
+    employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000b9'),
     rol: 'TL',
     rate: 351,
   },
@@ -86,7 +86,7 @@ export default [{
   endDate: '12/29/2021',
   clientName: 'Hetty',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000ba'),
+    employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000ba'),
     rol: 'DEV',
     rate: 321,
   },
@@ -99,7 +99,7 @@ export default [{
   endDate: '12/21/2022',
   clientName: 'Demetrius',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000bb'),
+    employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000bb'),
     rol: 'PM',
     rate: 500,
   },
@@ -112,7 +112,7 @@ export default [{
   endDate: '12/22/2022',
   clientName: 'Mirna',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000bc'),
+    _employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000bc'),
     rol: 'PM',
     rate: 345,
   },
@@ -125,7 +125,7 @@ export default [{
   endDate: '12/09/2022',
   clientName: 'Felice',
   employees: [{
-    _id: mongoose.Types.ObjectId('63544791fc13ae64f60000bd'),
+    employeeId: mongoose.Types.ObjectId('63544791fc13ae64f60000bd'),
     rol: 'QA',
     rate: 266,
   },
