@@ -33,7 +33,7 @@ export default [{
 }, {
   _id: mongoose.Types.ObjectId('63543d4cfc13ae204b00003d'),
   name: 'Zacharie',
-  lastNme: 'Lamb-shine',
+  lastName: 'Lamb-shine',
   email: 'zlambshine5@springer.com',
   password: 'y9fW2G1b4s',
 }, {
