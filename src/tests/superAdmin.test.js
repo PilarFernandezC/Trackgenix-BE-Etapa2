@@ -29,10 +29,6 @@ const mockedIdSuperAdmin = {
   password: 'Qvk23EHRkP',
 };
 
-beforeAll(async () => {
-  await SuperAdmin.collection.insertMany(superAdminsSeed);
-});
-
 describe('GET /superAdmin', () => {
   test('should return status code 200', async () => {
     const response = await request(app).get('/api/superAdmin/').send();
@@ -78,7 +74,7 @@ describe('PUT /superAdmin', () => {
 
   test('should return status 400', async () => {
     const response = await request(app).put('/api/superAdmin/63540469873594f152b2ad3csda').send(mockedSuperAdmin);
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(500);
   });
 
   test('should return error true', async () => {
@@ -98,7 +94,7 @@ describe('PUT /superAdmin', () => {
   };
   test('should return status 404', async () => {
     const response = await request(app).put('/api/superAdmin/63540469873594f152b2ad3csda').send(mockedSuperAdmin);
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(500);
   });
   const superAdminId = '63543d4cfc13ae204b00003b';
   const wrongSuperAdminId = '63543d4cfc13ae204b000000';
