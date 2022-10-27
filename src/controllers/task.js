@@ -28,7 +28,7 @@ const getOneTask = async (req, res) => {
     if (!task) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Tasks not found', status: 404,
+        message: 'The task has not been found', status: 404,
       };
     }
     return res.status(200).json({
