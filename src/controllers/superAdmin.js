@@ -5,19 +5,18 @@ const getSAdminById = async (req, res) => {
     const { id } = req.params;
     const superAdminData = await SuperAdmin.findById(id);
     if (!superAdminData) {
-      return res.status(404).json({
-        message: '404 Not found',
-        error: false,
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'SuperAdmin not found', status: 404,
+      };
     }
     return res.status(200).json({
-      message: 'Request successful!',
+      message: 'SuperAdmin found',
       data: superAdminData,
-      error: false,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: `An error ocurred: ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -27,13 +26,14 @@ const getAll = async (req, res) => {
   try {
     const superAdmins = await SuperAdmin.find();
     if (!superAdmins) {
-      return res.status(404).json({
-        message: 'An error occured ',
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'SuperAdmin not found', status: 404,
+      };
     }
     if (queriesArray.length === 0) {
       return res.status(200).json({
-        message: 'Super Admins founded',
+        message: 'SuperAdmins found',
         data: superAdmins,
       });
     }
@@ -50,8 +50,8 @@ const getAll = async (req, res) => {
     }
     return res.status(200).json({ filterByParams });
   } catch (error) {
-    return res.json({
-      message: `An error ocurred: ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -63,19 +63,18 @@ const updateSAdmin = async (req, res) => {
       new: true,
     });
     if (!result) {
-      return res.status(404).json({
-        message: '404 Not found',
-        error: false,
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'SuperAdmin not found', status: 404,
+      };
     }
     return res.status(200).json({
-      message: `Super Admin (ID ${id}) edited.`,
+      message: 'SuperAdmin edited.',
       data: result,
-      error: false,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: `An error ocurred: ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -85,22 +84,22 @@ const deleteSAdmin = async (req, res) => {
     const { id } = req.params;
     const result = await SuperAdmin.findByIdAndDelete(id);
     if (!result) {
-      return res.status(404).json({
-        message: '404 Not found',
-        error: false,
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'SuperAdmin not found', status: 404,
+      };
     }
     return res.status(204).json({
-      message: `Super Admin (ID ${id}) deleted.`,
+      message: 'Super Admin deleted.',
       data: result,
-      error: false,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: `An error ocurred: ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
+
 const create = async (req, res) => {
   try {
     const newSupAdmin = new SuperAdmin({
@@ -111,23 +110,22 @@ const create = async (req, res) => {
     });
     const confirm = await newSupAdmin.save();
     if (!newSupAdmin) {
-      return res.status(400).json({
-        message: 'All the fileds need to be filled',
-        data: confirm,
-
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Could not create SuperAdmin', status: 404,
+      };
     }
     return res.status(201).json({
       message: 'Super Admins created',
       data: confirm,
     });
   } catch (error) {
-    return res.json({
-      message: `An error ocurred: ${error}`,
-      error,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
+
 export default {
   getSAdminById,
   updateSAdmin,

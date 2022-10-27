@@ -32,9 +32,9 @@ const getAdminById = async (req, res) => {
     const { id } = req.params;
     const admins = await Admins.findById(id);
     if (!admins) {
-    // eslint-disable-next-line no-throw-literal
+      // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Admin does not exist', status: 404,
+        message: 'Admin not found', status: 404,
       };
     }
     return res.status(200).json({
@@ -76,7 +76,7 @@ const editAdmin = async (req, res) => {
 const getAllAdmins = async (req, res) => {
   const queriesArray = Object.keys(req.query);
   try {
-    const admins = await Admins.find();
+    const admins = await Admins.find(req.query);
     if (!admins) {
     // eslint-disable-next-line no-throw-literal
       throw {
