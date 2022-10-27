@@ -26,9 +26,10 @@ const getAdminById = async (req, res) => {
     const { id } = req.params;
     const admins = await Admins.findById(id);
     if (!admins) {
-      return res.status(404).json({
-        message: 'Admin does not exists',
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Admin not found', status: 404,
+      };
     }
     return res.status(200).json({
       message: 'Admin Found',
@@ -59,8 +60,8 @@ const editAdmin = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: `An error ocurred ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
