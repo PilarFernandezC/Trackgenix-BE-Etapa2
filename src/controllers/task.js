@@ -26,17 +26,18 @@ const getOneTask = async (req, res) => {
     const { id } = req.params;
     const task = await Models.findById(id);
     if (!task) {
-      return res.status(404).json({
-        msg: 'The task has not been found',
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Tasks not found', status: 404,
+      };
     }
     return res.status(200).json({
       msg: 'The task has been found',
       data: task,
     });
-  } catch (err) {
-    return res.json({
-      message: `an error ocurred: ${err}`,
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -46,16 +47,20 @@ const createTask = async (req, res) => {
     const task = new Models({
       description: req.body.description,
     });
-
     const result = await task.save();
+    if (!task) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Could not create a task', status: 404,
+      };
+    }
     return res.status(201).json({
-      messsage: 'Project created successfully',
+      message: 'Task created successfully',
       data: result,
-      error: false,
     });
-  } catch (err) {
-    return res.status(400).json({
-      message: `An error ocurred: ${err}`,
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -68,16 +73,18 @@ const updateTask = async (req, res) => {
       description: task.description,
     });
     if (!response) {
-      return res.status(404).json({
-        msg: 'The task has not been found',
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Tasks not found', status: 404,
+      };
     }
     return res.status(200).json({
-      msg: 'The task has been Updated',
+      message: 'The task has been Updated',
+      data: response,
     });
-  } catch (err) {
-    return res.json({
-      message: `an error ocurred: ${err}`,
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -87,17 +94,18 @@ const deleteTask = async (req, res) => {
     const { id } = req.params;
     const result = await Models.findByIdAndDelete(id);
     if (!result) {
-      return res.status(404).json({
-        msg: 'The task has not been found',
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Tasks not found', status: 404,
+      };
     }
     return res.status(204).json({
       msg: 'The task has been deleted: ',
       data: result,
     });
-  } catch (err) {
-    return res.json({
-      message: `an error ocurred: ${err}`,
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
