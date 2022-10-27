@@ -3,8 +3,6 @@ import app from '../app';
 import Task from '../models/Task';
 import taskSeed from '../seeds/task';
 
-test('Delete this test', () => {});
-
 beforeAll(async () => {
   await Task.collection.insertMany(taskSeed);
 });
