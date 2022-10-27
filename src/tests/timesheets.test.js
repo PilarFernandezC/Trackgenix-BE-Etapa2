@@ -1,6 +1,6 @@
 import request from 'supertest';
 import assert from 'assert';
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 import app from '../app';
 import Timesheet from '../models/TimeSheet';
 import timesheetSeeds from '../seeds/timesheets';
@@ -10,6 +10,8 @@ import Project from '../models/Projects';
 import projectSeeds from '../seeds/projects';
 import Employee from '../models/Employee';
 import employeeSeeds from '../seeds/employees';
+
+const { ObjectId } = Types;
 /* eslint no-underscore-dangle: 0 */
 let insertedTimesheets = [];
 
@@ -63,26 +65,32 @@ const seedDB = async () => {
   });
 };
 
+const clearDB = async () => {
+  Employee.collection.drop();
+  Task.collection.drop();
+  Project.collection.drop();
+  Timesheet.collection.drop();
+  insertedTimesheets = [];
+};
+
 beforeEach(async () => {
   await seedDB();
 });
 
 afterEach(async () => {
-  Employee.collection.drop();
-  Task.collection.drop();
-  Project.collection.drop();
-  Timesheet.collection.drop();
+  await clearDB();
 });
 
 describe('[POST] /api/timesheets/ endpoint => CREATE a timesheet.', () => {
   const timesheetTestItems = timesheetSeeds.slice(-7); // 7 tests
+
   test('sending ALL required data fields (nominal)', async () => {
     let countBefore;
     let response = await request(app).get('/api/timesheets');
     if (response.ok) {
       countBefore = response.body.data.length;
     // eslint-disable-next-line no-throw-literal
-    } else throw '[GET] 1/api/timesheets failed response';
+    } else throw '[GET] /api/timesheets failed response';
     const payload = timesheetTestItems[0]; // select any of the seeds
     delete payload._id;
     response = await request(app).post('/api/timesheets/').type('json')
@@ -90,7 +98,7 @@ describe('[POST] /api/timesheets/ endpoint => CREATE a timesheet.', () => {
     expect(response.status).toBe(201);
     expect(response.body.message).toMatch(/created/);
     expect(response.body.data).toBeTruthy();
-    expect(response.body.error).toBeUndefined();
+    expect(response.body.error).toBeFalsy();
     response = await request(app).get('/api/timesheets/');
     if (response.ok) {
       expect(countBefore < response.body.data.length).toBeTruthy();
@@ -120,7 +128,7 @@ describe('[POST] /api/timesheets/ endpoint => CREATE a timesheet.', () => {
     } else throw '[GET] /api/timesheets failed response';
   });
 
-  test('with ALL fields and an UNEXPECTED ID path param (not allowed)', async () => {
+  test('with ALL fields and an UNEXPECTED ID path param (not nominal, handled)', async () => {
     let countBefore;
     let response = await request(app).get('/api/timesheets');
     if (response.ok) {
@@ -131,13 +139,14 @@ describe('[POST] /api/timesheets/ endpoint => CREATE a timesheet.', () => {
     const unnecessaryId = payload._id;
     delete payload._id;
     response = await request(app).post(`/api/timesheets/${unnecessaryId}`)
-      .send(JSON.stringify(payload));
-    expect(response.status).toBe(404);
-    expect(response.body.message).toBeUndefined();
-    expect(response.body.error).toBeUndefined();
+      .send(payload);
+    expect(response.status).toBe(201);
+    expect(response.body.message).toMatch(/created/);
+    expect(response.body.data).toBeTruthy();
+    expect(response.body.error).toBeFalsy();
     response = await request(app).get('/api/timesheets/');
     if (response.ok) {
-      expect(countBefore === response.body.data.length).toBeTruthy();
+      expect(countBefore < response.body.data.length).toBeTruthy();
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
   });
@@ -179,7 +188,7 @@ describe('[POST] /api/timesheets/ endpoint => CREATE a timesheet.', () => {
     expect(response.status).toBe(201);
     expect(response.body.message).toMatch(/created/);
     expect(response.body.data).toBeTruthy();
-    expect(response.body.error).toBeUndefined();
+    expect(response.body.error).toBeFalsy();
     response = await request(app).get('/api/timesheets/');
     if (response.ok) {
       expect(countBefore < response.body.data.length).toBeTruthy();
@@ -237,13 +246,6 @@ describe('[POST] /api/timesheets/ endpoint => CREATE a timesheet.', () => {
 });
 
 describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () => {
-  const depopulateTimesheet = (TS) => ({
-    ...TS,
-    employee: TS.employee && TS.employee._id ? TS.employee._id : TS.employee,
-    task: TS.task && TS.task._id ? TS.task._id : TS.task,
-    project: TS.project && TS.project._id ? TS.project._id : TS.project,
-  });
-
   const isValidId = (id) => {
     try {
       const oid = new ObjectId(id);
@@ -257,28 +259,33 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
   test('with a VALID EXISTENT ID and ALL VALID DATA FIELDS sent in the body (NOMINAL)', async () => {
     const index = 0;
     const id = insertedTimesheets[index];
-    let response = await request(app).get(`/api/timesheets/${id}`);
+    let response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     let oldDocument;
     if (response.ok) {
-      oldDocument = depopulateTimesheet(response.body.data);
+      oldDocument = response.body.data;
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
-    const payload = oldDocument;
+    const payload = {
+      description: oldDocument.description,
+      date: oldDocument.date,
+      task: oldDocument.task,
+      employee: oldDocument.employee,
+      project: oldDocument.project,
+      hours: oldDocument.hours,
+    };
     // none of this properties are allowed in the request body
-    delete payload._id;
-    delete payload.__v;
-    delete payload.createdAt;
-    delete payload.updatedAt;
     payload.description = '-altered data-';
+    oldDocument.description = '-altered data-';
     payload.hours = 5;
+    oldDocument.hours = 5;
     response = await request(app).put(`/api/timesheets/${id}`)
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.msg).toMatch(/Updated/);
-    expect(response.body.error).toBeUndefined();
-    response = await request(app).get(`/api/timesheets/${id}`);
+    expect(response.body.message).toMatch(/updated/);
+    expect(response.body.error).toBeFalsy();
+    response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     if (response.ok) {
-      expect(depopulateTimesheet(response.body.data)).toMatchObject(payload);
+      expect(oldDocument).toMatchObject(payload);
       // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
   });
@@ -286,10 +293,10 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
   test('with a VALID EXISTENT ID and SOME VALID DATA FIELDS sent in the body (NOMINAL)', async () => {
     const index = 1;
     const id = insertedTimesheets[index];
-    let response = await request(app).get(`/api/timesheets/${id}`);
+    let response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     let oldDocument;
     if (response.ok) {
-      oldDocument = depopulateTimesheet(response.body.data);
+      oldDocument = response.body.data;
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
     const payload = {};
@@ -305,11 +312,11 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
     response = await request(app).put(`/api/timesheets/${id}`)
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.msg).toMatch(/Updated/);
-    expect(response.body.error).toBeUndefined();
-    response = await request(app).get(`/api/timesheets/${id}`);
+    expect(response.body.message).toMatch(/updated/);
+    expect(response.body.error).toBeFalsy();
+    response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     if (response.ok) {
-      expect(depopulateTimesheet(response.body.data)).toMatchObject(oldDocument);
+      expect(response.body.data).toMatchObject(oldDocument);
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
   });
@@ -317,10 +324,10 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
   test('with a VALID EXISTENT ID and SOME INVALID DATA FIELDS sent in the body (NOT NOMINAL)', async () => {
     const index = 2;
     const id = insertedTimesheets[index];
-    let response = await request(app).get(`/api/timesheets/${id}`);
+    let response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     let oldDocument;
     if (response.ok) {
-      oldDocument = depopulateTimesheet(response.body.data);
+      oldDocument = response.body.data;
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
     const payload = {};
@@ -338,9 +345,9 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
     expect(response.status).toBe(400);
     expect(response.body.message).toMatch(/error/);
     expect(response.body.error).toBeTruthy();
-    response = await request(app).get(`/api/timesheets/${id}`);
+    response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     if (response.ok) {
-      expect(depopulateTimesheet(response.body.data)).toMatchObject(oldDocument);
+      expect(response.body.data).toMatchObject(oldDocument);
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
   });
@@ -355,8 +362,9 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
     payload.employee = '6354389ffc13ae2db7000329';
     response = await request(app).put(`/api/timesheets/${id}`)
       .send(payload);
-    expect(response.status).toBe(404); // this should be a 404
+    expect(response.status).toBe(404);
     expect(response.body.message).toMatch(/not found/);
+    expect(response.body.error).toBeTruthy();
     // expect(response.body.error).toBeTruthy(); // the must be an error property
   });
 
@@ -368,29 +376,30 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
     payload.employee = '6354389ffc13ae2db7000329';
     const response = await request(app).put(`/api/timesheets/${id}`)
       .send(payload);
-    expect(response.status).toBe(500); // this should be a 400
-    expect(response.body.message).toMatch(/failed/);
-    // expect(response.body.error).toBeTruthy(); // the must be an error property
+    expect(response.status).toBe(400);
+    expect(response.body.message).toMatch(/id/);
+    expect(response.body.error).toBeTruthy();
   });
 
-  test('WITHOUT an ID and ALL DATA FIELDS sent in the body', async () => {
+  test('WITHOUT an ID and ALL DATA FIELDS sent in the body (FAILS)', async () => {
     const payload = {};
     payload.date = '01/01/2022';
     payload.employee = '6354389ffc13ae2db7000329';
     const response = await request(app).put('/api/timesheets/')
       .send(payload);
-    expect(response.status).toBe(404); // this should be a 400
-    // expect(response.body.message).toMatch(/failed/);
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBeTruthy();
+    expect(response.body.message).toMatch(/id/);
     // expect(response.body.error).toBeTruthy(); // the must be an error property
   });
 
   test('with a VALID EXISTENT ID and <date> PAST TODAY sent in the body (NOT ALLOWED)', async () => {
     const index = 2;
     const id = insertedTimesheets[index];
-    let response = await request(app).get(`/api/timesheets/${id}`);
+    let response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     let oldDocument;
     if (response.ok) {
-      oldDocument = depopulateTimesheet(response.body.data);
+      oldDocument = response.body.data;
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
     const payload = {};
@@ -410,21 +419,21 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
       .send(payload);
     expect(response.status).toBe(400);
     expect(response.body.message).toMatch(/error/);
-    expect(response.body.data).toMatch(/date/);
+    // expect(response.body.data).toMatch(/date/);
     expect(response.body.error).toBeTruthy();
-    response = await request(app).get(`/api/timesheets/${id}`);
+    response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     if (response.ok) {
-      expect(depopulateTimesheet(response.body.data)).toMatchObject(oldDocument);
+      expect(response.body.data).toMatchObject(oldDocument);
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
   });
   test('with a VALID EXISTENT ID and <hours> more than 12 (NOT ALLOWED)', async () => {
     const index = 2;
     const id = insertedTimesheets[index];
-    let response = await request(app).get(`/api/timesheets/${id}`);
+    let response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     let oldDocument;
     if (response.ok) {
-      oldDocument = depopulateTimesheet(response.body.data);
+      oldDocument = response.body.data;
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
     const payload = {};
@@ -439,11 +448,11 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
       .send(payload);
     expect(response.status).toBe(400);
     expect(response.body.message).toMatch(/error/);
-    expect(response.body.data).toMatch(/hours/);
+    // expect(response.body.data).toMatch(/hours/);
     expect(response.body.error).toBeTruthy();
-    response = await request(app).get(`/api/timesheets/${id}`);
+    response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     if (response.ok) {
-      expect(depopulateTimesheet(response.body.data)).toMatchObject(oldDocument);
+      expect(response.body.data).toMatchObject(oldDocument);
     // eslint-disable-next-line no-throw-literal
     } else throw '[GET] /api/timesheets failed response';
   });
