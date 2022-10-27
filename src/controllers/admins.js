@@ -10,6 +10,12 @@ const createAdmin = async (req, res) => {
     });
 
     const result = await admin.save();
+    if (!result) {
+    // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Could not create admin', status: 400,
+      };
+    }
     return res.status(201).json({
       message: 'Admin created successfully',
       data: result,

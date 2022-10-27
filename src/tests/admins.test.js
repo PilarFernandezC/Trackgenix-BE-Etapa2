@@ -70,7 +70,7 @@ describe('PUT /api/admin/:id', () => {
     expect(response.body.message).toBe(`${response.body.message}`);
   });
 
-  test('Should return status code 400 with an invalid ID', async () => {
+  test('Should return status code 500 with an invalid ID', async () => {
     const response = await request(app)
       .put('/api/admin/adsd')
       .send(mockedAdmin);
@@ -98,7 +98,7 @@ describe('PUT /api/admin/:id', () => {
 });
 
 describe('DELETE /admin/:id', () => {
-  test('Should return status code 400 with an empty ID', async () => {
+  test('Should return status code 500 with an empty ID', async () => {
     const response = await request(app)
       .delete(`/api/admin/${null}`)
       .send();
