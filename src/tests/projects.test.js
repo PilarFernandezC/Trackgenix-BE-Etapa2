@@ -33,9 +33,9 @@ const wrongMockedProject = {
   }],
 };
 
-const projectId = '635446a1fc13ae04ac000219';
-const wrongProjectId = '635446a1fc13ae04ac000200';
-const editProjectId = '635446a1fc13ae04ac000210';
+const editProjectId = '6350160d76dd03ff29e75dd3';
+const idProject = '635015885581eb421df09402';
+const idInvalid = '635015885581eb421df09404';
 
 describe('Test Project - Create', () => {
   test('Correct Body - Should create a new project - Status code 201', async () => {
@@ -64,13 +64,13 @@ describe('Test Project - Create', () => {
 
 describe('Test Project - Delete', () => {
   test('Correct ID - Should delete a project - Status code 202', async () => {
-    const response = await request(app).delete(`/api/projects/${projectId}`);
+    const response = await request(app).delete(`/api/projects/${idProject}`);
     expect(response.status).toBe(202);
     expect(response.body.error).toBeFalsy();
-    expect(response.body.message).toEqual(`Project with id=${projectId} deleted.`);
+    expect(response.body.message).toEqual(`Project with id=${idProject} deleted.`);
   });
   test('Wrong ID - Should not delete a project - Status code 404', async () => {
-    const response = await request(app).delete(`/api/projects/${wrongProjectId}`);
+    const response = await request(app).delete(`/api/projects/${idInvalid}`);
     expect(response.status).toBe(404);
     expect(response.body.message).toEqual('Project not found');
   });
@@ -80,7 +80,7 @@ describe('Test Project - Delete', () => {
     expect(response.body.message).toBeUndefined();
   });
   test('Wrong Path - Should not delete a project - Status code 404', async () => {
-    const response = await request(app).post('/api/projec').send(projectId);
+    const response = await request(app).post('/api/projec').send(idProject);
     expect(response.status).toBe(404);
     expect(response.body.message).toBeUndefined();
   });
@@ -100,17 +100,17 @@ describe('Test Project - Edit', () => {
     expect(response.body.message).not.toBeUndefined();
   });
   test('Wrong ID and correct body - Should not let you edit a project - Status code 404', async () => {
-    const response = await request(app).put(`/api/projects/${wrongProjectId}`).send(mockedProject);
+    const response = await request(app).put(`/api/projects/${idInvalid}`).send(mockedProject);
     expect(response.status).toBe(404);
     expect(response.body.message).toEqual('Project not found');
   });
   test('Wrong ID and wrong body - Should not let you edit a project - Status code 400', async () => {
-    const response = await request(app).put(`/api/projects/${wrongProjectId}`).send(wrongMockedProject);
+    const response = await request(app).put(`/api/projects/${idInvalid}`).send(wrongMockedProject);
     expect(response.status).toBe(400);
     expect(response.body.message).not.toBeUndefined();
   });
   test('Wrong path - Should not let you edit a project - Status code 404', async () => {
-    const response = await request(app).put(`/api/projec/${wrongProjectId}`).send(wrongMockedProject);
+    const response = await request(app).put(`/api/projec/${idInvalid}`).send(wrongMockedProject);
     expect(response.status).toBe(404);
     expect(response.body.message).toBeUndefined();
   });
@@ -123,5 +123,35 @@ describe('Test Project - Edit', () => {
     const response = await request(app).put(`/api/projects/${''}`).send(mockedProject);
     expect(response.status).toBe(404);
     expect(response.body.message).toBeUndefined();
+  });
+});
+
+describe('Projects - Unit test', () => {
+  describe('GET /projects', () => {
+    test('should return status code 200', async () => {
+      const response = await request(app).get('/api/projects/').send();
+      expect(response.status).toBe(200);
+      expect(response.body.error).toBeFalsy();
+      expect(response.body.data).toBeDefined();
+      expect(response.body.message).toBe('Projects found');
+    });
+  });
+
+  describe('GET BY ID /:id', () => {
+    test('should return status code 200', async () => {
+      const response = await request(app).get(`/api/projects/${editProjectId}`).send();
+      expect(response.status).toBe(200);
+      expect(response.body.error).toBeFalsy();
+      expect(response.body.data).toBeDefined();
+    });
+  });
+
+  describe('GET BY ID ERROR /:id', () => {
+    test('should return status code 400', async () => {
+      const response = await request(app).get(`/api/projects/${idInvalid}`).send();
+      expect(response.status).toBe(404);
+      expect(response.body.data).toBeUndefined();
+      expect(response.body.message).toBe(`${response.body.message}`);
+    });
   });
 });

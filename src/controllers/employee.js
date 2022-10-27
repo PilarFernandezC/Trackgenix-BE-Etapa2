@@ -4,13 +4,19 @@ const createEmployee = async (req, res) => {
   try {
     const newEmployee = new Employee(req.body);
     await newEmployee.save();
+    if (!newEmployee) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Could not create an employee', status: 404,
+      };
+    }
     res.status(201).json({
       message: 'New employee successfully created.',
       data: req.body,
     });
   } catch (error) {
-    res.status(400).json({
-      message: `Failed to create document in database: ${error.message}`,
+    res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -18,13 +24,20 @@ const createEmployee = async (req, res) => {
 const getEmployeeById = async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);
-    return res.status(200).json({
-      message: 'Employee found',
-      data: employee,
-    });
+    if (!employee) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Employee not found', status: 404,
+      };
+    } else {
+      return res.status(200).json({
+        message: 'Employee found',
+        data: employee,
+      });
+    }
   } catch (error) {
-    return res.status(400).json({
-      message: `An error has ocurred: ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -47,14 +60,20 @@ const filterEmployees = async (req, res) => {
   };
   const filterParams = validateFilterParams(allowedFilterParams);
   try {
+    if (!filterParams) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Employee not found', status: 404,
+      };
+    }
     const filteredEmployees = await Employee.find(filterParams);
     res.status(200).json({
       message: 'List of employees matching the query params was successfully retrieved.',
       data: filteredEmployees,
     });
   } catch (error) {
-    res.status(400).json({
-      message: `Failed to retrieve documents in database: ${error.message}`,
+    res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -66,6 +85,12 @@ const editEmployee = async (req, res) => {
       req.body,
       { new: true },
     );
+    if (!employee) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Employee not found', status: 404,
+      };
+    }
     return res.status(200).json({
       message: `Employee with the ID ${req.params.id} has been updated.`,
       data: employee,
@@ -81,17 +106,18 @@ const deleteEmployee = async (req, res) => {
   try {
     const employeeFoundById = await Employee.findByIdAndDelete(req.params.id);
     if (employeeFoundById === ' ') {
-      return res.status(404).json({
-        message: 'Error: Could not get the selected employee',
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Employee not found', status: 404,
+      };
     }
-    return res.status(204).json({
+    res.status(204).json({
       message: `Employee with the ID ${req.params.id} has been deleted.`,
       data: employeeFoundById,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: `An error has ocurred: ${error}`,
+    res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
