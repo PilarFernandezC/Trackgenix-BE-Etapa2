@@ -24,13 +24,20 @@ const createEmployee = async (req, res) => {
 const getEmployeeById = async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);
-    return res.status(200).json({
-      message: 'Employee found',
-      data: employee,
-    });
+    if (!employee) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Employee not found', status: 404,
+      };
+    } else {
+      return res.status(200).json({
+        message: 'Employee found',
+        data: employee,
+      });
+    }
   } catch (error) {
-    return res.status(400).json({
-      message: `An error has ocurred: ${error}`,
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
@@ -53,6 +60,12 @@ const filterEmployees = async (req, res) => {
   };
   const filterParams = validateFilterParams(allowedFilterParams);
   try {
+    if (!filterParams) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Employee not found', status: 404,
+      };
+    }
     const filteredEmployees = await Employee.find(filterParams);
     res.status(200).json({
       message: 'List of employees matching the query params was successfully retrieved.',
