@@ -31,13 +31,15 @@ const createTimesheet = async (req, res) => {
         data: result,
         error: false,
       });
+    } else {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Timesheet creation failed.',
+        status: 500,
+      };
     }
-    // eslint-disable-next-line no-throw-literal
-    throw {
-      message: 'Timesheet creation failed.',
-      status: 500,
-    };
-  } catch (error) {
+  }
+    catch (error) {
     if (error instanceof Joi.ValidationError) error.status = 400;
     return res.status(error.status || 500).json({
       message: error.message || error,
