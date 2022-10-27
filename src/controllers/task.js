@@ -26,17 +26,18 @@ const getOneTask = async (req, res) => {
     const { id } = req.params;
     const task = await Models.findById(id);
     if (!task) {
-      return res.status(404).json({
-        msg: 'The task has not been found',
-      });
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'The task has not been found', status: 404,
+      };
     }
     return res.status(200).json({
       msg: 'The task has been found',
       data: task,
     });
-  } catch (err) {
-    return res.json({
-      message: `an error ocurred: ${err}`,
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
     });
   }
 };
