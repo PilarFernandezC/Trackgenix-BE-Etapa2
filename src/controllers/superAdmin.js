@@ -73,7 +73,7 @@ const updateSAdmin = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(error.status || 500).json({
+    return res.status(error.status || 400 || 500).json({
       message: error.message || error,
     });
   }
