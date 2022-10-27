@@ -5,6 +5,7 @@ import projectsSeed from '../seeds/projects';
 
 const idProject = '635015885581eb421df09402';
 const idInvalid = '635015885581eb421df09404';
+const name = 'Nan';
 
 beforeAll(async () => {
   await Projects.collection.insertMany(projectsSeed);
@@ -26,6 +27,10 @@ describe('Projects - Unit test', () => {
       expect(response.status).toBe(200);
       expect(response.body.error).toBeFalsy();
       expect(response.body.data).toBeDefined();
+    });
+    test('Find project filter by name', async () => {
+      const response = await request(app).get(`/api/projects/?description=${name}`).send();
+      expect(response.status).toBe(200);
     });
   });
 
