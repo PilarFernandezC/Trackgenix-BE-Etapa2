@@ -20,14 +20,14 @@ export default [{
   lastName: 'Dunton',
   phone: '8648456509',
   email: 'bdunton2@etsy.com',
-  password: 'f5MKrE',
+  password: '6f5MKr0E56',
 }, {
   _id: mongoose.Types.ObjectId('6354389ffc13ae2db7000329'),
   name: 'Nichols',
   lastName: 'Glaysher',
   phone: '9375810524',
   email: 'nglaysher3@google.pl',
-  password: 'OXarxQOuM',
+  password: 'O9Xarx6QOuM',
 }, {
   _id: mongoose.Types.ObjectId('6354389ffc13ae2db700032a'),
   name: 'Winn',
@@ -48,7 +48,7 @@ export default [{
   lastName: 'Hrynczyk',
   phone: '4162906219',
   email: 'shrynczyk6@ustream.tv',
-  password: 'rAfErSon3S',
+  password: 'rAf6ErSon3S',
 }, {
   _id: mongoose.Types.ObjectId('6354389ffc13ae2db700032d'),
   name: 'Burlie',
@@ -62,7 +62,7 @@ export default [{
   lastName: 'Spollen',
   phone: '2489997839',
   email: 'sspollen8@linkedin.com',
-  password: '1m2cXvzV8k',
+  password: '86CB78c1a6',
 }, {
   _id: mongoose.Types.ObjectId('6354389ffc13ae2db700032f'),
   name: 'Marlo',
