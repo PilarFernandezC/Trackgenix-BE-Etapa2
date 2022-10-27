@@ -31,7 +31,7 @@ const employeeValidatorMiddleware = (req, res, next) => {
       .required()
       .pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
   });
-  const validation = employeeJoiSchema.validateAsync(req.body);
+  const validation = employeeJoiSchema.validate(req.body);
 
   if (validation.error) {
     return res.status(400).json({
