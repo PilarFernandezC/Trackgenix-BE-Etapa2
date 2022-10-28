@@ -1,8 +1,22 @@
-import TimesheetModel from '../models/TimeSheet';
+import Joi from 'joi';
+import mongoose from 'mongoose';
+import Timesheet from '../models/TimeSheet';
+
+const { ObjectId } = mongoose.Types;
+
+const isValidId = (id) => {
+  try {
+    const oid = new ObjectId(id);
+    return ObjectId.isValid(id)
+    && oid.toString() === id;
+  } catch {
+    return false;
+  }
+};
 
 const createTimesheet = async (req, res) => {
   try {
-    const newTimesheet = new TimesheetModel({
+    const newTimesheet = new Timesheet({
       description: req.body.description,
       date: req.body.date,
       task: req.body.task,
@@ -11,73 +25,88 @@ const createTimesheet = async (req, res) => {
       hours: req.body.hours,
     });
     const result = await newTimesheet.save();
-    return res.status(201).json({
-      message: 'Timesheet created',
-      data: result,
-    });
+    if (!result) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Timesheet creation failed.',
+        status: 500,
+      };
+    } else {
+      return res.status(201).json({
+        message: 'Timesheet created successfully.',
+        data: result,
+        error: false,
+      });
+    }
   } catch (error) {
+    if (error instanceof Joi.ValidationError) error.status = 400;
     return res.status(error.status || 500).json({
       message: error.message || error,
+      error: true,
     });
   }
 };
 
 const getAllTimesheets = async (req, res) => {
-  const timesheetArray = Object.keys(req.query);
   try {
-    const TimesheetFound = await TimesheetModel.find()
-      .populate('task')
-      .populate('employee')
-      .populate('project');
-
-    if (!TimesheetFound) {
+    const { id } = req.params;
+    const timesheetFound = req.query.disablePopulate
+      ? await Timesheet.find(id)
+      : await Timesheet.find(id)
+        .populate('task')
+        .populate('employee')
+        .populate('project');
+    if (!timesheetFound) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Timesheet not found',
         status: 404,
       };
     }
-    if (timesheetArray.length === 0) {
+    if (timesheetFound.length !== 0) {
       return res.status(200).json({
         message: 'Timesheet found',
-        data: TimesheetFound,
+        data: timesheetFound,
+        error: false,
       });
     }
-    let filterByParams;
+    let filterByParams = [...timesheetFound];
     if (req.query.description) {
-      filterByParams = TimesheetFound.filter(
+      filterByParams = timesheetFound.filter(
         (timesheet) => timesheet.description === req.query.description,
       );
     }
     if (req.query.date) {
-      filterByParams = TimesheetFound.filter(
+      filterByParams = filterByParams.filter(
         (timesheet) => timesheet.date === req.query.date,
       );
     }
     if (req.query.task) {
-      filterByParams = TimesheetFound.filter(
+      filterByParams = filterByParams.filter(
         (timesheet) => timesheet.task === req.query.task,
       );
     }
     if (req.query.employees) {
-      filterByParams = TimesheetFound.filter(
+      filterByParams = filterByParams.filter(
         (timesheet) => timesheet.employee === req.query.employees,
       );
     }
     if (req.query.project) {
-      filterByParams = TimesheetFound.filter(
+      filterByParams = filterByParams.filter(
         (timesheet) => timesheet.project === req.query.project,
       );
     }
     if (req.query.hours) {
-      filterByParams = TimesheetFound.filter(
-        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10),
+      filterByParams = filterByParams.filter(
+        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10)
       );
     }
     return res.status(200).json({ filterByParams });
   } catch (error) {
+    if (error instanceof Joi.ValidationError) error.status = 400;
     return res.status(error.status || 500).json({
       message: error.message || error,
+      error: true,
     });
   }
 };
@@ -85,11 +114,19 @@ const getAllTimesheets = async (req, res) => {
 const getOneTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
-    const timeSheet = await TimesheetModel.findById(id)
-      .populate('task')
-      .populate('employee')
-      .populate('project');
-
+    if (!isValidId(id)) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Invalid id',
+        status: 400,
+      };
+    }
+    const timeSheet = req.query.disablePopulate
+      ? await Timesheet.findById(id)
+      : await Timesheet.findById(id)
+        .populate('task')
+        .populate('employee')
+        .populate('project');
     if (!timeSheet) {
       // eslint-disable-next-line no-throw-literal
       throw {
@@ -98,12 +135,14 @@ const getOneTimesheet = async (req, res) => {
       };
     }
     return res.status(200).json({
-      msg: 'The time-sheet has been found',
+      message: `Timesheet id='${id}' found`,
       data: timeSheet,
+      error: false,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
       message: error.message || error,
+      error: true,
     });
   }
 };
@@ -111,8 +150,15 @@ const getOneTimesheet = async (req, res) => {
 const updateTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!isValidId(id)) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Invalid or non-existent id',
+        status: 400,
+      };
+    }
     const timeSheet = req.body;
-    const response = await TimesheetModel.findByIdAndUpdate(id, {
+    const response = await Timesheet.findByIdAndUpdate(id, {
       description: timeSheet.description,
       date: timeSheet.date,
       task: timeSheet.task,
@@ -128,11 +174,15 @@ const updateTimesheet = async (req, res) => {
       };
     }
     return res.status(200).json({
-      msg: 'The time-sheet has been Updated',
+      message: 'Timesheet updated successfully.',
+      data: response,
+      error: false,
     });
   } catch (error) {
+    if (error instanceof Joi.ValidationError) error.status = 400;
     return res.status(error.status || 500).json({
       message: error.message || error,
+      error: true,
     });
   }
 };
@@ -140,7 +190,7 @@ const updateTimesheet = async (req, res) => {
 const deleteTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await TimesheetModel.findByIdAndDelete(id);
+    const result = await Timesheet.findByIdAndDelete(id);
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
