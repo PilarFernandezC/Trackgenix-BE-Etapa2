@@ -19,11 +19,11 @@ module.exports = [{
 }, {
   _id: mongoose.Types.ObjectId('6354438cfc13ae204b000066'),
   description: 'turpis nec euismod scelerisque',
-  date: '6/6/2022',
-  task: mongoose.Types.ObjectId('63544114fc13ae2db7000335'),
-  employee: mongoose.Types.ObjectId('6354389ffc13ae2db7000327'),
-  project: mongoose.Types.ObjectId('635446a1fc13ae04ac000210'),
-  hours: 11,
+  date: '06/06/2022',
+  task: mongoose.Types.ObjectId('63546010fc13ae3a75000198'),
+  employee: mongoose.Types.ObjectId('6354438cfc13ae204b000067'),
+  project: mongoose.Types.ObjectId('6354438cfc13ae204b000068'),
+  hours: 43,
 }, {
   _id: mongoose.Types.ObjectId('6354438cfc13ae204b000069'),
   description: 'quisque',

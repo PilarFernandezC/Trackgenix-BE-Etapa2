@@ -8,7 +8,7 @@ const isValidId = (id) => {
   try {
     const oid = new ObjectId(id);
     return ObjectId.isValid(id)
-        && oid.toString() === id;
+    && oid.toString() === id;
   } catch {
     return false;
   }
@@ -25,21 +25,20 @@ const createTimesheet = async (req, res) => {
       hours: req.body.hours,
     });
     const result = await newTimesheet.save();
-    if (result) {
-      return res.status(201).json({
-        message: 'Timesheet created successfully.',
-        data: result,
-        error: false,
-      });
-    } else {
+    if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Timesheet creation failed.',
         status: 500,
       };
+    } else {
+      return res.status(201).json({
+        message: 'Timesheet created successfully.',
+        data: result,
+        error: false,
+      });
     }
-  }
-    catch (error) {
+  } catch (error) {
     if (error instanceof Joi.ValidationError) error.status = 400;
     return res.status(error.status || 500).json({
       message: error.message || error,
