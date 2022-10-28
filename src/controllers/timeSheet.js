@@ -98,7 +98,7 @@ const getAllTimesheets = async (req, res) => {
     }
     if (req.query.hours) {
       filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.hours === req.query.hours,
+        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10)
       );
     }
     return res.status(200).json({ filterByParams });
