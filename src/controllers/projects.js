@@ -5,7 +5,12 @@ const { ObjectId } = require('mongoose').Types;
 const getAll = async (req, res) => {
   const queriesArray = Object.keys(req.query);
   try {
-    const projects = await Project.find().populate('employees');
+    const projects = await Project.find().populate({
+      path: 'employees',
+      populate: {
+        path: 'employeeId',
+      },
+    });
     if (!projects) {
       // eslint-disable-next-line no-throw-literal
       throw {
