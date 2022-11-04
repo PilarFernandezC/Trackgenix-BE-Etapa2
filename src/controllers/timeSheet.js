@@ -63,7 +63,7 @@ const getAllTimesheets = async (req, res) => {
         status: 404,
       };
     }
-    if (timesheetFound.length !== 0) {
+    if (timesheetFound.length !== 0 && !req.query) {
       return res.status(200).json({
         message: 'Timesheet found',
         data: timesheetFound,
@@ -98,10 +98,14 @@ const getAllTimesheets = async (req, res) => {
     }
     if (req.query.hours) {
       filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10)
+        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10),
       );
     }
-    return res.status(200).json({ filterByParams });
+    return res.status(200).json({
+      message: 'Timesheet found',
+      data: filterByParams,
+      error: false,
+    });
   } catch (error) {
     if (error instanceof Joi.ValidationError) error.status = 400;
     return res.status(error.status || 500).json({
