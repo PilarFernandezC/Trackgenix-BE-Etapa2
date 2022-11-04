@@ -86,10 +86,9 @@ const editEmployee = async (req, res) => {
       { new: true },
     );
     if (!employee) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        message: 'Employee not found', status: 404,
-      };
+      return res.status(404).json({
+        message: 'Employee not found',
+      });
     }
     return res.status(200).json({
       message: `Employee with the ID ${req.params.id} has been updated.`,
