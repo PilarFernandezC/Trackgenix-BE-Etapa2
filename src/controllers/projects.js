@@ -120,6 +120,8 @@ const updateById = async (req, res) => {
         message: error.message || error,
       });
     }
+  } else {
+    res.status(400).json({ message: 'No projects with this ID were found' });
   }
 };
 
