@@ -63,47 +63,9 @@ const getAllTimesheets = async (req, res) => {
         status: 404,
       };
     }
-    if (timesheetFound.length !== 0 && !req.query) {
-      return res.status(200).json({
-        message: 'Timesheet found',
-        data: timesheetFound,
-        error: false,
-      });
-    }
-    let filterByParams = [...timesheetFound];
-    if (req.query.description) {
-      filterByParams = timesheetFound.filter(
-        (timesheet) => timesheet.description === req.query.description,
-      );
-    }
-    if (req.query.date) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.date === req.query.date,
-      );
-    }
-    if (req.query.task) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.task === req.query.task,
-      );
-    }
-    if (req.query.employees) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.employee === req.query.employees,
-      );
-    }
-    if (req.query.project) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.project === req.query.project,
-      );
-    }
-    if (req.query.hours) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10),
-      );
-    }
     return res.status(200).json({
       message: 'Timesheet found',
-      data: filterByParams,
+      data: timesheetFound,
       error: false,
     });
   } catch (error) {
