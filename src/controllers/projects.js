@@ -27,7 +27,10 @@ const getAll = async (req, res) => {
     if (req.query.name) {
       filterByParams = projects.filter((project) => project.name === req.query.name);
     }
-    return res.status(200).json({ filterByParams });
+    return res.status(200).json({
+      message: 'Project found succesfully',
+      data: filterByParams,
+    });
   } catch (error) {
     return res.status(error.status || 500).json({
       message: error.message || error,

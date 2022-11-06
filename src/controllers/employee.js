@@ -12,7 +12,7 @@ const createEmployee = async (req, res) => {
     }
     res.status(201).json({
       message: 'New employee successfully created.',
-      data: req.body,
+      data: newEmployee,
     });
   } catch (error) {
     res.status(error.status || 500).json({
