@@ -28,12 +28,12 @@ const createTimesheet = async (req, res) => {
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Timesheet creation failed.',
+        message: 'Could not create a new timesheet.',
         status: 500,
       };
     } else {
       return res.status(201).json({
-        message: 'Timesheet created successfully.',
+        message: 'New timesheet successfully created.',
         data: result,
         error: false,
       });
@@ -59,13 +59,13 @@ const getAllTimesheets = async (req, res) => {
     if (!timesheetFound) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Timesheet not found',
+        message: 'Timesheet not found.',
         status: 404,
       };
     }
     if (timesheetFound.length !== 0) {
       return res.status(200).json({
-        message: 'Timesheet found',
+        message: 'Timesheets found.',
         data: timesheetFound,
         error: false,
       });
@@ -98,7 +98,7 @@ const getAllTimesheets = async (req, res) => {
     }
     if (req.query.hours) {
       filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10)
+        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10),
       );
     }
     return res.status(200).json({ filterByParams });
@@ -117,7 +117,7 @@ const getOneTimesheet = async (req, res) => {
     if (!isValidId(id)) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Invalid id',
+        message: 'Invalid id.',
         status: 400,
       };
     }
@@ -130,12 +130,12 @@ const getOneTimesheet = async (req, res) => {
     if (!timeSheet) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Timesheet not found',
+        message: 'Timesheet not found.',
         status: 404,
       };
     }
     return res.status(200).json({
-      message: `Timesheet id='${id}' found`,
+      message: 'Timesheet found.',
       data: timeSheet,
       error: false,
     });
@@ -153,7 +153,7 @@ const updateTimesheet = async (req, res) => {
     if (!isValidId(id)) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Invalid or non-existent id',
+        message: 'Invalid id.',
         status: 400,
       };
     }
@@ -169,12 +169,12 @@ const updateTimesheet = async (req, res) => {
     if (!response) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Timesheet not found',
+        message: 'Timesheet not found.',
         status: 404,
       };
     }
     return res.status(200).json({
-      message: 'Timesheet updated successfully.',
+      message: `Timesheet with the ID ${req.params.id} has been updated.`,
       data: response,
       error: false,
     });
@@ -194,12 +194,12 @@ const deleteTimesheet = async (req, res) => {
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Timesheet not found',
+        message: 'Timesheet not found.',
         status: 404,
       };
     }
     return res.status(204).json({
-      msg: 'The time-sheet has been deleted: ',
+      message: `Timesheet with the ID ${req.params.id} has been deleted.`,
       data: result,
     });
   } catch (error) {

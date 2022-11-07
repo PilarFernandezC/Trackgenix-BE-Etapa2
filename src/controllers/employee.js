@@ -7,7 +7,7 @@ const createEmployee = async (req, res) => {
     if (!newEmployee) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Could not create an employee', status: 404,
+        message: 'Could not create a new employee.', status: 404,
       };
     }
     res.status(201).json({
@@ -27,11 +27,11 @@ const getEmployeeById = async (req, res) => {
     if (!employee) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Employee not found', status: 404,
+        message: 'Employee not found.', status: 404,
       };
     } else {
       return res.status(200).json({
-        message: 'Employee found',
+        message: 'Employees found.',
         data: employee,
       });
     }
@@ -63,12 +63,12 @@ const filterEmployees = async (req, res) => {
     if (!filterParams) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Employee not found', status: 404,
+        message: 'Employee not found.', status: 404,
       };
     }
     const filteredEmployees = await Employee.find(filterParams);
     res.status(200).json({
-      message: 'List of employees matching the query params was successfully retrieved.',
+      message: 'Employees found.',
       data: filteredEmployees,
     });
   } catch (error) {
@@ -88,7 +88,7 @@ const editEmployee = async (req, res) => {
     if (!employee) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Employee not found', status: 404,
+        message: 'Employee not found.', status: 404,
       };
     }
     return res.status(200).json({
@@ -108,7 +108,7 @@ const deleteEmployee = async (req, res) => {
     if (employeeFoundById === ' ') {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Employee not found', status: 404,
+        message: 'Employee not found.', status: 404,
       };
     }
     res.status(204).json({

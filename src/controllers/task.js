@@ -7,11 +7,11 @@ const getAllTasks = async (req, res) => {
     if (!tasks.length) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Tasks not found', status: 404,
+        message: 'Task not found.', status: 404,
       };
     }
     return res.status(200).json({
-      message: 'Tasks found',
+      message: 'Tasks found.',
       data: tasks,
     });
   } catch (error) {
@@ -28,11 +28,11 @@ const getOneTask = async (req, res) => {
     if (!task) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'The task has not been found', status: 404,
+        message: 'Task not found.', status: 404,
       };
     }
     return res.status(200).json({
-      msg: 'The task has been found',
+      msg: 'Task found.',
       data: task,
     });
   } catch (error) {
@@ -51,11 +51,11 @@ const createTask = async (req, res) => {
     if (!task) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Could not create a task', status: 404,
+        message: 'Could not create a new task.', status: 404,
       };
     }
     return res.status(201).json({
-      message: 'Task created successfully',
+      message: 'New task successfully created.',
       data: result,
     });
   } catch (error) {
@@ -75,11 +75,11 @@ const updateTask = async (req, res) => {
     if (!response) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Tasks not found', status: 404,
+        message: 'Task not found.', status: 404,
       };
     }
     return res.status(200).json({
-      message: 'The task has been Updated',
+      message: `Task with the ID ${req.params.id} has been updated.`,
       data: response,
     });
   } catch (error) {
@@ -96,11 +96,11 @@ const deleteTask = async (req, res) => {
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Tasks not found', status: 404,
+        message: 'Task not found.', status: 404,
       };
     }
     return res.status(204).json({
-      msg: 'The task has been deleted: ',
+      message: `Task with the ID ${req.params.id} has been deleted.`,
       data: result,
     });
   } catch (error) {

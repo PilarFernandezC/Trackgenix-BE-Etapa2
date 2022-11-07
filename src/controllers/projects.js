@@ -14,12 +14,12 @@ const getAll = async (req, res) => {
     if (!projects) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Projects not found', status: 404,
+        message: 'Project not found.', status: 404,
       };
     }
     if (queriesArray.length === 0) {
       return res.status(200).json({
-        message: 'Projects found',
+        message: 'Projects found.',
         data: projects,
       });
     }
@@ -49,11 +49,11 @@ const create = async (req, res) => {
     if (!newProject) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Could not create the project', status: 400,
+        message: 'Could not create a new project.', status: 400,
       };
     }
     return res.status(201).json({
-      message: 'New Project created',
+      message: 'New project successfully created.',
       data: confirm,
     });
   } catch (error) {
@@ -79,13 +79,13 @@ const getById = async (req, res) => {
       const retrievedProject = await Project.findById(req.params.id).populate('employees');
       if (retrievedProject !== null) {
         res.status(200).json({
-          message: `Project with id=${req.params.id} found.`,
+          message: 'Project found.',
           data: retrievedProject,
         });
       } else {
         // eslint-disable-next-line no-throw-literal
         throw {
-          message: 'Project not found', status: 404,
+          message: 'Project not found.', status: 404,
         };
       }
     } catch (error) {
@@ -106,13 +106,13 @@ const updateById = async (req, res) => {
       );
       if (updatedProject !== null) {
         res.status(200).json({
-          message: `Project with id=${req.params.id} has been updated.`,
+          message: `Project with the ID ${req.params.id} has been updated.`,
           data: updatedProject,
         });
       } else {
         // eslint-disable-next-line no-throw-literal
         throw {
-          message: 'Project not found', status: 404,
+          message: 'Project not found.', status: 404,
         };
       }
     } catch (error) {
@@ -129,12 +129,12 @@ const deleteById = async (req, res) => {
       const response = await Project.findByIdAndDelete(req.params.id);
       if (response !== null) {
         res.status(202).json({
-          message: `Project with id=${req.params.id} deleted.`,
+          message: `Project with the ID ${req.params.id} has been deleted.`,
         });
       } else {
         // eslint-disable-next-line no-throw-literal
         throw {
-          message: 'Project not found', status: 404,
+          message: 'Project not found.', status: 404,
         };
       }
     } catch (error) {
