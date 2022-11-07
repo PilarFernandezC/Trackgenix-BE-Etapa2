@@ -460,10 +460,10 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
 const timesheetId = '6354438cfc13ae204b000063';
 const timesheetDesc = 'orci mauris';
 const timesheetDate = '2/3/2022';
-const timesheetTask = '63546010fc13ae3a75000197';
-const timesheetEmployee = '6354438cfc13ae204b000064';
-const timesheetProject = '6354438cfc13ae204b000065';
-const timesheetHours = 98;
+const timesheetTask = '63544114fc13ae2db7000337';
+const timesheetEmployee = '6354389ffc13ae2db700032f';
+const timesheetProject = '635446a1fc13ae04ac000214';
+const timesheetHours = 2;
 
 describe('DELETE /timesheet/:id', () => {
   test('should delete an employee', async () => {

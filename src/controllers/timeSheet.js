@@ -49,59 +49,22 @@ const createTimesheet = async (req, res) => {
 
 const getAllTimesheets = async (req, res) => {
   try {
-    const { id } = req.params;
-    const timesheetFound = req.query.disablePopulate
-      ? await Timesheet.find(id)
-      : await Timesheet.find(id)
-        .populate('task')
-        .populate('employee')
-        .populate('project');
-    if (!timesheetFound) {
+    const timesheetFound = await Timesheet.find(req.query)
+      .populate('task')
+      .populate('employee')
+      .populate('project');
+    if (!timesheetFound || !timesheetFound.length) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Timesheet not found',
         status: 404,
       };
     }
-    if (timesheetFound.length !== 0) {
-      return res.status(200).json({
-        message: 'Timesheet found',
-        data: timesheetFound,
-        error: false,
-      });
-    }
-    let filterByParams = [...timesheetFound];
-    if (req.query.description) {
-      filterByParams = timesheetFound.filter(
-        (timesheet) => timesheet.description === req.query.description,
-      );
-    }
-    if (req.query.date) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.date === req.query.date,
-      );
-    }
-    if (req.query.task) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.task === req.query.task,
-      );
-    }
-    if (req.query.employees) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.employee === req.query.employees,
-      );
-    }
-    if (req.query.project) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.project === req.query.project,
-      );
-    }
-    if (req.query.hours) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10),
-      );
-    }
-    return res.status(200).json({ filterByParams });
+    return res.status(200).json({
+      message: 'Timesheet found',
+      data: timesheetFound,
+      error: false,
+    });
   } catch (error) {
     if (error instanceof Joi.ValidationError) error.status = 400;
     return res.status(error.status || 500).json({

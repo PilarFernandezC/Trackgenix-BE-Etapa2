@@ -48,7 +48,10 @@ const getAll = async (req, res) => {
     if (req.query.email) {
       filterByParams = superAdmins.filter((superAdmin) => superAdmin.email === req.query.email);
     }
-    return res.status(200).json({ filterByParams });
+    return res.status(200).json({
+      message: 'Super admin found succesfully',
+      data: filterByParams,
+    });
   } catch (error) {
     return res.status(error.status || 500).json({
       message: error.message || error,
