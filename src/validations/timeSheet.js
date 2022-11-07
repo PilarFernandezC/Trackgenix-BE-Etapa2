@@ -11,11 +11,11 @@ const validateCreate = (req, res, next) => {
     project: Joi.string().alphanum().length(24).required(),
   });
 
-  const validate = timesheetValidation.validate(req.body);
-  if (validate.error) {
+  const validation = timesheetValidation.validate(req.body, { abortEarly: false });
+
+  if (validation.error) {
     return res.status(400).json({
-      message: 'There was an error',
-      data: validate.error.details[0].message,
+      message: `There was an error: ${validation.error.message}`,
       error: true,
     });
   }
@@ -33,11 +33,11 @@ const validateUpdate = (req, res, next) => {
     project: Joi.string().alphanum().length(24).optional(),
   });
 
-  const validate = timesheetValidation.validate(req.body);
-  if (validate.error) {
+  const validation = timesheetValidation.validate(req.body, { abortEarly: false });
+
+  if (validation.error) {
     return res.status(400).json({
-      message: 'There was an error',
-      data: validate.error.details[0].message,
+      message: `There was an error: ${validation.error.message}`,
       error: true,
     });
   }

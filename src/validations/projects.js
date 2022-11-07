@@ -15,10 +15,13 @@ const createValidation = (req, res, next) => {
     clientName: Joi.string().required(),
     employees: Joi.array().items(employeeValidation),
   });
-  const validation = projectsValidation.validate(req.body);
+
+  const validation = projectsValidation.validate(req.body, { abortEarly: false });
+
   if (validation.error) {
     return res.status(400).json({
-      message: `There was an error ${validation.error.details[0].message}`,
+      message: `There was an error: ${validation.error.message}`,
+      error: true,
     });
   }
   return next();
