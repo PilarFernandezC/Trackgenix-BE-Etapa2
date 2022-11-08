@@ -65,11 +65,10 @@ describe('Test Project - Create', () => {
 });
 
 describe('Test Project - Delete', () => {
-  test('Correct ID - Should delete a project - Status code 202', async () => {
+  test('Correct ID - Should delete a project - Status code 204', async () => {
     const response = await request(app).delete(`/api/projects/${idProject}`);
-    expect(response.status).toBe(202);
+    expect(response.status).toBe(204);
     expect(response.body.error).toBeFalsy();
-    expect(response.body.message).toEqual(`Project with id=${idProject} deleted.`);
   });
   test('Wrong ID - Should not delete a project - Status code 404', async () => {
     const response = await request(app).delete(`/api/projects/${idInvalid}`);

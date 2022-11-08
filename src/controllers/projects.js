@@ -131,7 +131,7 @@ const deleteById = async (req, res) => {
     try {
       const response = await Project.findByIdAndDelete(req.params.id);
       if (response !== null) {
-        res.status(202).json({
+        res.status(204).json({
           message: `Project with id=${req.params.id} deleted.`,
         });
       } else {
