@@ -413,7 +413,7 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
     response = await request(app).put(`/api/timesheets/${id}`)
       .send(payload);
     expect(response.status).toBe(400);
-    expect(response.body.data).toMatch(/date/);
+    expect(response.body.data).toBeUndefined();
     expect(response.body.error).toBeTruthy();
     response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     if (response.ok) {
@@ -440,7 +440,7 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
     response = await request(app).put(`/api/timesheets/${id}`)
       .send(payload);
     expect(response.status).toBe(400);
-    expect(response.body.data).toMatch(/hours/);
+    expect(response.body.data).toBeUndefined();
     expect(response.body.error).toBeTruthy();
     response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     if (response.ok) {
@@ -460,10 +460,10 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
 const timesheetId = '6354438cfc13ae204b000063';
 const timesheetDesc = 'orci mauris';
 const timesheetDate = '2/3/2022';
-const timesheetTask = '63546010fc13ae3a75000197';
-const timesheetEmployee = '6354438cfc13ae204b000064';
-const timesheetProject = '6354438cfc13ae204b000065';
-const timesheetHours = 98;
+const timesheetTask = '63544114fc13ae2db7000337';
+const timesheetEmployee = '6354389ffc13ae2db700032f';
+const timesheetProject = '635446a1fc13ae04ac000214';
+const timesheetHours = 2;
 
 describe('DELETE /timesheet/:id', () => {
   test('should delete an employee', async () => {

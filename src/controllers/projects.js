@@ -27,7 +27,10 @@ const getAll = async (req, res) => {
     if (req.query.name) {
       filterByParams = projects.filter((project) => project.name === req.query.name);
     }
-    return res.status(200).json({ filterByParams });
+    return res.status(200).json({
+      message: 'Project found succesfully',
+      data: filterByParams,
+    });
   } catch (error) {
     return res.status(error.status || 500).json({
       message: error.message || error,
@@ -120,6 +123,8 @@ const updateById = async (req, res) => {
         message: error.message || error,
       });
     }
+  } else {
+    res.status(400).json({ message: 'No projects with this ID were found' });
   }
 };
 
@@ -128,8 +133,8 @@ const deleteById = async (req, res) => {
     try {
       const response = await Project.findByIdAndDelete(req.params.id);
       if (response !== null) {
-        res.status(202).json({
-          message: `Project with the ID ${req.params.id} has been deleted.`,
+        res.status(204).json({
+          message: `Project with id=${req.params.id} deleted.`,
         });
       } else {
         // eslint-disable-next-line no-throw-literal

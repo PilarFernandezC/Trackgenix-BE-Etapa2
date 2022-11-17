@@ -49,14 +49,11 @@ const createTimesheet = async (req, res) => {
 
 const getAllTimesheets = async (req, res) => {
   try {
-    const { id } = req.params;
-    const timesheetFound = req.query.disablePopulate
-      ? await Timesheet.find(id)
-      : await Timesheet.find(id)
-        .populate('task')
-        .populate('employee')
-        .populate('project');
-    if (!timesheetFound) {
+    const timesheetFound = await Timesheet.find(req.query)
+      .populate('task')
+      .populate('employee')
+      .populate('project');
+    if (!timesheetFound || !timesheetFound.length) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Timesheet not found.',

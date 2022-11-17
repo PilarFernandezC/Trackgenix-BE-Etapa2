@@ -35,7 +35,7 @@ describe('GET /superAdmin', () => {
     expect(response.status).toBe(200);
     expect(response.body.error).toBeFalsy();
     expect(response.body.data).toBeDefined();
-    expect(response.body.message).toBe('SuperAdmins found');
+    expect(response.body.message).toBe('Super admins found.');
   });
   test('Find SuperAdmin filter by name', async () => {
     const response = await request(app).get(`/api/superAdmin/?description=${name}`).send();
@@ -69,7 +69,7 @@ describe('PUT /superAdmin', () => {
 
   test('check for success message', async () => {
     const response = await request(app).put(`/api/superAdmin/${reqId}`).send(mockedSuperAdmin);
-    expect(response.body.message).toEqual('SuperAdmin edited.');
+    expect(response.body.message).toEqual('Super admin with the ID 63543d4cfc13ae204b000039 has been updated.');
   });
 
   test('should return status 400', async () => {
@@ -104,7 +104,7 @@ describe('PUT /superAdmin', () => {
     test('Correct Body - Should create a new super admin - Status code 201', async () => {
       const response = await request(app).post('/api/superAdmin').send(mockedSuperAdmin);
       expect(response.status).toBe(201);
-      expect(response.body.message).toEqual('Super Admins created');
+      expect(response.body.message).toEqual('New super admin successfully created.');
       expect(response.body.data).not.toBeUndefined();
       expect(response.body.error).toBeFalsy();
     });
@@ -134,7 +134,7 @@ describe('PUT /superAdmin', () => {
     test('Wrong ID - Should not delete a super admin - Status code 404', async () => {
       const response = await request(app).delete(`/api/superAdmin/${wrongSuperAdminId}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toEqual('SuperAdmin not found');
+      expect(response.body.message).toEqual('Super admin not found.');
     });
     test('Without ID - Should not delete a super admin - Status code 404', async () => {
       const response = await request(app).delete(`/api/superAdmin/${''}`);
@@ -159,7 +159,7 @@ describe('PUT /superAdmin', () => {
       const response = await request(app).get(`/api/superAdmin/${wrongSuperAdminId}`);
       expect(response.status).toBe(404);
       expect(response.body.data).toBeUndefined();
-      expect(response.body.message).toBe('SuperAdmin not found');
+      expect(response.body.message).toBe('Super admin not found.');
     });
     test('Wrong Path - Should not get a super admin - Status code 404', async () => {
       const response = await request(app).get(`/api/supperAdmin/${superAdminId}`);

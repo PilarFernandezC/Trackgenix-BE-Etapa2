@@ -99,7 +99,10 @@ const getAllAdmins = async (req, res) => {
     if (req.query.email) {
       filterByParams = admins.filter((admin) => admin.email === req.query.email);
     }
-    return res.status(200).json({ filterByParams });
+    return res.status(200).json({
+      message: 'Admin found succesfully',
+      data: filterByParams,
+    });
   } catch (error) {
     return res.status(error.status || 500).json({
       message: error.message || error,
