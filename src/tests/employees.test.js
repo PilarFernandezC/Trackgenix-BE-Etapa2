@@ -43,7 +43,7 @@ describe('getAll /employees', () => {
     expect(response.status).toBe(200);
     expect(response.body.error).toBeFalsy();
     expect(response.body.data).toBeDefined();
-    expect(response.body.message).toBe('List of employees matching the query params was successfully retrieved.');
+    expect(response.body.message).toBe('Employees found.');
   });
   test('should filter the employees by name', async () => {
     const response = await request(app)

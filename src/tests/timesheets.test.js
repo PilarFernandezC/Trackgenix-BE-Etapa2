@@ -413,7 +413,7 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
     response = await request(app).put(`/api/timesheets/${id}`)
       .send(payload);
     expect(response.status).toBe(400);
-    expect(response.body.data).toMatch(/date/);
+    expect(response.body.data).toBeUndefined();
     expect(response.body.error).toBeTruthy();
     response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     if (response.ok) {
@@ -440,7 +440,7 @@ describe('[PUT] /api/timesheets/:id endpoint => UPDATE/EDIT a timesheet.', () =>
     response = await request(app).put(`/api/timesheets/${id}`)
       .send(payload);
     expect(response.status).toBe(400);
-    expect(response.body.data).toMatch(/hours/);
+    expect(response.body.data).toBeUndefined();
     expect(response.body.error).toBeTruthy();
     response = await request(app).get(`/api/timesheets/${id}`).query({ disablePopulate: true });
     if (response.ok) {

@@ -5,11 +5,11 @@ const updateTaskValidation = (req, res, next) => {
     description: Joi.string().valid('BE', 'FE').required(),
   });
 
-  const validation = taskValidation.validate(req.body);
+  const validation = taskValidation.validate(req.body, { abortEarly: false });
 
   if (validation.error) {
     return res.status(400).json({
-      message: `There was an error: ${validation.error.details[0].message}`,
+      message: `There was an error: ${validation.error.message}`,
       error: true,
     });
   }

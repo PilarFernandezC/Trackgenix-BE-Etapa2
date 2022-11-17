@@ -7,11 +7,11 @@ const getSAdminById = async (req, res) => {
     if (!superAdminData) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'SuperAdmin not found', status: 404,
+        message: 'Super admin not found.', status: 404,
       };
     }
     return res.status(200).json({
-      message: 'SuperAdmin found',
+      message: 'Super admin found.',
       data: superAdminData,
     });
   } catch (error) {
@@ -28,12 +28,12 @@ const getAll = async (req, res) => {
     if (!superAdmins) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'SuperAdmin not found', status: 404,
+        message: 'Super admin not found.', status: 404,
       };
     }
     if (queriesArray.length === 0) {
       return res.status(200).json({
-        message: 'SuperAdmins found',
+        message: 'Super admins found.',
         data: superAdmins,
       });
     }
@@ -68,11 +68,11 @@ const updateSAdmin = async (req, res) => {
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'SuperAdmin not found', status: 404,
+        message: 'Super admin not found.', status: 404,
       };
     }
     return res.status(200).json({
-      message: 'SuperAdmin edited.',
+      message: `Super admin with the ID ${req.params.id} has been updated.`,
       data: result,
     });
   } catch (error) {
@@ -89,11 +89,11 @@ const deleteSAdmin = async (req, res) => {
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'SuperAdmin not found', status: 404,
+        message: 'Super admin not found.', status: 404,
       };
     }
     return res.status(204).json({
-      message: 'Super Admin deleted.',
+      message: `Super admin with the ID ${req.params.id} has been deleted.`,
       data: result,
     });
   } catch (error) {
@@ -115,11 +115,11 @@ const create = async (req, res) => {
     if (!newSupAdmin) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Could not create SuperAdmin', status: 404,
+        message: 'Could not create a new super admin.', status: 404,
       };
     }
     return res.status(201).json({
-      message: 'Super Admins created',
+      message: 'New super admin successfully created.',
       data: confirm,
     });
   } catch (error) {

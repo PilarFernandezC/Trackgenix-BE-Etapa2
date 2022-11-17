@@ -48,7 +48,7 @@ describe('POST /admin', () => {
     const response = await request(app)
       .post('/api/admin/')
       .send(mockedAdmin);
-    expect(response.body.message).toEqual('Admin created successfully');
+    expect(response.body.message).toEqual('New admin successfully created.');
   });
 
   test('Name minimum length of 3', async () => {

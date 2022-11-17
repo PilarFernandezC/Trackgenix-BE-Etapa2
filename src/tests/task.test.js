@@ -28,7 +28,7 @@ describe('getAll /tasks', () => {
     expect(response.status).toBe(200);
     expect(response.body.error).toBeFalsy();
     expect(response.body.data).toBeDefined();
-    expect(response.body.message).toBe('Tasks found');
+    expect(response.body.message).toBe('Tasks found.');
   });
   test('should filter tasks by description', async () => {
     const response = await request(app)
@@ -94,7 +94,7 @@ describe('POST /tasks', () => {
     const response = await request(app)
       .post('/api/tasks')
       .send(mockedTask);
-    expect(response.body.message).toBe('Task created successfully');
+    expect(response.body.message).toBe('New task successfully created.');
   });
 });
 

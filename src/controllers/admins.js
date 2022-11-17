@@ -13,11 +13,11 @@ const createAdmin = async (req, res) => {
     if (!result) {
     // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Could not create admin', status: 400,
+        message: 'Could not create a new admin.', status: 400,
       };
     }
     return res.status(201).json({
-      message: 'Admin created successfully',
+      message: 'New admin successfully created.',
       data: result,
     });
   } catch (error) {
@@ -34,11 +34,11 @@ const getAdminById = async (req, res) => {
     if (!admins) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Admin not found', status: 404,
+        message: 'Admin not found.', status: 404,
       };
     }
     return res.status(200).json({
-      message: 'Admin Found',
+      message: 'Admin found.',
       data: admins,
     });
   } catch (error) {
@@ -59,11 +59,11 @@ const editAdmin = async (req, res) => {
     if (!result) {
     // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Admin does not exist', status: 404,
+        message: 'Admin not found.', status: 404,
       };
     }
     return res.status(200).json({
-      message: `Admin with ID ${id} edited.`,
+      message: `Admin with the ID ${req.params.id} has been updated.`,
       data: result,
     });
   } catch (error) {
@@ -80,12 +80,12 @@ const getAllAdmins = async (req, res) => {
     if (!admins) {
     // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Admin not found', status: 404,
+        message: 'Admin not found.', status: 404,
       };
     }
     if (queriesArray.length === 0) {
       return res.status(200).json({
-        message: 'Admin found',
+        message: 'Admins found.',
         data: admins,
       });
     }
@@ -117,11 +117,11 @@ const deleteAdmin = async (req, res) => {
     if (!result) {
     // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Admin does not exist', status: 404,
+        message: 'Admin not found.', status: 404,
       };
     }
     return res.status(204).json({
-      message: `Admin with ID ${id} deleted.`,
+      message: `Admin with the ID ${req.params.id} has been deleted.`,
       data: result,
     });
   } catch (error) {
