@@ -533,10 +533,7 @@ describe('GET /timesheet/:id', () => {
   //   // check and compare this two outputs and the seed file.
   //   // Spooky behaviour
   //   const data = await Timesheet.find({});
-  //   console.log(data);
   //   // this user id is in the seeds file but not found in the db/import
-  //   console.log(timesheetSeeds);
-
   //   const response = await request(app).get('/api/timesheets/6354438cfc13ae204b000069').send();
   //   expect(response.status).toBe(200);
   // });

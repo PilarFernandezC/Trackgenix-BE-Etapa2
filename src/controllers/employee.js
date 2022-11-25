@@ -1,25 +1,5 @@
+import firebaseApp from '../helpers/firebase/index';
 import Employee from '../models/Employee';
-
-const createEmployee = async (req, res) => {
-  try {
-    const newEmployee = new Employee(req.body);
-    await newEmployee.save();
-    if (!newEmployee) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        message: 'Could not create a new employee.', status: 404,
-      };
-    }
-    res.status(201).json({
-      message: 'New employee successfully created.',
-      data: newEmployee,
-    });
-  } catch (error) {
-    res.status(error.status || 500).json({
-      message: error.message || error,
-    });
-  }
-};
 
 const getEmployeeById = async (req, res) => {
   try {
@@ -78,6 +58,41 @@ const filterEmployees = async (req, res) => {
   }
 };
 
+const createEmployee = async (req, res) => {
+  try {
+    const newFirebaseUser = await firebaseApp.auth().createUser({
+      email: req.body.email,
+      password: req.body.password,
+    });
+
+    await firebaseApp.auth().setCustomUserClaims(newFirebaseUser.uid, { role: 'EMPLOYEE' });
+
+    const newEmployee = new Employee({
+      name: req.body.name,
+      lastName: req.body.lastName,
+      phone: req.body.phone,
+      email: req.body.email,
+      password: req.body.password,
+      firebaseUid: newFirebaseUser.uid,
+    });
+    await newEmployee.save();
+    if (!newEmployee) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Could not create a new employee.', status: 404,
+      };
+    }
+    res.status(201).json({
+      message: 'New employee successfully created.',
+      data: newEmployee,
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      message: error.message || error,
+    });
+  }
+};
+
 const editEmployee = async (req, res) => {
   try {
     const employee = await Employee.findByIdAndUpdate(
@@ -85,6 +100,10 @@ const editEmployee = async (req, res) => {
       req.body,
       { new: true },
     );
+    await firebaseApp.auth().updateUser(employee.firebaseUid, {
+      email: req.body.email,
+      password: req.body.password,
+    });
     if (!employee) {
       return res.status(404).json({
         message: 'Employee not found',
@@ -103,6 +122,8 @@ const editEmployee = async (req, res) => {
 
 const deleteEmployee = async (req, res) => {
   try {
+    const employee = await Employee.findById(req.params.id);
+    await firebaseApp.auth().deleteUser(employee.firebaseUid);
     const employeeFoundById = await Employee.findByIdAndDelete(req.params.id);
     if (employeeFoundById === ' ') {
       // eslint-disable-next-line no-throw-literal

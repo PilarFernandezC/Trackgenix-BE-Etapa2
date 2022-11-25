@@ -1,13 +1,14 @@
 import express from 'express';
 import adminControllers from '../controllers/admins';
 import adminValidations from '../validations/admins';
+import checkAuth from '../middlewares/authMiddleware';
 
 const router = express.Router();
 
-router.post('/', adminValidations.validateCreation, adminControllers.createAdmin);
-router.get('/', adminControllers.getAllAdmins);
-router.get('/:id', adminControllers.getAdminById);
-router.put('/:id', adminValidations.validateCreation, adminControllers.editAdmin);
-router.delete('/:id', adminControllers.deleteAdmin);
+router.get('/', checkAuth(['SUPER_ADMIN']), adminControllers.getAllAdmins);
+router.post('/', checkAuth(['SUPER_ADMIN']), adminValidations.validateCreation, adminControllers.createAdmin);
+router.get('/:id', checkAuth(['SUPER_ADMIN']), adminControllers.getAdminById);
+router.put('/:id', checkAuth(['SUPER_ADMIN']), adminValidations.validateCreation, adminControllers.editAdmin);
+router.delete('/:id', checkAuth(['SUPER_ADMIN']), adminControllers.deleteAdmin);
 
 export default router;

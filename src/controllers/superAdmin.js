@@ -1,25 +1,5 @@
+import firebaseApp from '../helpers/firebase/index';
 import SuperAdmin from '../models/SuperAdmin';
-
-const getSAdminById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const superAdminData = await SuperAdmin.findById(id);
-    if (!superAdminData) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        message: 'Super admin not found.', status: 404,
-      };
-    }
-    return res.status(200).json({
-      message: 'Super admin found.',
-      data: superAdminData,
-    });
-  } catch (error) {
-    return res.status(error.status || 500).json({
-      message: error.message || error,
-    });
-  }
-};
 
 const getAll = async (req, res) => {
   const queriesArray = Object.keys(req.query);
@@ -43,7 +23,7 @@ const getAll = async (req, res) => {
     }
     if (req.query.lastName) {
       filterByParams = superAdmins.filter((superAdmin) => superAdmin.lastName
-      === req.query.lastName);
+        === req.query.lastName);
     }
     if (req.query.email) {
       filterByParams = superAdmins.filter((superAdmin) => superAdmin.email === req.query.email);
@@ -59,11 +39,71 @@ const getAll = async (req, res) => {
   }
 };
 
+const getSAdminById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const superAdminData = await SuperAdmin.findById(id);
+    if (!superAdminData) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Super admin not found.', status: 404,
+      };
+    }
+    return res.status(200).json({
+      message: 'Super admin found.',
+      data: superAdminData,
+    });
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
+    });
+  }
+};
+
+const create = async (req, res) => {
+  try {
+    const newFirebaseUser = await firebaseApp.auth().createUser({
+      email: req.body.email,
+      password: req.body.password,
+    });
+
+    await firebaseApp.auth().setCustomUserClaims(newFirebaseUser.uid, { role: 'SUPER_ADMIN' });
+
+    const newSupAdmin = new SuperAdmin({
+      name: req.body.name,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: req.body.password,
+      firebaseUid: newFirebaseUser.uid,
+
+    });
+    const confirm = await newSupAdmin.save();
+    if (!newSupAdmin) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Could not create a new super admin.', status: 404,
+      };
+    }
+    return res.status(201).json({
+      message: 'New super admin successfully created.',
+      data: confirm,
+    });
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
+    });
+  }
+};
+
 const updateSAdmin = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await SuperAdmin.findByIdAndUpdate({ _id: id }, req.body, {
       new: true,
+    });
+    await firebaseApp.auth().updateUser(result.firebaseUid, {
+      email: req.body.email,
+      password: req.body.password,
     });
     if (!result) {
       // eslint-disable-next-line no-throw-literal
@@ -85,6 +125,8 @@ const updateSAdmin = async (req, res) => {
 const deleteSAdmin = async (req, res) => {
   try {
     const { id } = req.params;
+    const superAdmin = await SuperAdmin.findById(req.params.id);
+    await firebaseApp.auth().deleteUser(superAdmin.firebaseUid);
     const result = await SuperAdmin.findByIdAndDelete(id);
     if (!result) {
       // eslint-disable-next-line no-throw-literal
@@ -95,32 +137,6 @@ const deleteSAdmin = async (req, res) => {
     return res.status(204).json({
       message: `Super admin with the ID ${req.params.id} has been deleted.`,
       data: result,
-    });
-  } catch (error) {
-    return res.status(error.status || 500).json({
-      message: error.message || error,
-    });
-  }
-};
-
-const create = async (req, res) => {
-  try {
-    const newSupAdmin = new SuperAdmin({
-      name: req.body.name,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      password: req.body.password,
-    });
-    const confirm = await newSupAdmin.save();
-    if (!newSupAdmin) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        message: 'Could not create a new super admin.', status: 404,
-      };
-    }
-    return res.status(201).json({
-      message: 'New super admin successfully created.',
-      data: confirm,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
