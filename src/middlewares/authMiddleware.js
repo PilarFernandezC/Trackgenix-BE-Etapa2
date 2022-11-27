@@ -12,7 +12,7 @@ const checkAuth = (roles) => async (req, res, next) => {
 
     const user = await app.auth().verifyIdToken(token);
 
-    if (!roles.inludes(user.role)) {
+    if (!roles.includes(user.role)) {
       throw new Error('Invalid role');
     }
     return next();
