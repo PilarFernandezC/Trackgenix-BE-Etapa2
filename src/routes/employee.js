@@ -7,8 +7,8 @@ import { ADMIN, EMPLOYEE, SUPER_ADMIN } from '../constants/roles';
 
 const router = express.Router();
 
-router.get('/', checkAuth([ADMIN, SUPER_ADMIN]), dbController.filterEmployees);
-router.get('/:id', checkAuth([ADMIN, SUPER_ADMIN]), dbController.getEmployeeById);
+router.get('/', checkAuth([ADMIN, SUPER_ADMIN, EMPLOYEE]), dbController.filterEmployees);
+router.get('/:id', checkAuth([ADMIN, SUPER_ADMIN, EMPLOYEE]), dbController.getEmployeeById);
 router.post('/', dataValidator, dbController.createEmployee);
 router.put('/:id', checkAuth([ADMIN, SUPER_ADMIN, EMPLOYEE]), dataValidator, dbController.editEmployee);
 router.delete('/:id', checkAuth([ADMIN, SUPER_ADMIN, EMPLOYEE]), dbController.deleteEmployee);

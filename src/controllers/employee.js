@@ -95,12 +95,13 @@ const createEmployee = async (req, res) => {
 
 const editEmployee = async (req, res) => {
   try {
+    const employeeUid = await Employee.findById(req.params.id);
     const employee = await Employee.findByIdAndUpdate(
       { _id: req.params.id },
       req.body,
       { new: true },
     );
-    await firebaseApp.auth().updateUser(employee.firebaseUid, {
+    await firebaseApp.auth().updateUser(employeeUid.firebaseUid, {
       email: req.body.email,
       password: req.body.password,
     });
