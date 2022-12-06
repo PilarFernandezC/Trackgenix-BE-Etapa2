@@ -4,7 +4,7 @@ const employeeValidatorMiddleware = (req, res, next) => {
   const employeeJoiSchema = Joi.object({
     name: Joi.string()
       .required()
-      .pattern(/^[\p{L}]+$/u)
+      .pattern(/^([A-Za-z]+ )+[A-Za-z]+$|^[A-Za-z]+$/u)
       .min(3)
       .messages({
         'string.pattern.base':
@@ -12,7 +12,7 @@ const employeeValidatorMiddleware = (req, res, next) => {
       }),
     lastName: Joi.string()
       .required()
-      .pattern(/^[\p{L}]+$/u)
+      .pattern(/^([A-Za-z]+ )+[A-Za-z]+$|^[A-Za-z]+$/u)
       .min(3)
       .messages({
         'string.pattern.base':

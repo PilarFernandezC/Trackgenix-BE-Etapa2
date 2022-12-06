@@ -8,11 +8,11 @@ const createValidation = (req, res, next) => {
   });
 
   const projectsValidation = Joi.object({
-    name: Joi.string().required(),
+    name: Joi.string().pattern(/^([A-Za-z]+ )+[A-Za-z]+$|^[A-Za-z]+$/u).required(),
     description: Joi.string().required(),
     startDate: Joi.date().required(),
     endDate: Joi.date().greater('now').required(),
-    clientName: Joi.string().required(),
+    clientName: Joi.string().pattern(/^([A-Za-z]+ )+[A-Za-z]+$|^[A-Za-z]+$/u).required(),
     employees: Joi.array().items(employeeValidation),
   });
 
