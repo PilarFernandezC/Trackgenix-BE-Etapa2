@@ -8,8 +8,8 @@ import { SUPER_ADMIN } from '../constants/roles';
 const router = express.Router();
 
 router.get('/', checkAuth([SUPER_ADMIN]), adminControllers.getAllAdmins);
-router.post('/', checkAuth([SUPER_ADMIN]), adminValidations.validateCreation, adminControllers.createAdmin);
 router.get('/:id', checkAuth([SUPER_ADMIN]), adminControllers.getAdminById);
+router.post('/', checkAuth([SUPER_ADMIN]), adminValidations.validateCreation, adminControllers.createAdmin);
 router.put('/:id', checkAuth([SUPER_ADMIN]), adminValidations.validateCreation, adminControllers.editAdmin);
 router.delete('/:id', checkAuth([SUPER_ADMIN]), adminControllers.deleteAdmin);
 

@@ -1,35 +1,23 @@
 import Project from '../models/Projects';
 
-const { ObjectId } = require('mongoose').Types;
-
-const getAll = async (req, res) => {
-  const queriesArray = Object.keys(req.query);
+const getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.find().populate({
+    const projects = await Project.find(req.query).populate({
       path: 'employees',
       populate: {
         path: 'employeeId',
       },
     });
-    if (!projects) {
+
+    if (!projects.length) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Project not found.', status: 404,
       };
     }
-    if (queriesArray.length === 0) {
-      return res.status(200).json({
-        message: 'Projects found.',
-        data: projects,
-      });
-    }
-    let filterByParams;
-    if (req.query.name) {
-      filterByParams = projects.filter((project) => project.name === req.query.name);
-    }
     return res.status(200).json({
-      message: 'Project found succesfully',
-      data: filterByParams,
+      message: 'Project found',
+      data: projects,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -38,7 +26,28 @@ const getAll = async (req, res) => {
   }
 };
 
-const create = async (req, res) => {
+const getProjectById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const project = await Project.findById(id);
+    if (!project) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Project not found.', status: 404,
+      };
+    }
+    return res.status(200).json({
+      msg: 'Project found.',
+      data: project,
+    });
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
+    });
+  }
+};
+
+const createProject = async (req, res) => {
   try {
     const newProject = new Project({
       name: req.body.name,
@@ -48,8 +57,9 @@ const create = async (req, res) => {
       clientName: req.body.clientName,
       employees: req.body.employees,
     });
-    const confirm = await newProject.save();
-    if (!newProject) {
+
+    const result = await newProject.save();
+    if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Could not create a new project.', status: 400,
@@ -57,7 +67,7 @@ const create = async (req, res) => {
     }
     return res.status(201).json({
       message: 'New project successfully created.',
-      data: confirm,
+      data: result,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -66,94 +76,55 @@ const create = async (req, res) => {
   }
 };
 
-const isValidId = (id) => {
+const editProject = async (req, res) => {
   try {
-    const oid = new ObjectId(id);
-    return ObjectId.isValid(id)
-      && oid.toString() === id;
-  } catch {
-    return false;
-  }
-};
-
-const getById = async (req, res) => {
-  if (req.params.id && isValidId(req.params.id)) {
-    try {
-      const retrievedProject = await Project.findById(req.params.id).populate('employees');
-      if (retrievedProject !== null) {
-        res.status(200).json({
-          message: 'Project found.',
-          data: retrievedProject,
-        });
-      } else {
-        // eslint-disable-next-line no-throw-literal
-        throw {
-          message: 'Project not found.', status: 404,
-        };
-      }
-    } catch (error) {
-      res.status(error.status || 500).json({
-        message: error.message || error,
-      });
+    const { id } = req.params;
+    const result = await Project.findByIdAndUpdate(
+      { _id: id },
+      req.body,
+      { new: true },
+    );
+    if (!result) {
+    // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Project not found.', status: 404,
+      };
     }
-  }
-};
-
-const updateById = async (req, res) => {
-  if (req.params.id && isValidId(req.params.id)) {
-    try {
-      const updatedProject = await Project.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true },
-      );
-      if (updatedProject !== null) {
-        res.status(200).json({
-          message: `Project with the ID ${req.params.id} has been updated.`,
-          data: updatedProject,
-        });
-      } else {
-        // eslint-disable-next-line no-throw-literal
-        throw {
-          message: 'Project not found.', status: 404,
-        };
-      }
-    } catch (error) {
-      res.status(error.status || 500).json({
-        message: error.message || error,
-      });
-    }
-  } else {
-    res.status(400).json({ message: 'No projects with this ID were found' });
+    return res.status(200).json({
+      message: `Project with the ID ${req.params.id} has been updated.`,
+      data: result,
+    });
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
+    });
   }
 };
 
 const deleteById = async (req, res) => {
-  if (req.params.id && isValidId(req.params.id)) {
-    try {
-      const response = await Project.findByIdAndDelete(req.params.id);
-      if (response !== null) {
-        res.status(204).json({
-          message: `Project with id=${req.params.id} deleted.`,
-        });
-      } else {
-        // eslint-disable-next-line no-throw-literal
-        throw {
-          message: 'Project not found.', status: 404,
-        };
-      }
-    } catch (error) {
-      res.status(error.status || 500).json({
-        message: error.message, error,
-      });
+  try {
+    const result = await Project.findByIdAndDelete(req.params.id);
+    if (!result) {
+    // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Project not found.', status: 404,
+      };
     }
+    return res.status(204).json({
+      message: `Project with the ID ${req.params.id} has been deleted.`,
+      data: result,
+    });
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
+    });
   }
 };
 
 export default {
-  getAll,
-  getById,
-  create,
-  updateById,
+  getAllProjects,
+  getProjectById,
+  createProject,
+  editProject,
   deleteById,
 };

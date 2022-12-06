@@ -1,8 +1,8 @@
-import Models from '../models/Task';
+import Tasks from '../models/Task';
 
 const getAllTasks = async (req, res) => {
   try {
-    const tasks = await Models.find(req.query);
+    const tasks = await Tasks.find(req.query);
 
     if (!tasks.length) {
       // eslint-disable-next-line no-throw-literal
@@ -21,10 +21,10 @@ const getAllTasks = async (req, res) => {
   }
 };
 
-const getOneTask = async (req, res) => {
+const getTaskById = async (req, res) => {
   try {
     const { id } = req.params;
-    const task = await Models.findById(id);
+    const task = await Tasks.findById(id);
     if (!task) {
       // eslint-disable-next-line no-throw-literal
       throw {
@@ -44,14 +44,14 @@ const getOneTask = async (req, res) => {
 
 const createTask = async (req, res) => {
   try {
-    const task = new Models({
+    const task = new Tasks({
       description: req.body.description,
     });
     const result = await task.save();
     if (!task) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Could not create a new task.', status: 404,
+        message: 'Could not create a new task.', status: 400,
       };
     }
     return res.status(201).json({
@@ -65,14 +65,14 @@ const createTask = async (req, res) => {
   }
 };
 
-const updateTask = async (req, res) => {
+const editTask = async (req, res) => {
   try {
     const { id } = req.params;
     const task = req.body;
-    const response = await Models.findByIdAndUpdate(id, {
+    const result = await Tasks.findByIdAndUpdate(id, {
       description: task.description,
     });
-    if (!response) {
+    if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Task not found.', status: 404,
@@ -80,7 +80,7 @@ const updateTask = async (req, res) => {
     }
     return res.status(200).json({
       message: `Task with the ID ${req.params.id} has been updated.`,
-      data: response,
+      data: result,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -91,8 +91,7 @@ const updateTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   try {
-    const { id } = req.params;
-    const result = await Models.findByIdAndDelete(id);
+    const result = await Tasks.findByIdAndDelete(req.params.id);
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
@@ -112,8 +111,8 @@ const deleteTask = async (req, res) => {
 
 export default {
   getAllTasks,
+  getTaskById,
   createTask,
+  editTask,
   deleteTask,
-  updateTask,
-  getOneTask,
 };

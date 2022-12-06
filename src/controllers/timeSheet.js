@@ -1,16 +1,48 @@
-import Joi from 'joi';
-import mongoose from 'mongoose';
 import Timesheet from '../models/TimeSheet';
 
-const { ObjectId } = mongoose.Types;
-
-const isValidId = (id) => {
+const getAllTimesheets = async (req, res) => {
   try {
-    const oid = new ObjectId(id);
-    return ObjectId.isValid(id)
-    && oid.toString() === id;
-  } catch {
-    return false;
+    const timesheets = await Timesheet.find(req.query)
+      .populate('task')
+      .populate('employee')
+      .populate('project');
+    if (!timesheets.length) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Timesheet not found.', status: 404,
+      };
+    }
+    return res.status(200).json({
+      message: 'Timesheets found.',
+      data: timesheets,
+    });
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
+    });
+  }
+};
+
+const getTimesheetById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const timeSheet = await Timesheet.findById(id);
+    if (!timeSheet) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Timesheet not found.',
+        status: 404,
+      };
+    }
+    return res.status(200).json({
+      message: 'Timesheet found.',
+      data: timeSheet,
+    });
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      message: error.message || error,
+      error: true,
+    });
   }
 };
 
@@ -28,142 +60,29 @@ const createTimesheet = async (req, res) => {
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Could not create a new timesheet.',
-        status: 500,
+        message: 'Could not create a new timesheet.', status: 400,
       };
-    } else {
-      return res.status(201).json({
-        message: 'New timesheet successfully created.',
-        data: result,
-        error: false,
-      });
     }
+    return res.status(201).json({
+      message: 'New timesheet successfully created.',
+      data: result,
+    });
   } catch (error) {
-    if (error instanceof Joi.ValidationError) error.status = 400;
     return res.status(error.status || 500).json({
       message: error.message || error,
-      error: true,
     });
   }
 };
 
-const getAllTimesheets = async (req, res) => {
-  try {
-    const timesheetFound = await Timesheet.find(req.query)
-      .populate('task')
-      .populate('employee')
-      .populate('project');
-    if (!timesheetFound || !timesheetFound.length) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        message: 'Timesheet not found.',
-        status: 404,
-      };
-    }
-    if (timesheetFound.length !== 0) {
-      return res.status(200).json({
-        message: 'Timesheets found.',
-        data: timesheetFound,
-        error: false,
-      });
-    }
-    let filterByParams = [...timesheetFound];
-    if (req.query.description) {
-      filterByParams = timesheetFound.filter(
-        (timesheet) => timesheet.description === req.query.description,
-      );
-    }
-    if (req.query.date) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.date === req.query.date,
-      );
-    }
-    if (req.query.task) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.task === req.query.task,
-      );
-    }
-    if (req.query.employees) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.employee === req.query.employees,
-      );
-    }
-    if (req.query.project) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.project === req.query.project,
-      );
-    }
-    if (req.query.hours) {
-      filterByParams = filterByParams.filter(
-        (timesheet) => timesheet.hours === parseInt(req.query.hours, 10),
-      );
-    }
-    return res.status(200).json({ filterByParams });
-  } catch (error) {
-    if (error instanceof Joi.ValidationError) error.status = 400;
-    return res.status(error.status || 500).json({
-      message: error.message || error,
-      error: true,
-    });
-  }
-};
-
-const getOneTimesheet = async (req, res) => {
+const editTimesheet = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!isValidId(id)) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        message: 'Invalid id.',
-        status: 400,
-      };
-    }
-    const timeSheet = req.query.disablePopulate
-      ? await Timesheet.findById(id)
-      : await Timesheet.findById(id)
-        .populate('task')
-        .populate('employee')
-        .populate('project');
-    if (!timeSheet) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        message: 'Timesheet not found.',
-        status: 404,
-      };
-    }
-    return res.status(200).json({
-      message: 'Timesheet found.',
-      data: timeSheet,
-      error: false,
-    });
-  } catch (error) {
-    return res.status(error.status || 500).json({
-      message: error.message || error,
-      error: true,
-    });
-  }
-};
-
-const updateTimesheet = async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!isValidId(id)) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        message: 'Invalid id.',
-        status: 400,
-      };
-    }
-    const timeSheet = req.body;
-    const response = await Timesheet.findByIdAndUpdate(id, {
-      description: timeSheet.description,
-      date: timeSheet.date,
-      task: timeSheet.task,
-      employee: timeSheet.employee,
-      project: timeSheet.project,
-      hours: timeSheet.hours,
-    });
-    if (!response) {
+    const result = await Timesheet.findByIdAndUpdate(
+      { _id: id },
+      req.body,
+      { new: true },
+    );
+    if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Timesheet not found.',
@@ -172,22 +91,18 @@ const updateTimesheet = async (req, res) => {
     }
     return res.status(200).json({
       message: `Timesheet with the ID ${req.params.id} has been updated.`,
-      data: response,
-      error: false,
+      data: result,
     });
   } catch (error) {
-    if (error instanceof Joi.ValidationError) error.status = 400;
     return res.status(error.status || 500).json({
       message: error.message || error,
-      error: true,
     });
   }
 };
 
 const deleteTimesheet = async (req, res) => {
   try {
-    const { id } = req.params;
-    const result = await Timesheet.findByIdAndDelete(id);
+    const result = await Timesheet.findByIdAndDelete(req.params.id);
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
@@ -207,9 +122,9 @@ const deleteTimesheet = async (req, res) => {
 };
 
 export default {
-  createTimesheet,
   getAllTimesheets,
-  getOneTimesheet,
-  updateTimesheet,
+  getTimesheetById,
+  createTimesheet,
+  editTimesheet,
   deleteTimesheet,
 };

@@ -2,34 +2,18 @@ import firebaseApp from '../helpers/firebase/index';
 import Admins from '../models/Admin';
 
 const getAllAdmins = async (req, res) => {
-  const queriesArray = Object.keys(req.query);
   try {
     const admins = await Admins.find(req.query);
-    if (!admins) {
+
+    if (!admins.length) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Admin not found.', status: 404,
       };
     }
-    if (queriesArray.length === 0) {
-      return res.status(200).json({
-        message: 'Admins found.',
-        data: admins,
-      });
-    }
-    let filterByParams;
-    if (req.query.name) {
-      filterByParams = admins.filter((admin) => admin.name === req.query.name);
-    }
-    if (req.query.lastName) {
-      filterByParams = admins.filter((admin) => admin.lastName === req.query.lastName);
-    }
-    if (req.query.email) {
-      filterByParams = admins.filter((admin) => admin.email === req.query.email);
-    }
     return res.status(200).json({
-      message: 'Admin found succesfully',
-      data: filterByParams,
+      message: 'Admins found.',
+      data: admins,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -41,16 +25,16 @@ const getAllAdmins = async (req, res) => {
 const getAdminById = async (req, res) => {
   try {
     const { id } = req.params;
-    const admins = await Admins.findById(id);
-    if (!admins) {
+    const admin = await Admins.findById(id);
+    if (!admin) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Admin not found.', status: 404,
       };
     }
     return res.status(200).json({
-      message: 'Admin found.',
-      data: admins,
+      msg: 'Admin found.',
+      data: admin,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -68,7 +52,7 @@ const createAdmin = async (req, res) => {
 
     await firebaseApp.auth().setCustomUserClaims(newFirebaseUser.uid, { role: 'ADMIN' });
 
-    const admin = new Admins({
+    const newAdmin = new Admins({
       name: req.body.name,
       lastName: req.body.lastName,
       email: req.body.email,
@@ -76,7 +60,7 @@ const createAdmin = async (req, res) => {
       firebaseUid: newFirebaseUser.uid,
     });
 
-    const result = await admin.save();
+    const result = await newAdmin.save();
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
@@ -146,9 +130,9 @@ const deleteAdmin = async (req, res) => {
 };
 
 export default {
-  createAdmin,
   getAllAdmins,
   getAdminById,
+  createAdmin,
   editAdmin,
   deleteAdmin,
 };
