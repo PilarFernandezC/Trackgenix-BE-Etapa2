@@ -1,36 +1,19 @@
 import firebaseApp from '../helpers/firebase/index';
 import SuperAdmin from '../models/SuperAdmin';
 
-const getAll = async (req, res) => {
-  const queriesArray = Object.keys(req.query);
+const getAllSuperAdmins = async (req, res) => {
   try {
-    const superAdmins = await SuperAdmin.find();
-    if (!superAdmins) {
+    const superAdmin = await SuperAdmin.find(req.query);
+
+    if (!superAdmin.length) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Super admin not found.', status: 404,
+        message: 'Super Admin not found.', status: 404,
       };
     }
-    if (queriesArray.length === 0) {
-      return res.status(200).json({
-        message: 'Super admins found.',
-        data: superAdmins,
-      });
-    }
-    let filterByParams;
-    if (req.query.name) {
-      filterByParams = superAdmins.filter((superAdmin) => superAdmin.name === req.query.name);
-    }
-    if (req.query.lastName) {
-      filterByParams = superAdmins.filter((superAdmin) => superAdmin.lastName
-        === req.query.lastName);
-    }
-    if (req.query.email) {
-      filterByParams = superAdmins.filter((superAdmin) => superAdmin.email === req.query.email);
-    }
     return res.status(200).json({
-      message: 'Super admin found succesfully',
-      data: filterByParams,
+      message: superAdmin.length > 1 ? 'Super Admins found' : 'Super Admin found',
+      data: superAdmin,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -39,19 +22,19 @@ const getAll = async (req, res) => {
   }
 };
 
-const getSAdminById = async (req, res) => {
+const getSuperAdminById = async (req, res) => {
   try {
     const { id } = req.params;
-    const superAdminData = await SuperAdmin.findById(id);
-    if (!superAdminData) {
+    const superAdmin = await SuperAdmin.findById(id);
+    if (!superAdmin) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Super admin not found.', status: 404,
+        message: 'Super Admin not found.', status: 404,
       };
     }
     return res.status(200).json({
-      message: 'Super admin found.',
-      data: superAdminData,
+      msg: 'Super Admin found.',
+      data: superAdmin,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -60,7 +43,7 @@ const getSAdminById = async (req, res) => {
   }
 };
 
-const create = async (req, res) => {
+const createSuperAdmin = async (req, res) => {
   try {
     const newFirebaseUser = await firebaseApp.auth().createUser({
       email: req.body.email,
@@ -77,16 +60,16 @@ const create = async (req, res) => {
       firebaseUid: newFirebaseUser.uid,
 
     });
-    const confirm = await newSupAdmin.save();
-    if (!newSupAdmin) {
+    const result = await newSupAdmin.save();
+    if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Could not create a new super admin.', status: 404,
+        message: 'Could not create a new Super Admin.', status: 400,
       };
     }
     return res.status(201).json({
-      message: 'New super admin successfully created.',
-      data: confirm,
+      message: 'New Super Admin successfully created.',
+      data: result,
     });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -95,7 +78,7 @@ const create = async (req, res) => {
   }
 };
 
-const updateSAdmin = async (req, res) => {
+const editSuperAdmin = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await SuperAdmin.findByIdAndUpdate({ _id: id }, req.body, {
@@ -108,11 +91,11 @@ const updateSAdmin = async (req, res) => {
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Super admin not found.', status: 404,
+        message: 'Super Admin not found.', status: 404,
       };
     }
     return res.status(200).json({
-      message: `Super admin with the ID ${req.params.id} has been updated.`,
+      message: 'Super Admin updated.',
       data: result,
     });
   } catch (error) {
@@ -122,20 +105,19 @@ const updateSAdmin = async (req, res) => {
   }
 };
 
-const deleteSAdmin = async (req, res) => {
+const deleteSuperAdmin = async (req, res) => {
   try {
-    const { id } = req.params;
     const superAdmin = await SuperAdmin.findById(req.params.id);
     await firebaseApp.auth().deleteUser(superAdmin.firebaseUid);
-    const result = await SuperAdmin.findByIdAndDelete(id);
+    const result = await SuperAdmin.findByIdAndDelete(req.params.id);
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: 'Super admin not found.', status: 404,
+        message: 'Super Admin not found.', status: 404,
       };
     }
     return res.status(204).json({
-      message: `Super admin with the ID ${req.params.id} has been deleted.`,
+      message: 'Super Admin deleted.',
       data: result,
     });
   } catch (error) {
@@ -146,9 +128,9 @@ const deleteSAdmin = async (req, res) => {
 };
 
 export default {
-  getSAdminById,
-  updateSAdmin,
-  deleteSAdmin,
-  getAll,
-  create,
+  getAllSuperAdmins,
+  getSuperAdminById,
+  createSuperAdmin,
+  editSuperAdmin,
+  deleteSuperAdmin,
 };

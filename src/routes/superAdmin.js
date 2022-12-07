@@ -4,10 +4,10 @@ import superAdminValidation from '../validations/superAdmin';
 
 const router = express.Router();
 
-router.get('/:id', superAdminControllers.getSAdminById);
-router.put('/:id', superAdminValidation.createValidation, superAdminControllers.updateSAdmin);
-router.delete('/:id', superAdminControllers.deleteSAdmin);
-router.get('/', superAdminControllers.getAll);
-router.post('/', superAdminValidation.createValidation, superAdminControllers.create);
+router.get('/', superAdminControllers.getAllSuperAdmins);
+router.get('/:id', superAdminControllers.getSuperAdminById);
+router.post('/', superAdminValidation.createValidation, superAdminControllers.createSuperAdmin);
+router.put('/:id', superAdminValidation.createValidation, superAdminControllers.editSuperAdmin);
+router.delete('/:id', superAdminControllers.deleteSuperAdmin);
 
 export default router;

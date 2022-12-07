@@ -7,10 +7,10 @@ import { ADMIN, EMPLOYEE } from '../constants/roles';
 
 const router = express.Router();
 
-router.get('/', checkAuth([ADMIN, EMPLOYEE]), dbController.getAll);
-router.get('/:id', checkAuth([ADMIN, EMPLOYEE]), dbController.getById);
-router.post('/', checkAuth([ADMIN]), dataValidator, dbController.create);
-router.put('/:id', checkAuth([ADMIN]), dataValidator, dbController.updateById);
+router.get('/', checkAuth([ADMIN, EMPLOYEE]), dbController.getAllProjects);
+router.get('/:id', checkAuth([ADMIN, EMPLOYEE]), dbController.getProjectById);
+router.post('/', checkAuth([ADMIN]), dataValidator, dbController.createProject);
+router.put('/:id', checkAuth([ADMIN]), dataValidator, dbController.editProject);
 router.delete('/:id', checkAuth([ADMIN]), dbController.deleteById);
 
 export default router;

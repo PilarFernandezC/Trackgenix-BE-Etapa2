@@ -8,9 +8,9 @@ import { ADMIN, EMPLOYEE } from '../constants/roles';
 const router = express.Router();
 
 router.get('/', checkAuth([ADMIN, EMPLOYEE]), tasksControllers.getAllTasks);
-router.get('/:id', checkAuth([ADMIN, EMPLOYEE]), tasksControllers.getOneTask);
+router.get('/:id', checkAuth([ADMIN, EMPLOYEE]), tasksControllers.getTaskById);
 router.post('/', checkAuth([ADMIN]), tasksValidations.updateTaskValidation, tasksControllers.createTask);
-router.put('/:id', checkAuth([ADMIN]), tasksValidations.updateTaskValidation, tasksControllers.updateTask);
+router.put('/:id', checkAuth([ADMIN]), tasksValidations.updateTaskValidation, tasksControllers.editTask);
 router.delete('/:id', checkAuth([ADMIN]), tasksControllers.deleteTask);
 
 export default router;
