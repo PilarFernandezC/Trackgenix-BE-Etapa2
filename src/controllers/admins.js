@@ -12,7 +12,7 @@ const getAllAdmins = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: 'Admins found.',
+      message: admins.length > 1 ? 'Admins found' : 'Admin found',
       data: admins,
     });
   } catch (error) {
@@ -97,7 +97,7 @@ const editAdmin = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: `Admin with the ID ${req.params.id} has been updated.`,
+      message: 'Admin updated.',
       data: result,
     });
   } catch (error) {
@@ -119,7 +119,7 @@ const deleteAdmin = async (req, res) => {
       };
     }
     return res.status(204).json({
-      message: `Admin with the ID ${req.params.id} has been deleted.`,
+      message: 'Admin deleted.',
       data: result,
     });
   } catch (error) {

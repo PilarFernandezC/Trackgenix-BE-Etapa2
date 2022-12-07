@@ -16,7 +16,7 @@ const getAllProjects = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: 'Project found',
+      message: projects.length > 1 ? 'Projects found' : 'Project found',
       data: projects,
     });
   } catch (error) {
@@ -91,7 +91,7 @@ const editProject = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: `Project with the ID ${req.params.id} has been updated.`,
+      message: 'Project updated.',
       data: result,
     });
   } catch (error) {
@@ -111,7 +111,7 @@ const deleteById = async (req, res) => {
       };
     }
     return res.status(204).json({
-      message: `Project with the ID ${req.params.id} has been deleted.`,
+      message: 'Project deleted.',
       data: result,
     });
   } catch (error) {

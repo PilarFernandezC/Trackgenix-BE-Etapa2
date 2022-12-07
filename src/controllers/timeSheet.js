@@ -13,7 +13,7 @@ const getAllTimesheets = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: 'Timesheets found.',
+      message: timesheets.length > 1 ? 'Timesheets found' : 'Timesheet found',
       data: timesheets,
     });
   } catch (error) {
@@ -90,7 +90,7 @@ const editTimesheet = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: `Timesheet with the ID ${req.params.id} has been updated.`,
+      message: 'Timesheet updated.',
       data: result,
     });
   } catch (error) {
@@ -111,7 +111,7 @@ const deleteTimesheet = async (req, res) => {
       };
     }
     return res.status(204).json({
-      message: `Timesheet with the ID ${req.params.id} has been deleted.`,
+      message: 'Timesheet deleted.',
       data: result,
     });
   } catch (error) {

@@ -12,7 +12,7 @@ const getAllEmployees = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: 'Employees found.',
+      message: employees.length > 1 ? 'Employees found' : 'Employee found',
       data: employees,
     });
   } catch (error) {
@@ -33,7 +33,7 @@ const getEmployeeById = async (req, res) => {
       };
     } else {
       return res.status(200).json({
-        message: 'Employees found.',
+        message: 'Employee found.',
         data: employee,
       });
     }
@@ -98,7 +98,7 @@ const editEmployee = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: `Employee with the ID ${req.params.id} has been updated.`,
+      message: 'Employee updated.',
       data: result,
     });
   } catch (error) {
@@ -119,12 +119,12 @@ const deleteEmployee = async (req, res) => {
         message: 'Employee not found.', status: 404,
       };
     }
-    res.status(204).json({
-      message: `Employee with the ID ${req.params.id} has been deleted.`,
+    return res.status(204).json({
+      message: 'Employee deleted.',
       data: result,
     });
   } catch (error) {
-    res.status(error.status || 500).json({
+    return res.status(error.status || 500).json({
       message: error.message || error,
     });
   }

@@ -11,7 +11,7 @@ const getAllTasks = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: 'Tasks found.',
+      message: tasks.length > 1 ? 'Tasks found' : 'Task found',
       data: tasks,
     });
   } catch (error) {
@@ -79,7 +79,7 @@ const editTask = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: `Task with the ID ${req.params.id} has been updated.`,
+      message: 'Task updated.',
       data: result,
     });
   } catch (error) {
@@ -99,7 +99,7 @@ const deleteTask = async (req, res) => {
       };
     }
     return res.status(204).json({
-      message: `Task with the ID ${req.params.id} has been deleted.`,
+      message: 'Task deleted.',
       data: result,
     });
   } catch (error) {

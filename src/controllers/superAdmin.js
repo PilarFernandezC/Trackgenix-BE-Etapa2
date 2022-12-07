@@ -12,7 +12,7 @@ const getAllSuperAdmins = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: 'SuperAdmins found.',
+      message: superAdmin.length > 1 ? 'Super Admins found' : 'Super Admin found',
       data: superAdmin,
     });
   } catch (error) {
@@ -95,7 +95,7 @@ const editSuperAdmin = async (req, res) => {
       };
     }
     return res.status(200).json({
-      message: `Super Admin with the ID ${req.params.id} has been updated.`,
+      message: 'Super Admin updated.',
       data: result,
     });
   } catch (error) {
@@ -117,7 +117,7 @@ const deleteSuperAdmin = async (req, res) => {
       };
     }
     return res.status(204).json({
-      message: `Super Admin with the ID ${req.params.id} has been deleted.`,
+      message: 'Super Admin deleted.',
       data: result,
     });
   } catch (error) {
