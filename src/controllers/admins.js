@@ -3,7 +3,7 @@ import Admins from '../models/Admin';
 
 const getAllAdmins = async (req, res) => {
   try {
-    const admins = await Admins.find(req.query);
+    const admins = await Admins.find({ isDeleted: false });
 
     if (!admins.length) {
       // eslint-disable-next-line no-throw-literal
@@ -30,6 +30,11 @@ const getAdminById = async (req, res) => {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Admin not found.', status: 404,
+      };
+    } else if (admin.isDeleted === true) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Admin Deleted.', status: 404,
       };
     }
     return res.status(200).json({
@@ -109,8 +114,8 @@ const editAdmin = async (req, res) => {
 
 const deleteAdmin = async (req, res) => {
   try {
-    const admin = await Admins.findById(req.params.id);
-    await firebaseApp.auth().deleteUser(admin.firebaseUid);
+    // const admin = await Admins.findById(req.params.id);
+    // await firebaseApp.auth().deleteUser(admin.firebaseUid);
     const result = await Admins.findByIdAndUpdate(req.params.id, { isDeleted: true });
     if (!result) {
     // eslint-disable-next-line no-throw-literal
