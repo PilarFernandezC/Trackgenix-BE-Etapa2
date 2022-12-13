@@ -3,7 +3,7 @@ import Employee from '../models/Employee';
 
 const getAllEmployees = async (req, res) => {
   try {
-    const employees = await Employee.find(req.query);
+    const employees = await Employee.find({ isDeleted: false });
 
     if (!employees.length) {
       // eslint-disable-next-line no-throw-literal
@@ -31,9 +31,14 @@ const getEmployeeById = async (req, res) => {
       throw {
         message: 'Employee not found.', status: 404,
       };
+    } else if (employee.isDeleted === true) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Employee Deleted.', status: 404,
+      };
     } else {
       return res.status(200).json({
-        message: 'Employee found.',
+        msg: 'Employee found.',
         data: employee,
       });
     }
@@ -110,9 +115,9 @@ const editEmployee = async (req, res) => {
 
 const deleteEmployee = async (req, res) => {
   try {
-    const employee = await Employee.findById(req.params.id);
-    await firebaseApp.auth().deleteUser(employee.firebaseUid);
-    const result = await Employee.findByIdAndDelete(req.params.id);
+    // const employee = await Employee.findById(req.params.id);
+    // await firebaseApp.auth().deleteUser(employee.firebaseUid);
+    const result = await Employee.findByIdAndUpdate(req.params.id, { isDeleted: true });
     if (!result) {
       // eslint-disable-next-line no-throw-literal
       throw {

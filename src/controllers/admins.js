@@ -36,11 +36,12 @@ const getAdminById = async (req, res) => {
       throw {
         message: 'Admin Deleted.', status: 404,
       };
+    } else {
+      return res.status(200).json({
+        msg: 'Admin found.',
+        data: admin,
+      });
     }
-    return res.status(200).json({
-      msg: 'Admin found.',
-      data: admin,
-    });
   } catch (error) {
     return res.status(error.status || 500).json({
       message: error.message || error,
