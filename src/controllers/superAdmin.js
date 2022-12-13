@@ -1,5 +1,6 @@
 import firebaseApp from '../helpers/firebase/index';
 import SuperAdmin from '../models/SuperAdmin';
+import { hashPassword } from '../helpers/bcrypt';
 
 const getAllSuperAdmins = async (req, res) => {
   try {
@@ -52,11 +53,12 @@ const createSuperAdmin = async (req, res) => {
 
     await firebaseApp.auth().setCustomUserClaims(newFirebaseUser.uid, { role: 'SUPER_ADMIN' });
 
+    const hash = hashPassword(req.body.password);
     const newSupAdmin = new SuperAdmin({
       name: req.body.name,
       lastName: req.body.lastName,
       email: req.body.email,
-      password: req.body.password,
+      password: hash,
       firebaseUid: newFirebaseUser.uid,
 
     });
@@ -80,6 +82,7 @@ const createSuperAdmin = async (req, res) => {
 
 const editSuperAdmin = async (req, res) => {
   try {
+    req.body.password = hashPassword(req.body.password);
     const { id } = req.params;
     const result = await SuperAdmin.findByIdAndUpdate({ _id: id }, req.body, {
       new: true,

@@ -1,5 +1,6 @@
 import firebaseApp from '../helpers/firebase/index';
 import Admins from '../models/Admin';
+import { hashPassword } from '../helpers/bcrypt';
 
 const getAllAdmins = async (req, res) => {
   try {
@@ -52,11 +53,12 @@ const createAdmin = async (req, res) => {
 
     await firebaseApp.auth().setCustomUserClaims(newFirebaseUser.uid, { role: 'ADMIN' });
 
+    const hash = hashPassword(req.body.password);
     const newAdmin = new Admins({
       name: req.body.name,
       lastName: req.body.lastName,
       email: req.body.email,
-      password: req.body.password,
+      password: hash,
       firebaseUid: newFirebaseUser.uid,
     });
 
@@ -80,6 +82,7 @@ const createAdmin = async (req, res) => {
 
 const editAdmin = async (req, res) => {
   try {
+    req.body.password = hashPassword(req.body.password);
     const { id } = req.params;
     const result = await Admins.findByIdAndUpdate(
       { _id: id },
