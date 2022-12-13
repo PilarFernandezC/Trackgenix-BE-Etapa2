@@ -2,7 +2,7 @@ import Project from '../models/Projects';
 
 const getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.find(req.query).populate({
+    const projects = await Project.find({ isDeleted: false }).populate({
       path: 'employees',
       populate: {
         path: 'employeeId',
@@ -35,11 +35,17 @@ const getProjectById = async (req, res) => {
       throw {
         message: 'Project not found.', status: 404,
       };
+    } else if (project.isDeleted === true) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Project Deleted.', status: 404,
+      };
+    } else {
+      return res.status(200).json({
+        msg: 'Project found.',
+        data: project,
+      });
     }
-    return res.status(200).json({
-      msg: 'Project found.',
-      data: project,
-    });
   } catch (error) {
     return res.status(error.status || 500).json({
       message: error.message || error,
@@ -103,7 +109,7 @@ const editProject = async (req, res) => {
 
 const deleteById = async (req, res) => {
   try {
-    const result = await Project.findByIdAndDelete(req.params.id);
+    const result = await Project.findByIdAndUpdate(req.params.id, { isDeleted: true });
     if (!result) {
     // eslint-disable-next-line no-throw-literal
       throw {
