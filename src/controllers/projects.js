@@ -2,7 +2,7 @@ import Project from '../models/Projects';
 
 const getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.find({ isDeleted: false }).populate({
+    const projects = await Project.find(req.query).find({ isDeleted: false }).populate({
       path: 'employees',
       populate: {
         path: 'employeeId',

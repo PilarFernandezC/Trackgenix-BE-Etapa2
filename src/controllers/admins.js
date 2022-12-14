@@ -3,7 +3,7 @@ import Admins from '../models/Admin';
 
 const getAllAdmins = async (req, res) => {
   try {
-    const admins = await Admins.find({ isDeleted: false });
+    const admins = await Admins.find(req.query).find({ isDeleted: false });
 
     if (!admins.length) {
       // eslint-disable-next-line no-throw-literal

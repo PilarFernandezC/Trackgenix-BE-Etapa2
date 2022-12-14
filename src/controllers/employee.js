@@ -3,7 +3,7 @@ import Employee from '../models/Employee';
 
 const getAllEmployees = async (req, res) => {
   try {
-    const employees = await Employee.find({ isDeleted: false });
+    const employees = await Employee.find(req.query).find({ isDeleted: false });
 
     if (!employees.length) {
       // eslint-disable-next-line no-throw-literal
