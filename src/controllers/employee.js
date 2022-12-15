@@ -1,5 +1,6 @@
 import firebaseApp from '../helpers/firebase/index';
 import Employee from '../models/Employee';
+import { hashPassword } from '../helpers/bcrypt';
 
 const getAllEmployees = async (req, res) => {
   try {
@@ -53,12 +54,13 @@ const createEmployee = async (req, res) => {
 
     await firebaseApp.auth().setCustomUserClaims(newFirebaseUser.uid, { role: 'EMPLOYEE' });
 
+    const hash = hashPassword(req.body.password);
     const newEmployee = new Employee({
       name: req.body.name,
       lastName: req.body.lastName,
       phone: req.body.phone,
       email: req.body.email,
-      password: req.body.password,
+      password: hash,
       firebaseUid: newFirebaseUser.uid,
     });
     await newEmployee.save();
@@ -81,6 +83,7 @@ const createEmployee = async (req, res) => {
 
 const editEmployee = async (req, res) => {
   try {
+    req.body.password = hashPassword(req.body.password);
     const { id } = req.params;
     const result = await Employee.findByIdAndUpdate(
       { _id: id },
