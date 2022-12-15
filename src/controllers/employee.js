@@ -31,7 +31,7 @@ const getEmployeeById = async (req, res) => {
       throw {
         message: 'Employee not found.', status: 404,
       };
-    } else if (employee.isDeleted === true) {
+    } else if (employee.isDeleted) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Employee Deleted.', status: 404,
@@ -115,8 +115,6 @@ const editEmployee = async (req, res) => {
 
 const deleteEmployee = async (req, res) => {
   try {
-    // const employee = await Employee.findById(req.params.id);
-    // await firebaseApp.auth().deleteUser(employee.firebaseUid);
     const result = await Employee.findByIdAndUpdate(req.params.id, { isDeleted: true });
     if (!result) {
       // eslint-disable-next-line no-throw-literal

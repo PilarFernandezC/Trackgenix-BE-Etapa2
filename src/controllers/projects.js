@@ -35,7 +35,7 @@ const getProjectById = async (req, res) => {
       throw {
         message: 'Project not found.', status: 404,
       };
-    } else if (project.isDeleted === true) {
+    } else if (project.isDeleted) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Project Deleted.', status: 404,

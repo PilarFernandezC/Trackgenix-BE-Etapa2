@@ -31,7 +31,7 @@ const getAdminById = async (req, res) => {
       throw {
         message: 'Admin not found.', status: 404,
       };
-    } else if (admin.isDeleted === true) {
+    } else if (admin.isDeleted) {
       // eslint-disable-next-line no-throw-literal
       throw {
         message: 'Admin Deleted.', status: 404,
