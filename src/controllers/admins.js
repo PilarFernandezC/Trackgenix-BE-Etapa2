@@ -115,8 +115,6 @@ const editAdmin = async (req, res) => {
 
 const deleteAdmin = async (req, res) => {
   try {
-    // const admin = await Admins.findById(req.params.id);
-    // await firebaseApp.auth().deleteUser(admin.firebaseUid);
     const result = await Admins.findByIdAndUpdate(req.params.id, { isDeleted: true });
     if (!result) {
     // eslint-disable-next-line no-throw-literal
