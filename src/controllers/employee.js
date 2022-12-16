@@ -83,6 +83,7 @@ const createEmployee = async (req, res) => {
 
 const editEmployee = async (req, res) => {
   try {
+    const { password } = req.body;
     req.body.password = hashPassword(req.body.password);
     const { id } = req.params;
     const result = await Employee.findByIdAndUpdate(
@@ -92,7 +93,7 @@ const editEmployee = async (req, res) => {
     );
     await firebaseApp.auth().updateUser(result.firebaseUid, {
       email: req.body.email,
-      password: req.body.password,
+      password,
     });
     if (!result) {
     // eslint-disable-next-line no-throw-literal
