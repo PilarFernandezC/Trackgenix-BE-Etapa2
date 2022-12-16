@@ -4,7 +4,7 @@ import { hashPassword } from '../helpers/bcrypt';
 
 const getAllAdmins = async (req, res) => {
   try {
-    const admins = await Admins.find(req.query);
+    const admins = await Admins.find(req.query).find({ isDeleted: false });
 
     if (!admins.length) {
       // eslint-disable-next-line no-throw-literal
@@ -32,11 +32,17 @@ const getAdminById = async (req, res) => {
       throw {
         message: 'Admin not found.', status: 404,
       };
+    } else if (admin.isDeleted) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: 'Admin Deleted.', status: 404,
+      };
+    } else {
+      return res.status(200).json({
+        msg: 'Admin found.',
+        data: admin,
+      });
     }
-    return res.status(200).json({
-      msg: 'Admin found.',
-      data: admin,
-    });
   } catch (error) {
     return res.status(error.status || 500).json({
       message: error.message || error,
@@ -113,9 +119,7 @@ const editAdmin = async (req, res) => {
 
 const deleteAdmin = async (req, res) => {
   try {
-    const admin = await Admins.findById(req.params.id);
-    await firebaseApp.auth().deleteUser(admin.firebaseUid);
-    const result = await Admins.findByIdAndDelete(req.params.id);
+    const result = await Admins.findByIdAndUpdate(req.params.id, { isDeleted: true });
     if (!result) {
     // eslint-disable-next-line no-throw-literal
       throw {

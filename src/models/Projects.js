@@ -14,6 +14,7 @@ const schema = new Schema({
     role: { type: String, enum: ['DEV', 'QA', 'PM', 'TL'], required: true },
     rate: { type: Number, required: true },
   }],
+  isDeleted: { type: Boolean, required: true, default: false },
 });
 
 export default mongoose.model('projects', schema);
