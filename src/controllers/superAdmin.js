@@ -83,7 +83,9 @@ const createSuperAdmin = async (req, res) => {
 const editSuperAdmin = async (req, res) => {
   try {
     const { password } = req.body;
-    req.body.password = hashPassword(req.body.password);
+    if (password) {
+      req.body.password = hashPassword(req.body.password);
+    }
     const { id } = req.params;
     const result = await SuperAdmin.findByIdAndUpdate({ _id: id }, req.body, {
       new: true,
