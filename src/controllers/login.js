@@ -35,7 +35,7 @@ const testLogin = async (req, res) => {
     const employee = await Employee.find({ email: req.headers.email }).find({
       isDeleted: false,
     });
-    if (employee.length > 0) {
+    if (employee.length) {
       loginSuccess = compareHashPassword(
         req.headers.password,
         employee[0].password,
@@ -44,12 +44,12 @@ const testLogin = async (req, res) => {
         const data = loginFirebase(req.headers.email, req.headers.password);
         customToken = await data();
       } else {
-        return res.status(500).json({
+        return res.status(400).json({
           message: 'Password invalid!',
         });
       }
       return res.status(200).json({
-        message: 'Login successful as employee',
+        message: 'Successfully logged as employee',
         token: customToken.idToken,
       });
     }
@@ -57,7 +57,7 @@ const testLogin = async (req, res) => {
     const admin = await Admin.find({ email: req.headers.email }).find({
       isDeleted: false,
     });
-    if (admin.length > 0) {
+    if (admin.length) {
       loginSuccess = compareHashPassword(
         req.headers.password,
         admin[0].password,
@@ -66,12 +66,12 @@ const testLogin = async (req, res) => {
         const data = loginFirebase(req.headers.email, req.headers.password);
         customToken = await data();
       } else {
-        return res.status(500).json({
+        return res.status(400).json({
           message: 'Password invalid!',
         });
       }
       return res.status(200).json({
-        message: 'Login successful as admin',
+        message: 'Successfully logged as admin',
         token: customToken.idToken,
       });
     }
@@ -81,7 +81,7 @@ const testLogin = async (req, res) => {
         isDeleted: false,
       },
     );
-    if (superAdmin.length > 0) {
+    if (superAdmin.length) {
       loginSuccess = compareHashPassword(
         req.headers.password,
         superAdmin[0].password,
@@ -90,17 +90,17 @@ const testLogin = async (req, res) => {
         const data = loginFirebase(req.headers.email, req.headers.password);
         customToken = await data();
       } else {
-        return res.status(500).json({
+        return res.status(400).json({
           message: 'Password invalid!',
         });
       }
       return res.status(200).json({
-        message: 'Login successful as super admin',
+        message: 'Successfully logged as super admin',
         token: customToken.idToken,
       });
     }
 
-    return res.status(500).json({
+    return res.status(400).json({
       message: 'Email invalid!',
     });
   } catch (error) {
